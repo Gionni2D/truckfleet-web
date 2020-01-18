@@ -1,0 +1,28 @@
+{
+  "name": "Eco-WebApp",
+  "version": "1.0.0",
+  "main": "public/index.html",
+  "author": "Gionni2D <gionni2d@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start:dev": "webpack-dev-server",
+    "build": "rm -rf dist/* && NODE_ENV=production webpack && cp -r public/* dist"
+  },
+  "devDependencies": {
+    "node-sass": "^4.13.0",
+    "sass-loader": "^8.0.0",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.2",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.7.0",
+    "@types/react-dom": "^16.9.4",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "redux": "^4.0.4"
+  }
+}
