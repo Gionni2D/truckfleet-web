@@ -1,19 +1,21 @@
 import { createStore, Store, Unsubscribe } from 'redux'
 import { Action, ActionType as AT } from './actions'
 import reducer, { State } from './reducer'
-import * as api from './api'
+// import * as api from './api'
 import { RouteList } from './routes'
-import { Catalog } from './domain'
+import language, { i18n } from './i18n'
+// import { Catalog } from './domain'
 
 class App {
-  private bundle: any
+  private bundle: i18n
   private store: Store<State, Action>
 
   constructor() {
     this.store = createStore(reducer)
+    this.bundle = language
   }
 
-  setBundle = (bundle: any) => this.bundle = bundle
+  setBundle = (bundle: i18n) => this.bundle = bundle
 
   getBundle = () => this.bundle
 

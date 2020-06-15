@@ -1,8 +1,10 @@
 import * as React from 'react'
+import HomePresenter from './Home/HomePresenter'
 import app from '../app'
 
 export enum RouteList {
-  Default
+  Default,
+  Home
 }
 
 export default class Router
@@ -30,6 +32,8 @@ export default class Router
     const { route, data } = this.state
     switch(route) {
       case RouteList.Default:
+      case RouteList.Home:
+        return <HomePresenter />
       default:
         return <div>No case</div>
     }
