@@ -1,12 +1,12 @@
 import { createStore, Store, Unsubscribe } from 'redux'
 import { Action, ActionType as AT } from './actions'
 import reducer, { State } from './reducer'
-// import * as api from './api'
-import { RouteData } from './routes'
 import language, { i18n } from './i18n'
-// import { Catalog } from './domain'
+import { RouteData } from './routes'
+import { Model } from './domain'
+import api from './api'
 
-class App {
+class App implements Model {
   private bundle: i18n
   private store: Store<State, Action>
 
@@ -26,6 +26,18 @@ class App {
   changeRoute = (routeData: RouteData) => {
     this.store.dispatch({ type: AT.CHANGE_ROUTE_ACTION, routeData })
   }
+
+  getSpedizioni = api.getSpedizioni
+  getMagazzini = api.getMagazzini
+  getOrdini = api.getOrdini
+  getTappe = api.getTappe
+  inserisciSpedizione = api.inserisciSpedizione
+  rimuoviSpedizione = api.rimuoviSpedizione
+  validaSpedizione = api.validaSpedizione
+  inserisciOrdine = api.inserisciOrdine
+  rimuoviOrdine = api.rimuoviOrdine
+  validaOrdine = api.validaOrdine
+
 }
 
 const app = new App()
