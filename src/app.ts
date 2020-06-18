@@ -2,7 +2,7 @@ import { createStore, Store, Unsubscribe } from 'redux'
 import { Action, ActionType as AT } from './actions'
 import reducer, { State } from './reducer'
 // import * as api from './api'
-import { RouteList } from './routes'
+import { RouteData } from './routes'
 import language, { i18n } from './i18n'
 // import { Catalog } from './domain'
 
@@ -23,8 +23,8 @@ class App {
 
   subscribe = (listener: () => void) => this.store.subscribe(listener)
 
-  changeRoute = (to: RouteList, data?: any) => {
-    this.store.dispatch({ type: AT.CHANGE_ROUTE_ACTION, to, data })
+  changeRoute = (routeData: RouteData) => {
+    this.store.dispatch({ type: AT.CHANGE_ROUTE_ACTION, routeData })
   }
 }
 

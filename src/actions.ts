@@ -1,4 +1,4 @@
-import { RouteList } from "./routes";
+import { RouteData } from "./routes";
 
 export enum ActionType {
   CHANGE_ROUTE_ACTION
@@ -8,7 +8,6 @@ export type Action =
   ChangeRouteAction
 
 interface ChangeRouteAction {
-  to: RouteList
-  data: any
+  routeData: RouteData
   type: ActionType.CHANGE_ROUTE_ACTION
 }

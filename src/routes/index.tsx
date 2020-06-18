@@ -7,30 +7,40 @@ export enum RouteList {
   Home
 }
 
+type RoutesWithoutData =
+  RouteList.Default |
+  RouteList.Home
+
+interface BaseRouteData { route: RoutesWithoutData }
+
+export type RouteData =
+  BaseRouteData
+
 export default class Router
-  extends React.Component<{}, { route: RouteList, data: any}> {
+  extends React.Component<{}, { data: RouteData }> {
 
   constructor(props={}) {
     super(props);
     this.state = {
-      route: RouteList.Default,
-      data: null
+      data: {
+        route: RouteList.Default
+      }
     }
   }
 
   componentDidMount() {
     app.subscribe(this.onAppStateUpdate)
-    app.changeRoute(this.state.route);
+    app.changeRoute(this.state.data);
   }
 
   onAppStateUpdate = () => {
-    const { route, routeData: data } = app.getState()
-    this.setState({ route, data })
+    const { routeData } = app.getState()
+    this.setState({ data: routeData })
   }
 
   render() {
-    const { route, data } = this.state
-    switch(route) {
+    const { data } = this.state
+    switch(data.route) {
       case RouteList.Default:
       case RouteList.Home:
         return <HomePresenter />
