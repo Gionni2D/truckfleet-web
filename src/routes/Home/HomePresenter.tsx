@@ -1,4 +1,4 @@
-import HomeView from './HomeView'
+import HomeView, { FromHomeRoute } from './HomeView'
 import * as React from 'react'
 import app from '../../app'
 
@@ -6,7 +6,8 @@ interface PresenterState {
 
 }
 
-export default class HomePresenter extends React.Component<{}, PresenterState> {
+export default class HomePresenter
+  extends React.Component<{}, PresenterState> {
 
   constructor(props: {}) {
     super(props)
@@ -15,7 +16,12 @@ export default class HomePresenter extends React.Component<{}, PresenterState> {
     }
   }
 
+  onChangeRoute = (route: FromHomeRoute) => {
+    app.changeRoute({ route })
+  }
+
   render() {
-    return <HomeView />
+    return <HomeView
+      onChangeRoute={this.onChangeRoute}/>
   }
 }
