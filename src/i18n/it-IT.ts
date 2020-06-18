@@ -4,6 +4,16 @@ const itIT : i18n = {
   "routes": {
     "home": {
       "title": "Benvenuto in Truck Fleet"
+    },
+    "gestioneSpedizioni": {
+    },
+    "inserisciSpedizione": {
+    },
+    "visualizzaSpedizione": {
+    },
+    "gestioneOrdini": {
+    },
+    "inserisciOrdine": {
     }
   }
 }
