@@ -55,8 +55,8 @@ export interface Tappa {
   id: number;               // integer
   magazzinoId: number;      // integer
   spedizioneId: number;     // integer
-  arrivoPrevisto: number;   // timestamp (secondi)
-  arrivoEffettivo: number;  // timestamp (secondi)
+  arrivoPrevisto: number;   // timestamp (millisecondi)
+  arrivoEffettivo?: number;  // timestamp (millisecondi)
   ordineItinerario: number; // integer
   getSpedizione() : Spedizione
   getMagazzino()  : Magazzino
