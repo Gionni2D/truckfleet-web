@@ -11,7 +11,7 @@ const api : D.Model = {
   },
 
   getOrdini(filter: D.OrdiniFilter) : D.Ordine[] {
-    return []
+    return db.Ordini;
   },
 
   getTappe(filter: D.TappeFilter) : D.Tappa[] {
