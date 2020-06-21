@@ -14,8 +14,8 @@ export interface Ordine {
   massa:              number; // double
   stato:              StatoOrdine; // integer
   getSpedizione()  : Spedizione
-  getInfoCarico()  : [Magazzino, Tappa]
-  getInfoScarico() : [Magazzino, Tappa]
+  getInfoCarico()  : [Magazzino, Tappa|null]
+  getInfoScarico() : [Magazzino, Tappa|null]
 }
 
 export enum StatoOrdine {

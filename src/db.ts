@@ -43,7 +43,7 @@ export const citta : string[] = [
 ]
 
 
-faker.setLocale("it");
+//faker.setLocale("it"); //con questa il browser mi da errore
 
 for(let i = 0; i < 5; i++) {
     Spedizioni.push({
@@ -70,10 +70,12 @@ for(let i = 0; i < 10; i++) {
 }
 
 for(let i = 0; i < 15; i++) {
+	let magazzinoCaricoId = faker.random.number(10);
+	let magazzinoScaricoId = faker.random.number(10);
     Ordini.push({
         id: i, // integer
-        magazzinoCaricoId:  -1, // integer
-        magazzinoScaricoId: -1, // integer
+        magazzinoCaricoId:  magazzinoCaricoId, // integer
+        magazzinoScaricoId: magazzinoScaricoId, // integer
         descrizione:        faker.commerce.productName(),
         nomeMittente:       faker.company.companyName(),
         nomeDestinatario:   faker.company.companyName(),
@@ -82,9 +84,9 @@ for(let i = 0; i < 15; i++) {
         dimZ:               faker.random.number(50)+10, // integer
         massa:             faker.random.number(10.5)+0.5, // double
         stato:              StatoOrdine.INSERITO, // integer
-        getSpedizione() { return Spedizioni.filter(x => x.id == this.spedizioneId)[] },
-        getInfoCarico()  : [Magazzino, Tappa],
-        getInfoScarico() : [Magazzino, Tappa]
+        getSpedizione() { return Spedizioni.filter(x => x.id == this.spedizioneId)[0] },//senza lo 0 non funziona, senza le quadre nemmeno, così però se non c'è nessuna spedizione associata?
+        getInfoCarico()  {return [Magazzini[magazzinoCaricoId], null]},
+        getInfoScarico() {return [Magazzini[magazzinoScaricoId], null]}
     })
 }
 
