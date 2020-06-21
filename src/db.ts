@@ -70,8 +70,11 @@ for(let i = 0; i < 10; i++) {
 }
 
 for(let i = 0; i < 15; i++) {
-	let magazzinoCaricoId = faker.random.number(10);
-	let magazzinoScaricoId = faker.random.number(10);
+	let magazzinoCaricoId = faker.random.number(9);
+	let magazzinoScaricoId:number;
+	do {
+		magazzinoScaricoId = faker.random.number(9);
+	} while(magazzinoCaricoId == magazzinoScaricoId);
     Ordini.push({
         id: i, // integer
         magazzinoCaricoId:  magazzinoCaricoId, // integer

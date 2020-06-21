@@ -1,4 +1,4 @@
-import GestioneOrdiniView from './GestioneOrdiniView'
+import GestioneOrdiniView, {FromGestioneOrdiniRoute} from './GestioneOrdiniView'
 import * as React from 'react'
 import app from '../../app'
 
@@ -14,7 +14,12 @@ export default class GestioneOrdiniPresenter
     }
   }
 
+  onChangeRoute = (route: FromGestioneOrdiniRoute) => {
+    app.changeRoute({ route })
+  }
+
   render() {
-    return <GestioneOrdiniView />
+    return <GestioneOrdiniView
+		onChangeRoute={this.onChangeRoute}/>
   }
 }

@@ -11,6 +11,7 @@ export interface i18n {
     "visualizzaSpedizione": {
     }
     "gestioneOrdini": {
+		"insertOrder": string
     }
     "inserisciOrdine": {
     }

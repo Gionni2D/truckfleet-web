@@ -12,6 +12,7 @@ const itIT : i18n = {
     "visualizzaSpedizione": {
     },
     "gestioneOrdini": {
+		"insertOrder": "Inserisci ordine"
     },
     "inserisciOrdine": {
     }
