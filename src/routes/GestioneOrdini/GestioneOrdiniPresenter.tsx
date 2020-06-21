@@ -1,8 +1,10 @@
 import GestioneOrdiniView, {FromGestioneOrdiniRoute} from './GestioneOrdiniView'
 import * as React from 'react'
 import app from '../../app'
+import { Ordine } from '../../domain'
 
 interface PresenterState {
+  ordini: Ordine[]
 }
 
 export default class GestioneOrdiniPresenter
@@ -11,7 +13,14 @@ export default class GestioneOrdiniPresenter
   constructor(props: {}) {
     super(props)
     this.state = {
+      ordini: []
     }
+  }
+
+  componentDidMount() {
+    this.setState({
+      ordini: app.getOrdini()
+    })
   }
 
   onChangeRoute = (route: FromGestioneOrdiniRoute) => {
@@ -20,6 +29,7 @@ export default class GestioneOrdiniPresenter
 
   render() {
     return <GestioneOrdiniView
+    ordini={this.state.ordini}
 		onChangeRoute={this.onChangeRoute}/>
   }
 }

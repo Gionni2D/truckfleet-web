@@ -1,6 +1,6 @@
 import { i18n } from ".";
 
-const itIT : i18n = {
+const itIT:  i18n = {
   "routes": {
     "home": {
       "title": "Benvenuto in Truck Fleet"
@@ -12,7 +12,16 @@ const itIT : i18n = {
     "visualizzaSpedizione": {
     },
     "gestioneOrdini": {
-		"insertOrder": "Inserisci ordine"
+      "insertOrder": "Inserisci ordine",
+      "ordersProperty": {
+        "desc":       "Descrizione",
+        "from":       "Mittente",
+        "to":         "Destinatario",
+        "load":       "Carico",
+        "unload":     "Scarico",
+        "dimension":  "Dimensioni",
+        "mass":       "Massa"
+      }
     },
     "inserisciOrdine": {
     }

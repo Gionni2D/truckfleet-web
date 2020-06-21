@@ -11,11 +11,20 @@ export interface i18n {
     "visualizzaSpedizione": {
     }
     "gestioneOrdini": {
-		"insertOrder": string
+      "insertOrder": string,
+      "ordersProperty": {
+        "desc":       string,
+        "from":       string,
+        "to":         string,
+        "load":       string,
+        "unload":     string,
+        "dimension":  string,
+        "mass":       string
+      }
     }
     "inserisciOrdine": {
     }
   }
 }
 
-export { default as default } from './it-IT'
+export { default } from './it-IT'
