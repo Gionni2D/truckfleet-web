@@ -13,9 +13,9 @@ export interface Ordine {
   dimZ:               number; // integer
   massa:              number; // double
   stato:              StatoOrdine; // integer
-  getSpedizione()  : Spedizione
-  getInfoCarico()  : [Magazzino, Tappa|null]
-  getInfoScarico() : [Magazzino, Tappa|null]
+  getSpedizione()  : Spedizione | undefined
+  getInfoCarico()  : [Magazzino, Tappa?]
+  getInfoScarico() : [Magazzino, Tappa?]
 }
 
 export enum StatoOrdine {
@@ -68,10 +68,10 @@ export type OrdiniFilter = (o: Ordine) => boolean
 export type TappeFilter = (o: Tappa) => boolean
 
 export interface Model {
-  getSpedizioni(filter: SpedizioniFilter) : Spedizione[]
-  getMagazzini(filter: MagazziniFilter) : Magazzino[]
-  getOrdini(filter: OrdiniFilter) : Ordine[]
-  getTappe(filter: TappeFilter) : Tappa[]
+  getSpedizioni(filter?: SpedizioniFilter) : Spedizione[]
+  getMagazzini(filter?: MagazziniFilter) : Magazzino[]
+  getOrdini(filter?: OrdiniFilter) : Ordine[]
+  getTappe(filter?: TappeFilter) : Tappa[]
   inserisciSpedizione(s : Spedizione) : boolean
   rimuoviSpedizione(s : Spedizione) : boolean
   validaSpedizione(s : Spedizione) : boolean

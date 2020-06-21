@@ -2,19 +2,21 @@ import * as db from './db'
 import * as D from './domain'
 
 const api : D.Model = {
-  getSpedizioni(filter: D.SpedizioniFilter) : D.Spedizione[] {
+  getSpedizioni(filter?: D.SpedizioniFilter) : D.Spedizione[] {
     return []
   },
 
-  getMagazzini(filter: D.MagazziniFilter) : D.Magazzino[] {
+  getMagazzini(filter?: D.MagazziniFilter) : D.Magazzino[] {
     return []
   },
 
-  getOrdini(filter: D.OrdiniFilter) : D.Ordine[] {
-    return db.Ordini;
+  getOrdini(filter?: D.OrdiniFilter) : D.Ordine[] {
+    return filter ?
+      db.Ordini.filter(filter) :
+      db.Ordini;
   },
 
-  getTappe(filter: D.TappeFilter) : D.Tappa[] {
+  getTappe(filter?: D.TappeFilter) : D.Tappa[] {
     return []
   },
 

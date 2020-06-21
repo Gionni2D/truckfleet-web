@@ -1,23 +1,13 @@
 import { Magazzino, Ordine, Tappa, Spedizione, StatoSpedizione, StatoOrdine } from "./domain";
-import * as faker from "faker";
-import { random } from "faker";
+import * as faker from "faker/locale/it";
 
 
-export const Spedizioni : Spedizione[] = [
+export const Spedizioni : Spedizione[] = []
+export const Ordini : Ordine[] = []
+export const Magazzini : Magazzino[] = []
+export const Tappe : Tappa[] = []
 
-]
-
-export const Ordini : Ordine[] = [
-
-]
-export const Magazzini : Magazzino[] = [
-
-]
-export const Tappe : Tappa[] = [
-
-]
-
-export const targhe : string[]  = [
+const targhe : string[]  = [
     "EF122SN",
     "DA328HG",
     "EF251LA",
@@ -25,14 +15,14 @@ export const targhe : string[]  = [
     "BD381EH"
 ]
 
-export const modelli : string[] = [
+const modelli : string[] = [
     "Mercedes",
     "Scania",
     "DAF",
     "MAN"
 ]
 
-export const citta : string[] = [
+const citta : string[] = [
     "Bologna, BO, 40123",
     "Modena, MO, 41121",
     "Rimini, RN, 47921",
@@ -42,12 +32,11 @@ export const citta : string[] = [
     "Parma, PR, 43121"
 ]
 
-
-//faker.setLocale("it"); //con questa il browser mi da errore
+// CREAZIONE SPEDIZIONI
 
 for(let i = 0; i < 5; i++) {
     Spedizioni.push({
-        id: 1,
+        id: i,
         veicoloTarga: targhe[i],
         veicoloModello: modelli[faker.random.number(3)],
         veicoloMassa: 11.5,       // double
@@ -62,19 +51,25 @@ for(let i = 0; i < 5; i++) {
     });
 }
 
+// CREAZIONE MAGAZZINI
+
 for(let i = 0; i < 10; i++) {
     Magazzini.push({
         id: i,        // integer
-        indirizzo: faker.address.streetName() +", "  +(faker.random.number(50)+1)  +", "+citta[faker.random.number(6)] +", Italia"// Via, Civico, Comune, Provincia, ZIPCode, Nazione
+        indirizzo: `${faker.address.streetName()}, ${faker.random.number(50)+1}, ${citta[faker.random.number(6)]}, Italia"`// Via, Civico, Comune, Provincia, ZIPCode, Nazione
     });
 }
 
+// CREAZIONE ORDINI
+
 for(let i = 0; i < 15; i++) {
 	let magazzinoCaricoId = faker.random.number(9);
-	let magazzinoScaricoId:number;
+    let magazzinoScaricoId : number;
+
 	do {
 		magazzinoScaricoId = faker.random.number(9);
-	} while(magazzinoCaricoId == magazzinoScaricoId);
+    } while(magazzinoCaricoId == magazzinoScaricoId);
+
     Ordini.push({
         id: i, // integer
         magazzinoCaricoId:  magazzinoCaricoId, // integer
@@ -87,32 +82,46 @@ for(let i = 0; i < 15; i++) {
         dimZ:               faker.random.number(50)+10, // integer
         massa:             faker.random.number(10.5)+0.5, // double
         stato:              StatoOrdine.INSERITO, // integer
-        getSpedizione() { return Spedizioni.filter(x => x.id == this.spedizioneId)[0] },//senza lo 0 non funziona, senza le quadre nemmeno, così però se non c'è nessuna spedizione associata?
-        getInfoCarico()  {return [Magazzini[magazzinoCaricoId], null]},
-        getInfoScarico() {return [Magazzini[magazzinoScaricoId], null]}
+        getSpedizione() {
+            return Spedizioni.filter(x => x.id == this.spedizioneId)[0]
+        },
+        getInfoCarico()  {
+            const t = Tappe.filter(x => x.id == this.tappaCaricoId)[0]
+            const m = Magazzini.filter(x => x.id == this.magazzinoCaricoId)[0]
+            return [ m, t]
+        },
+        getInfoScarico() {
+            const t = Tappe.filter(x => x.id == this.tappaScaricoId)[0]
+            const m = Magazzini.filter(x => x.id == this.magazzinoScaricoId)[0]
+            return [ m, t]
+        }
     })
 }
 
+// CREAZIONE TAPPE
 
-
-for(let i = 0, k = 0; i < Spedizioni.length; i++) {
+for(let i = 0; i < Spedizioni.length; i++) {
     let arrivoPre = faker.date.future(1).getTime();
 
-    for(let j = 1; j <= 3; j++, k++) {
+    for(let j = 0; j < 3; j++) {
         Tappe.push({
-            id: k,               // integer
+            id: j,               // integer
             magazzinoId: faker.random.number(9),      // integer
             spedizioneId: i,     // integer
             arrivoPrevisto: arrivoPre,   // timestamp (millisecondi)
-            ordineItinerario: j, // integer
-            getSpedizione() { return Spedizioni.filter(x => x.id == this.spedizioneId)[0] },
-            getMagazzino()  { return Magazzini.filter(x => x.id == this.magazzinoId)[0] }
-            });
-            
-            arrivoPre = arrivoPre + faker.random.number(1000*60*60)+1000*60*20;
+            ordineItinerario: j + 1, // integer
+            getSpedizione() {
+                return Spedizioni.filter(x => x.id == this.spedizioneId)[0]
+            },
+            getMagazzino() {
+                return Magazzini.filter(x => x.id == this.magazzinoId)[0]
+            }
+        });
 
-            // popolare proprietà ordini non definite
-        }
+        arrivoPre = arrivoPre + faker.random.number(1000*60*60)+1000*60*20;
+
+        // popolare proprietà ordini non definite
+    }
 }
 
 
