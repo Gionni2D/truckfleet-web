@@ -9,7 +9,8 @@ interface ViewProps {
 }
 
 export type FromGestioneOrdiniRoute =
-  RouteList.InserisciOrdine
+  RouteList.InserisciOrdine |
+  RouteList.Home
 
 export default class GestioneOrdiniView
   extends React.Component<ViewProps> {
@@ -28,7 +29,9 @@ export default class GestioneOrdiniView
   render() {
     const b = this.bundle.routes.gestioneOrdini
 
+	//starebbe bene anche degli spazi tra i due bottoni piuttosto che andare a capo
     return <div><h1>GestioneOrdini</h1>
+		<button onClick={this.onChangeRoute.bind(this, RouteList.Home)}>Home</button><br/><br/>  
 		<button onClick={this.onChangeRoute.bind(this, RouteList.InserisciOrdine)}>{b.insertOrder}</button>
 		<table>
 			<thead>
