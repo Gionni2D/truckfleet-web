@@ -7,36 +7,36 @@ import { Model } from './domain'
 import api from './api'
 
 class App implements Model {
-  private bundle: i18n
-  private store: Store<State, Action>
+	private bundle: i18n
+	private store: Store<State, Action>
 
-  constructor() {
-    this.store = createStore(reducer)
-    this.bundle = language
-  }
+	constructor() {
+		this.store = createStore(reducer)
+		this.bundle = language
+	}
 
-  setBundle = (bundle: i18n) => this.bundle = bundle
+	setBundle = (bundle: i18n) => this.bundle = bundle
 
-  getBundle = () => this.bundle
+	getBundle = () => this.bundle
 
-  getState = () => this.store.getState()
+	getState = () => this.store.getState()
 
-  subscribe = (listener: () => void) => this.store.subscribe(listener)
+	subscribe = (listener: () => void) => this.store.subscribe(listener)
 
-  changeRoute = (routeData: RouteData) => {
-    this.store.dispatch({ type: AT.CHANGE_ROUTE_ACTION, routeData })
-  }
+	changeRoute = (routeData: RouteData) => {
+		this.store.dispatch({ type: AT.CHANGE_ROUTE_ACTION, routeData })
+	}
 
-  getSpedizioni = api.getSpedizioni
-  getMagazzini = api.getMagazzini
-  getOrdini = api.getOrdini
-  getTappe = api.getTappe
-  inserisciSpedizione = api.inserisciSpedizione
-  rimuoviSpedizione = api.rimuoviSpedizione
-  validaSpedizione = api.validaSpedizione
-  inserisciOrdine = api.inserisciOrdine
-  rimuoviOrdine = api.rimuoviOrdine
-  validaOrdine = api.validaOrdine
+	getSpedizioni = api.getSpedizioni
+	getMagazzini = api.getMagazzini
+	getOrdini = api.getOrdini
+	getTappe = api.getTappe
+	inserisciSpedizione = api.inserisciSpedizione
+	rimuoviSpedizione = api.rimuoviSpedizione
+	validaSpedizione = api.validaSpedizione
+	inserisciOrdine = api.inserisciOrdine
+	rimuoviOrdine = api.rimuoviOrdine
+	validaOrdine = api.validaOrdine
 
 }
 

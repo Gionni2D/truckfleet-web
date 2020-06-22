@@ -6,18 +6,18 @@ interface ViewProps {
 }
 
 export default class GestioneSpedizioniView
-  extends React.Component<ViewProps> {
+	extends React.Component<ViewProps> {
 
-  readonly bundle: i18n
+	readonly bundle: i18n
 
-  constructor(props: ViewProps) {
-    super(props)
-    this.bundle = app.getBundle()
-  }
+	constructor(props: ViewProps) {
+		super(props)
+		this.bundle = app.getBundle()
+	}
 
-  render() {
-    const b = this.bundle.routes.gestioneSpedizioni
+	render() {
+		const b = this.bundle.routes.gestioneSpedizioni
 
-    return <div>GestioneSpedizioni</div>
-  }
+		return <div>GestioneSpedizioni</div>
+	}
 }

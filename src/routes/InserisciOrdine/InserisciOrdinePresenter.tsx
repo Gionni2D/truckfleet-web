@@ -6,20 +6,20 @@ interface PresenterState {
 }
 
 export default class VisualizzaSpedizionePresenter
-  extends React.Component<{}, PresenterState> {
+	extends React.Component<{}, PresenterState> {
 
-  constructor(props: {}) {
-    super(props)
-    this.state = {
-    }
-  }
+	constructor(props: {}) {
+		super(props)
+		this.state = {
+		}
+	}
 
-  onChangeRoute = (route: FromInserisciOrdineRoute) => {
-    app.changeRoute({ route })
-  }
+	onChangeRoute = (route: FromInserisciOrdineRoute) => {
+		app.changeRoute({ route })
+	}
 
-  render() {
-    return <InserisciOrdineView
+	render() {
+		return <InserisciOrdineView
 		onChangeRoute={this.onChangeRoute}/>
-  }
+	}
 }

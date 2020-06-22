@@ -6,18 +6,18 @@ interface ViewProps {
 }
 
 export default class InserisciSpedizioneView
-  extends React.Component<ViewProps> {
+	extends React.Component<ViewProps> {
 
-  readonly bundle: i18n
+	readonly bundle: i18n
 
-  constructor(props: ViewProps) {
-    super(props)
-    this.bundle = app.getBundle()
-  }
+	constructor(props: ViewProps) {
+		super(props)
+		this.bundle = app.getBundle()
+	}
 
-  render() {
-    const b = this.bundle.routes.inserisciSpedizione
+	render() {
+		const b = this.bundle.routes.inserisciSpedizione
 
-    return <div>InserisciSpedizione</div>
-  }
+		return <div>InserisciSpedizione</div>
+	}
 }

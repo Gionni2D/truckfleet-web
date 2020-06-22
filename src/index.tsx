@@ -3,7 +3,7 @@ import * as React from "react";
 import Router from './routes'
 
 ReactDOM.render(
-  <Router />,
-  document.getElementById("main")
+	<Router />,
+	document.getElementById("main")
 );
 

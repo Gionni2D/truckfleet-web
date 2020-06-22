@@ -6,21 +6,21 @@ interface PresenterState {
 }
 
 export interface VisualizzaSpedizionePresenterProps {
-  id_spedizione: number
+	id_spedizione: number
 }
 
 export default class VisualizzaSpedizionePresenter
-  extends React.Component<VisualizzaSpedizionePresenterProps, PresenterState> {
+	extends React.Component<VisualizzaSpedizionePresenterProps, PresenterState> {
 
-  constructor(props: VisualizzaSpedizionePresenterProps) {
-    super(props)
-    this.state = {
-    }
-  }
+	constructor(props: VisualizzaSpedizionePresenterProps) {
+		super(props)
+		this.state = {
+		}
+	}
 
-  render() {
-    console.log(this.props.id_spedizione);
+	render() {
+		console.log(this.props.id_spedizione);
 
-    return <VisualizzaSpedizioneView />
-  }
+		return <VisualizzaSpedizioneView />
+	}
 }

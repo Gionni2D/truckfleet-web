@@ -6,15 +6,15 @@ interface PresenterState {
 }
 
 export default class InserisciSpedizionePresenter
-  extends React.Component<{}, PresenterState> {
+	extends React.Component<{}, PresenterState> {
 
-  constructor(props: {}) {
-    super(props)
-    this.state = {
-    }
-  }
+	constructor(props: {}) {
+		super(props)
+		this.state = {
+		}
+	}
 
-  render() {
-    return <InserisciSpedizioneView />
-  }
+	render() {
+		return <InserisciSpedizioneView />
+	}
 }

@@ -12,29 +12,29 @@ interface ViewProps {
 }
 
 export type FromGestioneOrdiniRoute =
-  RouteList.InserisciOrdine |
-  RouteList.Home
+	RouteList.InserisciOrdine |
+	RouteList.Home
 
 export default class GestioneOrdiniView
-  extends React.Component<ViewProps> {
+	extends React.Component<ViewProps> {
 
-  readonly bundle: i18n
+	readonly bundle: i18n
 
-  constructor(props: ViewProps) {
-    super(props)
-    this.bundle = app.getBundle()
-  }
+	constructor(props: ViewProps) {
+		super(props)
+		this.bundle = app.getBundle()
+	}
 
-  onChangeRoute(route: FromGestioneOrdiniRoute) {
-    this.props.onChangeRoute(route)
-  }
+	onChangeRoute(route: FromGestioneOrdiniRoute) {
+		this.props.onChangeRoute(route)
+	}
 
-  onChangeFilterText = (e: React.ChangeEvent<HTMLInputElement>) => {
+	onChangeFilterText = (e: React.ChangeEvent<HTMLInputElement>) => {
 	this.props.onChangeFilterText(e.target.value);
-  }
+	}
 
-  render() {
-    const b = this.bundle.routes.gestioneOrdini
+	render() {
+		const b = this.bundle.routes.gestioneOrdini
 
 	//starebbe bene anche degli spazi tra i due bottoni piuttosto che andare a capo
 	return <div><h1>{b.manageOrders}</h1>
@@ -70,6 +70,6 @@ export default class GestioneOrdiniView
 				})}
 			</tbody>
 		</table>
-    </div>
-  }
+		</div>
+	}
 }

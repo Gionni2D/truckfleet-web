@@ -7,21 +7,21 @@ interface PresenterState {
 }
 
 export default class HomePresenter
-  extends React.Component<{}, PresenterState> {
+	extends React.Component<{}, PresenterState> {
 
-  constructor(props: {}) {
-    super(props)
-    this.state = {
+	constructor(props: {}) {
+		super(props)
+		this.state = {
 
-    }
-  }
+		}
+	}
 
-  onChangeRoute = (route: FromHomeRoute) => {
-    app.changeRoute({ route })
-  }
+	onChangeRoute = (route: FromHomeRoute) => {
+		app.changeRoute({ route })
+	}
 
-  render() {
-    return <HomeView
-      onChangeRoute={this.onChangeRoute}/>
-  }
+	render() {
+		return <HomeView
+			onChangeRoute={this.onChangeRoute}/>
+	}
 }

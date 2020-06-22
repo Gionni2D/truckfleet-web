@@ -4,32 +4,32 @@ import app from '../../app'
 import { Ordine } from '../../domain'
 
 interface PresenterState {
-  ordini: Ordine[],
-  filterText: string
+	ordini: Ordine[],
+	filterText: string
 }
 
 export default class GestioneOrdiniPresenter
-  extends React.Component<{}, PresenterState> {
+	extends React.Component<{}, PresenterState> {
 
-  constructor(props: {}) {
-    super(props)
-    this.state = {
-      ordini: [],
-      filterText: ""
-    }
-  }
+	constructor(props: {}) {
+		super(props)
+		this.state = {
+			ordini: [],
+			filterText: ""
+		}
+	}
 
-  componentDidMount() {
-    this.setState({
-      ordini: app.getOrdini()
-    })
-  }
+	componentDidMount() {
+		this.setState({
+			ordini: app.getOrdini()
+		})
+	}
 
-  onChangeRoute = (route: FromGestioneOrdiniRoute) => {
-    app.changeRoute({ route })
-  }
+	onChangeRoute = (route: FromGestioneOrdiniRoute) => {
+		app.changeRoute({ route })
+	}
 
-  onChangeFilterText = (filterText: string) => {//la notazione in questo modo conserva this allo scope padre: https://stackoverflow.com/a/59404368
+	onChangeFilterText = (filterText: string) => {//la notazione in questo modo conserva this allo scope padre: https://stackoverflow.com/a/59404368
 		this.setState({
 			ordini: app.getOrdini((o: Ordine) => {
 				return o.descrizione.toLowerCase().includes(filterText.toLowerCase()) ||
@@ -40,13 +40,13 @@ export default class GestioneOrdiniPresenter
 			}),
 			filterText: filterText
 		})
-  }
+	}
 
-  render() {
-    return <GestioneOrdiniView
+	render() {
+		return <GestioneOrdiniView
 		ordini={this.state.ordini}
 		filterText={this.state.filterText}
 		onChangeFilterText={this.onChangeFilterText}
 		onChangeRoute={this.onChangeRoute}/>
-  }
+	}
 }
