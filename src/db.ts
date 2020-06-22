@@ -56,7 +56,7 @@ for(let i = 0; i < 5; i++) {
 for(let i = 0; i < 10; i++) {
     Magazzini.push({
         id: i,        // integer
-        indirizzo: `${faker.address.streetName()}, ${faker.random.number(50)+1}, ${citta[faker.random.number(6)]}, Italia"`// Via, Civico, Comune, Provincia, ZIPCode, Nazione
+        indirizzo: `${faker.address.streetName()}, ${faker.random.number(50)+1}, ${citta[faker.random.number(6)]}, Italia`// Via, Civico, Comune, Provincia, ZIPCode, Nazione
     });
 }
 
