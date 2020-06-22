@@ -30,12 +30,16 @@ export default class GestioneOrdiniPresenter
   }
 
   onChangeFilterText = (filterText: string) => {//la notazione in questo modo conserva this allo scope padre: https://stackoverflow.com/a/59404368
-	this.setState({
-		ordini: app.getOrdini((o: Ordine) => {
-			return o.descrizione.includes(filterText)
-		}),
-		filterText: filterText
-	})
+		this.setState({
+			ordini: app.getOrdini((o: Ordine) => {
+				return o.descrizione.toLowerCase().includes(filterText.toLowerCase()) ||
+					o.nomeMittente.toLowerCase().includes(filterText.toLowerCase()) ||
+					o.nomeDestinatario.toLowerCase().includes(filterText.toLowerCase()) ||
+					o.getInfoCarico()[0].indirizzo.toLowerCase().includes(filterText.toLowerCase()) ||
+					o.getInfoScarico()[0].indirizzo.toLowerCase().includes(filterText.toLowerCase())
+			}),
+			filterText: filterText
+		})
   }
 
   render() {

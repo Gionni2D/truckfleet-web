@@ -1,4 +1,4 @@
-import VisualizzaSpedizioneView from './InserisciOrdineView'
+import InserisciOrdineView, {FromInserisciOrdineRoute} from './InserisciOrdineView'
 import * as React from 'react'
 import app from '../../app'
 
@@ -14,7 +14,12 @@ export default class VisualizzaSpedizionePresenter
     }
   }
 
+  onChangeRoute = (route: FromInserisciOrdineRoute) => {
+    app.changeRoute({ route })
+  }
+
   render() {
-    return <VisualizzaSpedizioneView />
+    return <InserisciOrdineView
+		onChangeRoute={this.onChangeRoute}/>
   }
 }

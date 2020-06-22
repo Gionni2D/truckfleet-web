@@ -1,9 +1,15 @@
 import { i18n } from '../../i18n'
+import { RouteList } from '..'
 import * as React from 'react'
 import app from '../../app'
 
 interface ViewProps {
+	onChangeRoute(route: FromInserisciOrdineRoute): void
 }
+
+export type FromInserisciOrdineRoute =
+  RouteList.GestioneOrdini |
+  RouteList.Home
 
 export default class InserisciOrdineView
   extends React.Component<ViewProps> {
@@ -15,9 +21,18 @@ export default class InserisciOrdineView
     this.bundle = app.getBundle()
   }
 
-  render() {
-    const b = this.bundle.routes.inserisciOrdine
+  onChangeRoute(route: FromInserisciOrdineRoute) {
+    this.props.onChangeRoute(route)
+  }
 
-    return <div>InserisciOrdine</div>
+  render() {
+	const b = this.bundle.routes.inserisciOrdine
+	const bg = this.bundle.routes.gestioneOrdini
+
+	return <div><h1>{bg.insertOrder}</h1>
+		<button onClick={this.onChangeRoute.bind(this, RouteList.Home)}>Home</button><br/><br/>
+		<button onClick={this.onChangeRoute.bind(this, RouteList.GestioneOrdini)}>{bg.manageOrders}</button>
+		
+	</div>
   }
 }
