@@ -11,7 +11,9 @@ export interface i18n {
     "visualizzaSpedizione": {
     }
     "gestioneOrdini": {
-      "insertOrder": string,
+	  "insertOrder": string,
+	  "search": string,
+	  "manageOrders": string,
       "ordersProperty": {
         "desc":       string,
         "from":       string,

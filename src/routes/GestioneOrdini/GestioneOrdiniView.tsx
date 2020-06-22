@@ -7,6 +7,8 @@ import { Ordine } from "../../domain"
 interface ViewProps {
 	ordini : Ordine[]
 	onChangeRoute(route: FromGestioneOrdiniRoute): void
+	onChangeFilterText(filterText: string): void
+	filterText: string
 }
 
 export type FromGestioneOrdiniRoute =
@@ -21,18 +23,24 @@ export default class GestioneOrdiniView
   constructor(props: ViewProps) {
     super(props)
     this.bundle = app.getBundle()
+    this.onChangeFilterText = this.onChangeFilterText.bind(this)
   }
 
   onChangeRoute(route: FromGestioneOrdiniRoute) {
     this.props.onChangeRoute(route)
   }
 
+  onChangeFilterText(e: React.ChangeEvent<HTMLInputElement>) {
+	this.props.onChangeFilterText(e.target.value);
+  }
+
   render() {
     const b = this.bundle.routes.gestioneOrdini
 
 	//starebbe bene anche degli spazi tra i due bottoni piuttosto che andare a capo
-    return <div><h1>GestioneOrdini</h1>
+	return <div><h1>{b.manageOrders}</h1>
 		<button onClick={this.onChangeRoute.bind(this, RouteList.Home)}>Home</button><br/><br/>
+		<input type="text" onChange={(evt) => this.onChangeFilterText(evt)} value={this.props.filterText} placeholder={b.search}></input>
 		<button onClick={this.onChangeRoute.bind(this, RouteList.InserisciOrdine)}>{b.insertOrder}</button>
 		<table>
 			<thead>
@@ -63,6 +71,6 @@ export default class GestioneOrdiniView
 				})}
 			</tbody>
 		</table>
-	</div>
+    </div>
   }
 }

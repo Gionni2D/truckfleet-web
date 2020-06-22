@@ -4,7 +4,8 @@ import app from '../../app'
 import { Ordine } from '../../domain'
 
 interface PresenterState {
-  ordini: Ordine[]
+  ordini: Ordine[],
+  filterText: string
 }
 
 export default class GestioneOrdiniPresenter
@@ -13,7 +14,8 @@ export default class GestioneOrdiniPresenter
   constructor(props: {}) {
     super(props)
     this.state = {
-      ordini: []
+      ordini: [],
+      filterText: ""
     }
   }
 
@@ -27,9 +29,20 @@ export default class GestioneOrdiniPresenter
     app.changeRoute({ route })
   }
 
+  onChangeFilterText = (filterText: string) => {//la notazione in questo modo conserva this allo scope padre: https://stackoverflow.com/a/59404368
+	this.setState({
+		ordini: app.getOrdini((o: Ordine) => {
+			return o.descrizione.includes(filterText)
+		}),
+		filterText: filterText
+	})
+  }
+
   render() {
     return <GestioneOrdiniView
-    ordini={this.state.ordini}
+		ordini={this.state.ordini}
+		filterText={this.state.filterText}
+		onChangeFilterText={this.onChangeFilterText}
 		onChangeRoute={this.onChangeRoute}/>
   }
 }

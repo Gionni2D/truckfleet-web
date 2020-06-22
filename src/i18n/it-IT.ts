@@ -12,7 +12,9 @@ const itIT:  i18n = {
     "visualizzaSpedizione": {
     },
     "gestioneOrdini": {
-      "insertOrder": "Inserisci ordine",
+	  "insertOrder": "Inserisci ordine",
+	  "search": "Cerca",
+	  "manageOrders": "Gestione ordini",
       "ordersProperty": {
         "desc":       "Descrizione",
         "from":       "Mittente",
