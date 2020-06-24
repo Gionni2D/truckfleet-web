@@ -27,6 +27,11 @@ const itIT: i18n = {
 		},
 		"inserisciOrdine": {
 		}
+	},
+	"components": {
+		"drawer": {
+			"settings": "Impostazioni account"
+		}
 	}
 }
 

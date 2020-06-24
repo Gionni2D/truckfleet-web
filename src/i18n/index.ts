@@ -26,6 +26,11 @@ export interface i18n {
 		}
 		"inserisciOrdine": {
 		}
+	},
+	"components": {
+		"drawer": {
+			"settings": string
+		}
 	}
 }
 
