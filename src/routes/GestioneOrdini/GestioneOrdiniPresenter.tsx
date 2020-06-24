@@ -42,11 +42,22 @@ export default class GestioneOrdiniPresenter
 		})
 	}
 
+	onEliminaOrdine = (idOrdine: number): boolean => {
+		if(app.rimuoviOrdine(app.getOrdini((o: Ordine) => o.id == idOrdine)[0])) {
+			//aggiorna state con elenco ordini, preservando eventuali filtri messi
+			this.onChangeFilterText(this.state.filterText);
+			return true;
+		}
+		else
+			return false;
+	}
+
 	render() {
 		return <GestioneOrdiniView
 		ordini={this.state.ordini}
 		filterText={this.state.filterText}
 		onChangeFilterText={this.onChangeFilterText}
+		onEliminaOrdine={this.onEliminaOrdine}
 		onChangeRoute={this.onChangeRoute}/>
 	}
 }

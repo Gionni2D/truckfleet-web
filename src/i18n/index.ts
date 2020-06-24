@@ -1,3 +1,4 @@
+import { StatoOrdine } from '../domain';
 
 export interface i18n {
 	"routes": {
@@ -15,9 +16,11 @@ export interface i18n {
 		"visualizzaSpedizione": {
 		}
 		"gestioneOrdini": {
-		"insertOrder": string,
-		"search": string,
-		"manageOrders": string,
+			"insertOrder": string,
+			"search": string,
+			"manageOrders": string,
+			"actions": string,
+			"delete": string,
 			"ordersProperty": {
 				"desc":       string,
 				"from":       string,
@@ -25,10 +28,17 @@ export interface i18n {
 				"load":       string,
 				"unload":     string,
 				"dimension":  string,
-				"mass":       string
+				"mass":       string,
+				"state":      string
 			}
 		}
 		"inserisciOrdine": {
+			"insert": string
+		}
+	},
+	"domain": {
+		"orderState": {
+			[key in StatoOrdine]: string
 		}
 	},
 	"components": {

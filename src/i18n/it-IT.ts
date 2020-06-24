@@ -1,4 +1,5 @@
 import { i18n } from ".";
+import { StatoOrdine } from "../domain";
 
 const itIT: i18n = {
 	"routes": {
@@ -16,9 +17,11 @@ const itIT: i18n = {
 		"visualizzaSpedizione": {
 		},
 		"gestioneOrdini": {
-		"insertOrder": "Inserisci ordine",
-		"search": "Cerca",
-		"manageOrders": "Gestione ordini",
+			"insertOrder": "Inserisci ordine",
+			"search": "Cerca",
+			"actions": "Azioni",
+			"manageOrders": "Gestione ordini",
+			"delete": "Elimina",
 			"ordersProperty": {
 				"desc":       "Descrizione",
 				"from":       "Mittente",
@@ -26,10 +29,20 @@ const itIT: i18n = {
 				"load":       "Carico",
 				"unload":     "Scarico",
 				"dimension":  "Dimensioni",
-				"mass":       "Massa"
+				"mass":       "Massa",
+				"state":      "Stato"
 			}
 		},
 		"inserisciOrdine": {
+			"insert": "Inserisci"
+		}
+	},
+	"domain": {
+		"orderState": {
+			[StatoOrdine.INSERITO]: "Inserito",
+			[StatoOrdine.PROGRAMMATO]: "Programmato",
+			[StatoOrdine.INVIATO]: "Inviato",
+			[StatoOrdine.CONSEGNATO]: "Consegnato"
 		}
 	},
 	"components": {

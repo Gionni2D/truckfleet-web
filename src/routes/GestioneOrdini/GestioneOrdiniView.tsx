@@ -8,6 +8,7 @@ interface ViewProps {
 	ordini : Ordine[]
 	onChangeRoute(route: FromGestioneOrdiniRoute): void
 	onChangeFilterText(filterText: string): void
+	onEliminaOrdine(idOrdine: number): boolean
 	filterText: string
 }
 
@@ -30,7 +31,14 @@ export default class GestioneOrdiniView
 	}
 
 	onChangeFilterText = (e: React.ChangeEvent<HTMLInputElement>) => {
-	this.props.onChangeFilterText(e.target.value);
+		this.props.onChangeFilterText(e.target.value);
+	}
+
+	onEliminaOrdine = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, idOrdine: number) => {
+		if(this.props.onEliminaOrdine(idOrdine))
+			alert("Ordine eliminato correttamente");
+		else
+			alert("Errore nell'eliminazione dell'ordine");
 	}
 
 	render() {
@@ -52,11 +60,12 @@ export default class GestioneOrdiniView
 					<th>{b.ordersProperty.unload}</th>
 					<th>{b.ordersProperty.dimension}</th>
 					<th>{b.ordersProperty.mass}</th>
+					<th>{b.ordersProperty.state}</th>
+					<th>{b.actions}</th>
 				</tr>
 			</thead>
 			<tbody>
 				{ this.props.ordini.map((ordine) => {
-					console.log(ordine)
 					return (<tr key={ordine.id}>
 						<th>{ordine.id}</th>
 						<td>{ordine.descrizione}</td>
@@ -66,6 +75,8 @@ export default class GestioneOrdiniView
 						<td>{ordine.getInfoScarico()[0].indirizzo}</td>
 						<td>{ordine.dimX}x{ordine.dimY}x{ordine.dimZ}cm</td>
 						<td>{ordine.massa}kg</td>
+						<td>{this.bundle.domain.orderState[ordine.stato]}</td>
+						<td><button onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => this.onEliminaOrdine(e, ordine.id)}>{b.delete}</button></td>
 					</tr>)
 				})}
 			</tbody>
