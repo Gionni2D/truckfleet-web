@@ -75,7 +75,14 @@ export interface Model {
 	inserisciSpedizione(s : Spedizione) : boolean
 	rimuoviSpedizione(s : Spedizione) : boolean
 	validaSpedizione(s : Spedizione) : boolean
-	inserisciOrdine(o: Ordine) : boolean
+	inserisciOrdine(o: Ordine, magazzinoCarico: Magazzino, magazzinoScarico: Magazzino) : boolean
 	rimuoviOrdine(o: Ordine) : boolean
-	validaOrdine(o: Ordine) : boolean
+	validaOrdine(o: Ordine, magazzinoCarico: Magazzino, magazzinoScarico: Magazzino) : boolean
+	getMe() : GestoreSpedizioni
+}
+
+export interface GestoreSpedizioni {
+	nome: string,
+	cognome: string,
+	userName: string
 }

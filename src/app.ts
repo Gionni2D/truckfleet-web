@@ -37,6 +37,7 @@ class App implements Model {
 	inserisciOrdine = api.inserisciOrdine
 	rimuoviOrdine = api.rimuoviOrdine
 	validaOrdine = api.validaOrdine
+	getMe = api.getMe
 
 }
 

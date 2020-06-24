@@ -32,7 +32,7 @@ const api : D.Model = {
 		return false
 	},
 
-	inserisciOrdine(o: D.Ordine) : boolean {
+	inserisciOrdine(o: D.Ordine, magazzinoCarico: D.Magazzino, magazzinoScarico: D.Magazzino) : boolean {
 		return false
 	},
 
@@ -40,8 +40,12 @@ const api : D.Model = {
 		return false
 	},
 
-	validaOrdine(o: D.Ordine) : boolean {
+	validaOrdine(o: D.Ordine, magazzinoCarico: D.Magazzino, magazzinoScarico: D.Magazzino) : boolean {
 		return false
+	},
+
+	getMe() : D.GestoreSpedizioni {
+		return db.gestoreSpedizioni
 	}
 }
 

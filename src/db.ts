@@ -1,4 +1,4 @@
-import { Magazzino, Ordine, Tappa, Spedizione, StatoSpedizione, StatoOrdine } from "./domain";
+import { Magazzino, Ordine, Tappa, Spedizione, StatoSpedizione, StatoOrdine, GestoreSpedizioni } from "./domain";
 import * as faker from "faker/locale/it";
 
 
@@ -124,4 +124,8 @@ for(let i = 0; i < Spedizioni.length; i++) {
 	}
 }
 
-
+export let gestoreSpedizioni: GestoreSpedizioni = {
+	nome: "Mario",
+	cognome: "Rossi",
+	userName: "rossi.mario.3"
+}
