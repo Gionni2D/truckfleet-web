@@ -2,7 +2,11 @@
 export interface i18n {
 	"routes": {
 		"home": {
-			"title": string
+			"title": string,
+			"orderManagementText": string,
+			"orderManagementButton": string,
+			"shipmentManagementText": string,
+			"shipmentManagementButton": string
 		},
 		"gestioneSpedizioni": {
 		}

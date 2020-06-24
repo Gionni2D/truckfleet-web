@@ -1,7 +1,19 @@
+import { Button, Typography, Divider, makeStyles, Theme, createStyles } from '@material-ui/core'
+import Drawer from '../../components/Drawer'
+import App from '../../components/App'
 import { i18n } from '../../i18n'
 import { RouteList } from '..'
 import * as React from 'react'
 import app from '../../app'
+
+const useStlyes = makeStyles((theme: Theme) => createStyles({
+	title: {
+		marginBottom: theme.spacing(3)
+	},
+	section: {
+		padding: theme.spacing(3, 0)
+	}
+}))
 
 interface ViewProps {
 	onChangeRoute(route: FromHomeRoute) : void
@@ -11,29 +23,50 @@ export type FromHomeRoute =
 	RouteList.GestioneOrdini |
 	RouteList.GestioneSpedizioni
 
-export default class HomeView
-	extends React.Component<ViewProps> {
+export default function HomeView(props: ViewProps) {
 
-	readonly bundle: i18n
+	const bundle = app.getBundle()
+	const classes = useStlyes()
+	const b = app.getBundle().routes.home
 
-	constructor(props: ViewProps) {
-		super(props)
-		this.bundle = app.getBundle()
+	const onChangeRoute = (route: FromHomeRoute) => {
+		props.onChangeRoute(route)
 	}
 
-	onChangeRoute(route: FromHomeRoute) {
-		this.props.onChangeRoute(route)
-	}
+	return <App>
+		<Drawer >
+			<Typography
+				className={classes.title}
+				variant="h3">
+				{b.title}
+			</Typography>
 
-	render() {
-		const b = this.bundle.routes.home
+			<Divider />
 
-		return <div>
-			<h1>{b.title}</h1>
-			<br/><br/>
-			<button onClick={this.onChangeRoute.bind(this, RouteList.GestioneOrdini)}>GestioneOrdini</button>
-			<br/><br/>
-			<button onClick={this.onChangeRoute.bind(this, RouteList.GestioneSpedizioni)}>GestioneSpedizioni</button>
-		</div>
-	}
+			<div className={classes.section}>
+				<Button
+					onClick={onChangeRoute.bind(undefined, RouteList.GestioneOrdini)}
+					variant="outlined"
+					color="primary">
+					{b.orderManagementButton}
+				</Button>
+				<br/><br/>
+				<Typography>{b.orderManagementText}</Typography>
+			</div>
+
+			<Divider />
+
+			<div className={classes.section}>
+				<Button
+					onClick={onChangeRoute.bind(undefined, RouteList.GestioneSpedizioni)}
+					variant="outlined"
+					color="primary">
+					{b.shipmentManagementButton}
+				</Button>
+				<br/><br/>
+				<Typography>{b.shipmentManagementText}</Typography>
+			</div>
+
+		</Drawer>
+	</App>
 }
