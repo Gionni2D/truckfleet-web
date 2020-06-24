@@ -34,7 +34,9 @@ const itIT: i18n = {
 	},
 	"components": {
 		"drawer": {
-			"settings": "Impostazioni account"
+			"settings":           "Impostazioni account",
+			"orderManagement":    "Gestione ordini",
+			"shipmentManagement": "Gestione spedizioni"
 		}
 	}
 }

@@ -33,7 +33,9 @@ export interface i18n {
 	},
 	"components": {
 		"drawer": {
-			"settings": string
+			"settings":           string,
+			"orderManagement":    string,
+			"shipmentManagement": string
 		}
 	}
 }

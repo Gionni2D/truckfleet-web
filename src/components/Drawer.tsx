@@ -4,12 +4,15 @@ import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { CssBaseline, Avatar, Typography } from '@material-ui/core';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import LocalShippingIcon from '@material-ui/icons/LocalShipping';
+import ListAltIcon from '@material-ui/icons/ListAlt';
 import FaceIcon from '@material-ui/icons/Face';
 import MenuIcon from '@material-ui/icons/Menu'
 import MailIcon from '@material-ui/icons/Mail'
 import * as React from 'react'
 import app from '../app';
 import clsx from 'clsx'
+import { RouteList } from '../routes';
 
 const drawerWidth = 240;
 
@@ -74,6 +77,9 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
       width: theme.spacing(9) + 1,
     },
   },
+  drawerBg: {
+    backgroundColor: theme.palette.background.default
+  },
   toolbar: {
     display: 'flex',
     alignItems: 'center',
@@ -88,9 +94,8 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
 }))
 
-interface DrawerState {
-  open: boolean
-}
+const goToGestioneOrdini = () => app.changeRoute({ route: RouteList.GestioneOrdini })
+const goToGestioneSpedizioni = () => app.changeRoute({ route: RouteList.GestioneSpedizioni })
 
 export default function CustomDrawer(props: React.ComponentProps<'div'>) {
 
@@ -104,7 +109,6 @@ export default function CustomDrawer(props: React.ComponentProps<'div'>) {
 
   return (
     <div className={classes.root}>
-      <CssBaseline />
       <AppBar
         position="fixed"
         className={clsx(classes.appBar, open && classes.appBarShift)}>
@@ -131,8 +135,7 @@ export default function CustomDrawer(props: React.ComponentProps<'div'>) {
       <Drawer
         variant="permanent"
         className={clsx(classes.drawer, open ? classes.drawerOpen : classes.drawerClose)}
-        classes={{ paper: clsx(open ? classes.drawerOpen : classes.drawerClose) }}>
-
+        classes={{ paper: clsx(classes.drawerBg, open ? classes.drawerOpen : classes.drawerClose) }}>
         <div className={classes.toolbar}>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
@@ -140,10 +143,13 @@ export default function CustomDrawer(props: React.ComponentProps<'div'>) {
         </div>
         <Divider />
         <List>
-          {/* TODO: Insert here the action icon we want */}
-          <ListItem button key="Send email">
-            <ListItemIcon><MailIcon /></ListItemIcon>
-            <ListItemText primary="Send email" />
+          <ListItem button onClick={goToGestioneOrdini} key={b.orderManagement}>
+            <ListItemIcon><ListAltIcon /></ListItemIcon>
+            <ListItemText primary={b.orderManagement} />
+          </ListItem>
+          <ListItem button onClick={goToGestioneSpedizioni} key={b.shipmentManagement}>
+            <ListItemIcon><LocalShippingIcon /></ListItemIcon>
+            <ListItemText primary={b.shipmentManagement} />
           </ListItem>
         </List>
       </Drawer>
