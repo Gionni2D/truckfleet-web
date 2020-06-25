@@ -107,7 +107,7 @@ export default function CustomDrawer(props: React.ComponentProps<'div'>) {
   const handleDrawerOpen = () => setOpen(true)
   const handleDrawerClose = () => setOpen(false)
 
-  const gestoreSpedizioni = app.getMe();
+  const me = app.getMe();
 
   return (
     <div className={classes.root}>
@@ -125,7 +125,7 @@ export default function CustomDrawer(props: React.ComponentProps<'div'>) {
           </IconButton>
           <div className={classes.userBox}>
             <div className={classes.userInfo}>
-              <Typography>{`${app.getMe().nome} ${app.getMe().cognome}`}</Typography>
+              <Typography>{`${me.nome} ${me.cognome}`}</Typography>
               <Typography variant="caption">{b.settings}</Typography>
             </div>
             <Avatar className={classes.userAvatar}>

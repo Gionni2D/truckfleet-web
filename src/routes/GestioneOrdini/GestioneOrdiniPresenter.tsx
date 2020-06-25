@@ -29,23 +29,28 @@ export default class GestioneOrdiniPresenter
 		app.changeRoute({ route })
 	}
 
-	onChangeFilterText = (filterText: string) => {//la notazione in questo modo conserva this allo scope padre: https://stackoverflow.com/a/59404368
+	updateState = (filterText = this.state.filterText) => {
 		this.setState({
 			ordini: app.getOrdini((o: Ordine) => {
-				return o.descrizione.toLowerCase().includes(filterText.toLowerCase()) ||
-					o.nomeMittente.toLowerCase().includes(filterText.toLowerCase()) ||
-					o.nomeDestinatario.toLowerCase().includes(filterText.toLowerCase()) ||
-					o.getInfoCarico()[0].indirizzo.toLowerCase().includes(filterText.toLowerCase()) ||
-					o.getInfoScarico()[0].indirizzo.toLowerCase().includes(filterText.toLowerCase())
+				const fl = filterText.toLowerCase();
+				return o.descrizione.toLowerCase().includes(fl) ||
+					o.nomeMittente.toLowerCase().includes(fl) ||
+					o.nomeDestinatario.toLowerCase().includes(fl) ||
+					o.getInfoCarico()[0].indirizzo.toLowerCase().includes(fl) ||
+					o.getInfoScarico()[0].indirizzo.toLowerCase().includes(fl)
 			}),
-			filterText: filterText
+			filterText
 		})
 	}
 
+	onChangeFilterText = (filterText: string) => {//la notazione in questo modo conserva this allo scope padre: https://stackoverflow.com/a/59404368
+		this.updateState(filterText)
+	}
+
 	onEliminaOrdine = (idOrdine: number): boolean => {
-		if(app.rimuoviOrdine(app.getOrdini((o: Ordine) => o.id == idOrdine)[0])) {
-			//aggiorna state con elenco ordini, preservando eventuali filtri messi
-			this.onChangeFilterText(this.state.filterText);
+		if(app.rimuoviOrdine(this.state.ordini.filter((o: Ordine) => o.id == idOrdine)[0])) {
+			//aggiorna state con elenco ordini
+			this.updateState();
 			return true;
 		}
 		else
@@ -54,10 +59,10 @@ export default class GestioneOrdiniPresenter
 
 	render() {
 		return <GestioneOrdiniView
-		ordini={this.state.ordini}
-		filterText={this.state.filterText}
-		onChangeFilterText={this.onChangeFilterText}
-		onEliminaOrdine={this.onEliminaOrdine}
-		onChangeRoute={this.onChangeRoute}/>
+			ordini={this.state.ordini}
+			filterText={this.state.filterText}
+			onChangeFilterText={this.onChangeFilterText}
+			onEliminaOrdine={this.onEliminaOrdine}
+			onChangeRoute={this.onChangeRoute}/>
 	}
 }
