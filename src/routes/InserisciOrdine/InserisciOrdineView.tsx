@@ -3,7 +3,8 @@ import { RouteList } from '..'
 import * as React from 'react'
 import app from '../../app'
 import { Ordine, Magazzino } from '../../domain'
-import { Ordini } from '../../db'
+import Drawer from '../../components/Drawer'
+import App from '../../components/App'
 
 interface ViewProps {
 	onChangeRoute(route: FromInserisciOrdineRoute): void
@@ -61,7 +62,9 @@ export default class InserisciOrdineView
 		const b = this.bundle.routes.inserisciOrdine
 		const bg = this.bundle.routes.gestioneOrdini
 
-		return <div><h1>{bg.insertOrder}</h1>
+		return <App>
+			<Drawer>
+				<h1>{bg.insertOrder}</h1><div>
 			<button onClick={this.onChangeRoute.bind(this, RouteList.Home)}>Home</button><br/><br/>
 			<button onClick={this.onChangeRoute.bind(this, RouteList.GestioneOrdini)}>{bg.manageOrders}</button><br/><br/>
 
@@ -79,5 +82,7 @@ export default class InserisciOrdineView
 			<input type="submit" value={b.insert}></input>
 			</form>
 		</div>
+		</Drawer>
+		</App>
 	}
 }

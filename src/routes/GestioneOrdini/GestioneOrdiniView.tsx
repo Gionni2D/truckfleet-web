@@ -3,6 +3,8 @@ import { RouteList } from '..'
 import * as React from 'react'
 import app from '../../app'
 import { Ordine } from "../../domain"
+import Drawer from '../../components/Drawer'
+import App from '../../components/App'
 
 interface ViewProps {
 	ordini : Ordine[]
@@ -45,7 +47,9 @@ export default class GestioneOrdiniView
 		const b = this.bundle.routes.gestioneOrdini
 
 	//starebbe bene anche degli spazi tra i due bottoni piuttosto che andare a capo
-	return <div><h1>{b.manageOrders}</h1>
+	return <App>
+	<Drawer >
+		<h1>{b.manageOrders}</h1><div>
 		<button onClick={this.onChangeRoute.bind(this, RouteList.Home)}>Home</button><br/><br/>
 		<input type="text" onChange={this.onChangeFilterText} value={this.props.filterText} placeholder={`${b.search}...`}></input>
 		<button onClick={this.onChangeRoute.bind(this, RouteList.InserisciOrdine)}>{b.insertOrder}</button>
@@ -82,5 +86,7 @@ export default class GestioneOrdiniView
 			</tbody>
 		</table>
 		</div>
+		</Drawer>
+		</App>
 	}
 }
