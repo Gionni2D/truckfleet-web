@@ -1,7 +1,5 @@
 import { Magazzino, Ordine, Tappa, Spedizione, StatoSpedizione, StatoOrdine, GestoreSpedizioni } from "./domain";
 import * as faker from "faker/locale/it";
-import { jssPreset } from "@material-ui/core";
-
 
 export const Spedizioni : Spedizione[] = []
 export const Ordini : Ordine[] = []
@@ -33,13 +31,18 @@ const citta : string[] = [
 	"Parma, PR, 43121"
 ]
 
+const N_SPEDIZIONI = 5
+const N_MAGAZZINI  = 10
+const N_ORDINI     = 25
+const N_ORD_X_SPED = 4 // ≤ N_ORDINI / N_SPEDIZIONI
+
 // CREAZIONE SPEDIZIONI
 
-for(let i = 0; i < 5; i++) {
+for(let i = 0; i < N_SPEDIZIONI; i++) {
 	Spedizioni.push({
 		id: i,
 		veicoloTarga: targhe[i],
-		veicoloModello: modelli[faker.random.number(3)],
+		veicoloModello: modelli[faker.random.number(modelli.length - 1)],
 		veicoloMassa: 11.5,     // double
 		rimorchioDimX: 250,     // integer
 		rimorchioDimY: 350,     // integer
@@ -54,7 +57,7 @@ for(let i = 0; i < 5; i++) {
 
 // CREAZIONE MAGAZZINI
 
-for(let i = 0; i < 10; i++) {
+for(let i = 0; i < N_MAGAZZINI; i++) {
 	Magazzini.push({
 		id: i,  // integer
 		indirizzo: `${faker.address.streetName()}, ${faker.random.number(50)+1}, ${citta[faker.random.number(6)]}, Italia`// Via, Civico, Comune, Provincia, ZIPCode, Nazione
@@ -63,17 +66,16 @@ for(let i = 0; i < 10; i++) {
 
 // CREAZIONE ORDINI
 
-for(let i = 0; i < 15; i++) {
-	let magazzinoCaricoId = faker.random.number(9);
+for(let i = 0; i < N_ORDINI; i++) {
+	let magazzinoCaricoId = faker.random.number(N_MAGAZZINI - 1);
 	let magazzinoScaricoId : number;
 
 	do {
-		magazzinoScaricoId = faker.random.number(9);
+		magazzinoScaricoId = faker.random.number(N_MAGAZZINI - 1);
 	} while(magazzinoCaricoId == magazzinoScaricoId);
 
 	Ordini.push({
-		id: i, // integer
-		spedizioneId: Math.floor(i/3),			//integer
+		id:                 i,                             // integer
 		magazzinoCaricoId:  magazzinoCaricoId,             // integer
 		magazzinoScaricoId: magazzinoScaricoId,            // integer
 		descrizione:        faker.commerce.productName(),
@@ -102,124 +104,58 @@ for(let i = 0; i < 15; i++) {
 
 // CREAZIONE TAPPE
 
-for(let i = 0; i < Spedizioni.length; i++) {
-	let arrivoPre = faker.date.future(1).getTime();
-	let idTappa = 0;
-	let order = 0;
-	let tappaTrovata = false;
+type TappaRaw = {
+	id:               number,
+	spedizioneId:     number,
+	magazzinoId:      number,
+	arrivoPrevisto:   number,
+	ordineItinerario: number
+}
 
-	for(let tmpSpedizione of Spedizioni) {
-		console.log(tmpSpedizione);
+function createTappa(tappaRaw: TappaRaw) {
+	Tappe.push({
+		...tappaRaw,
+		getMagazzino() { return Magazzini.filter(m => m.id === this.magazzinoId)[0] },
+		getSpedizione() { return Spedizioni.filter(s => s.id === this.spedizioneId)[0] }
+	})
+}
 
-		let tmpOrdini = tmpSpedizione.getOrdini()
-		for(let tmpOrdine of tmpOrdini) {
-			order = 0;
+let indexSpedizione = 0
+let nTappe = 0
 
-			console.log(tmpOrdine);
-			
-			if(Tappe && Tappe.length == 0) {
-				console.log(idTappa);
-				Tappe.push({
-					id: idTappa,
-					magazzinoId: tmpOrdine.magazzinoScaricoId,
-					spedizioneId: tmpSpedizione.id,
-					arrivoPrevisto: arrivoPre,
-					ordineItinerario: order,
-					getSpedizione() {
-						return Spedizioni.filter(x => x.id == this.spedizioneId)[0]
-					},
-					getMagazzino() {
-						return Magazzini.filter(x => x.id == this.magazzinoId)[0]
-					}
-				})
-				idTappa++;
-				order++;
-			} else {
-				console.log(idTappa);
-				
-				//carichi
-				tappaTrovata = false;
-				for(let tmpTappa of Tappe) {
-					
-					if(tmpTappa.spedizioneId == tmpOrdine.spedizioneId 
-						&& tmpTappa.magazzinoId == tmpOrdine.magazzinoCaricoId) {
-							tappaTrovata = true;
-					}
-				}
-				if(!tappaTrovata) {
-					Tappe.push({
-						id: idTappa,
-						magazzinoId: tmpOrdine.magazzinoCaricoId,
-						spedizioneId: tmpSpedizione.id,
-						arrivoPrevisto: arrivoPre,
-						ordineItinerario: order,
-						getSpedizione() {
-							return Spedizioni.filter(x => x.id == this.spedizioneId)[0]
-						},
-						getMagazzino() {
-							return Magazzini.filter(x => x.id == this.magazzinoId)[0]
-						}
-					})
-					idTappa++;
-					order++;
-				}
+// ciclo per ogni spedizione
+for(let s of Spedizioni) {
+	const isStarted = s.stato != StatoSpedizione.CREATA
+	let arrival = faker.date[isStarted ? 'past' : 'future']().getTime()
+	const ordersIndexBegin = indexSpedizione * N_ORD_X_SPED
+	const orders = Ordini.slice(ordersIndexBegin, ordersIndexBegin + N_ORD_X_SPED)
 
-				//scarichi
-				tappaTrovata = false;
-				for(let tmpTappa of Tappe) {
-				
-					if(tmpTappa.spedizioneId == tmpOrdine.spedizioneId 
-						&& tmpTappa.magazzinoId == tmpOrdine.magazzinoScaricoId) {
-							tappaTrovata = true;
-					}
-				}
-				
-				if(!tappaTrovata) {
-					Tappe.push({
-						id: idTappa,
-						magazzinoId: tmpOrdine.magazzinoScaricoId,
-						spedizioneId: tmpSpedizione.id,
-						arrivoPrevisto: arrivoPre,
-						ordineItinerario: order,
-						getSpedizione() {
-							return Spedizioni.filter(x => x.id == this.spedizioneId)[0]
-						},
-						getMagazzino() {
-							return Magazzini.filter(x => x.id == this.magazzinoId)[0]
-						}
-					})
-					idTappa++;
-					order++;
-				}
-			}
-			console.log(Tappe);
+	// assegno alcuni ordini ad una spedizione
+	orders.forEach(o => o.spedizioneId = s.id)
+
+	// prendo il magazzino di carico e scarico di ogni ordine
+	const magOrdini = orders.map(o => [
+		o.getInfoCarico()[0],
+		o.getInfoScarico()[0]
+	])
+
+	// creo la tappa di carico e scarico di ogni ordine
+	for(let i = 0; i < magOrdini.length; i++) {
+		for(let y = 0; y < 2; y++) { // 0: carico, 1: scarico
+			createTappa({
+				id: nTappe++,
+				spedizioneId: s.id,
+				magazzinoId: magOrdini[i][y].id,
+				arrivoPrevisto: arrival,
+				ordineItinerario: i,
+			})
+			arrival += 1000*60*60*Math.floor(faker.random.number(6))
 		}
 	}
-	
 
-	//old
-	/*
-	for(let j = 0; j < 3; j++) {
-		Tappe.push({
-			id: j,                               // integer
-			magazzinoId: faker.random.number(9), // integer
-			spedizioneId: i,                     // integer
-			arrivoPrevisto: arrivoPre,           // timestamp (millisecondi)
-			ordineItinerario: j + 1,             // integer
-			getSpedizione() {
-				return Spedizioni.filter(x => x.id == this.spedizioneId)[0]
-			},
-			getMagazzino() {
-				return Magazzini.filter(x => x.id == this.magazzinoId)[0]
-			}
-		});
-
-		arrivoPre = arrivoPre + faker.random.number(1000*60*60)+1000*60*20;
-
-		// popolare proprietà ordini non definite
-	}*/
+	indexSpedizione++;
 }
-console.log(Tappe);
+
 
 export let gestoreSpedizioni: GestoreSpedizioni = {
 	nome: "Mario",
