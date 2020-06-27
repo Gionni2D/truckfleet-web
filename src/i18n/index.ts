@@ -1,4 +1,4 @@
-import { StatoOrdine } from '../domain';
+import { StatoOrdine, StatoSpedizione } from '../domain';
 
 export interface i18n {
 	"routes": {
@@ -10,10 +10,29 @@ export interface i18n {
 			"shipmentManagementButton": string
 		},
 		"gestioneSpedizioni": {
+			"search": string,
+			"actions": string,
+			"delete": string,
+			"details": string,
+			"shipmentProperty": {
+				"departureDate": string,
+				"arrivalDate":   string,
+				"drivers":       string,
+				"duration":      string,
+				"distance":      string,
+				"state":         string,
+				"vehicle":       string,
+				"trailer":       string,
+				"maxLoad":       string,
+				"unladenMass":   string,
+			}
 		}
 		"inserisciSpedizione": {
 		}
 		"visualizzaSpedizione": {
+			"associatedOrders":  string,
+			"stops":             string,
+			"map":               string
 		}
 		"gestioneOrdini": {
 			"insertOrder": string,
@@ -39,13 +58,17 @@ export interface i18n {
 	"domain": {
 		"orderState": {
 			[key in StatoOrdine]: string
+		},
+		"shipmentState": {
+			[key in StatoSpedizione]: string
 		}
 	},
 	"components": {
 		"drawer": {
 			"settings":           string,
 			"orderManagement":    string,
-			"shipmentManagement": string
+			"shipmentManagement": string,
+			"shipmentDetails":    string
 		}
 	}
 }
