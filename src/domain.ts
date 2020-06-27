@@ -18,6 +18,16 @@ export interface Ordine {
 	getInfoScarico() : [Magazzino, Tappa?]
 }
 
+export interface OrdineRaw {
+	descrizione:        string;
+	nomeMittente:       string;
+	nomeDestinatario:   string;
+	dimX:               number; // integer
+	dimY:               number; // integer
+	dimZ:               number; // integer
+	massa:              number; // double
+}
+
 export enum StatoOrdine {
 	INSERITO,     // 0
 	PROGRAMMATO,  // 1
