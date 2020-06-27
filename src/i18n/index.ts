@@ -31,6 +31,9 @@ export interface i18n {
 		}
 		"inserisciOrdine": {
 			"title": string,
+			"senderSection": string,
+			"receiverSection": string,
+			"orderSection": string,
 			"insert": string
 		}
 	},

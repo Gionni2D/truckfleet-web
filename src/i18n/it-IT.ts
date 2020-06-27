@@ -32,6 +32,9 @@ const itIT: i18n = {
 		},
 		"inserisciOrdine": {
 			"title": "Inserisci ordine",
+			"senderSection": "Informazioni mittente",
+			"receiverSection": "Informazioni destinatario",
+			"orderSection": "Informazioni ordine",
 			"insert": "Inserisci"
 		}
 	},

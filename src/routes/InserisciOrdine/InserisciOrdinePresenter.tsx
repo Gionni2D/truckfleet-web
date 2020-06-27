@@ -1,12 +1,13 @@
 import InserisciOrdineView, {FromInserisciOrdineRoute} from './InserisciOrdineView'
 import * as React from 'react'
 import app from '../../app'
-import { OrdineRaw, StatoOrdine, MagazzinoRaw } from '../../domain'
+import { OrdineRaw, MagazzinoRaw, Magazzino } from '../../domain'
 
 interface PresenterState {
 	ordine: OrdineRaw,
 	magazzinoCarico: MagazzinoRaw,
-	magazzinoScarico: MagazzinoRaw
+	magazzinoScarico: MagazzinoRaw,
+	magazzini: Magazzino[]
 }
 
 export default class VisualizzaSpedizionePresenter
@@ -14,10 +15,6 @@ export default class VisualizzaSpedizionePresenter
 
 	constructor(props: {}) {
 		super(props)
-		this.initState()
-	}
-
-	initState = () => {
 		this.state = {
 			ordine: {
 				descrizione: "",
@@ -33,12 +30,9 @@ export default class VisualizzaSpedizionePresenter
 			},
 			magazzinoScarico: {
 				indirizzo: ""
-			}
+			},
+			magazzini: app.getMagazzini()
 		}
-	}
-
-	onChangeRoute = (route: FromInserisciOrdineRoute) => {
-		app.changeRoute({ route })
 	}
 
 	onChangeValue = (value: string, attributeName: keyof OrdineRaw) => {
@@ -63,8 +57,6 @@ export default class VisualizzaSpedizionePresenter
 	onSubmit = (): boolean => {
 		if(app.validaOrdine(this.state.ordine, this.state.magazzinoCarico, this.state.magazzinoScarico)) {//TODO: anche valida ordine dovrebbe avere i magazzini? magari per controllare che gli indirizzi non siano identici
 			if(app.inserisciOrdine(this.state.ordine, this.state.magazzinoCarico, this.state.magazzinoScarico)) {
-				//resetta ordine e magazzini allo stato iniziale
-				this.initState()
 				return true
 			}
 		}
@@ -76,10 +68,10 @@ export default class VisualizzaSpedizionePresenter
 			ordine={this.state.ordine}
 			magazzinoCarico={this.state.magazzinoCarico}
 			magazzinoScarico={this.state.magazzinoScarico}
+			magazzini={this.state.magazzini}
 			onChangeValue={this.onChangeValue}
 			onChangeMagazzinoCarico={this.onChangeMagazzinoCarico}
 			onChangeMagazzinoScarico={this.onChangeMagazzinoScarico}
-			onSubmit={this.onSubmit}
-			onChangeRoute={this.onChangeRoute}/>
+			onSubmit={this.onSubmit}/>
 	}
 }
