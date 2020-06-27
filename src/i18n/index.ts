@@ -13,19 +13,7 @@ export interface i18n {
 			"search": string,
 			"actions": string,
 			"delete": string,
-			"details": string,
-			"shipmentProperty": {
-				"departureDate": string,
-				"arrivalDate":   string,
-				"drivers":       string,
-				"duration":      string,
-				"distance":      string,
-				"state":         string,
-				"vehicle":       string,
-				"trailer":       string,
-				"maxLoad":       string,
-				"unladenMass":   string,
-			}
+			"details": string
 		}
 		"inserisciSpedizione": {
 		}
@@ -63,6 +51,21 @@ export interface i18n {
 			"dimension":  string,
 			"mass":       string,
 			"state":      string
+		},
+		"shipmentProperties": {
+			"id":            string,
+			"departureDate": string,
+			"arrivalDate":   string,
+			"drivers":       string,
+			"duration":      string,
+			"distance":      string,
+			"state":         string,
+			"vehicle":       string,
+			"trailer":       string,
+			"maxLoad":       string,
+			"unladenMass":   string,
+			"numOrders":     string,
+			"numStops":      string
 		}
 	},
 	"components": {

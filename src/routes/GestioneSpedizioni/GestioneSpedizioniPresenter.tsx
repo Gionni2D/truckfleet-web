@@ -35,6 +35,10 @@ export default class GestioneSpedizioniPresenter
 		app.changeRoute({ route: RouteList.VisualizzaSpedizione, id_spedizione })
 	}
 
+	onInserisciSpedizione = () => {
+		app.changeRoute({ route: RouteList.InserisciSpedizione })
+	}
+
 	updateState = (filterText = this.state.filterText) => {
 		this.setState({
 			spedizioni: app.getSpedizioni((s: Spedizione) => {
@@ -42,7 +46,9 @@ export default class GestioneSpedizioniPresenter
 				return s.camionisti.some(c => { if (c !== undefined) return (c.cognome + " " + c.nome).toLowerCase().includes(fl) }) ||
 					this.bundle.domain.shipmentState[s.stato].toLowerCase().includes(fl) ||
 					formatDate(s.getTappe()[0].arrivoPrevisto).includes(fl) ||
-					formatDate(s.getTappe()[s.getTappe().length-1].arrivoPrevisto).includes(fl)
+					formatDate(s.getTappe()[s.getTappe().length-1].arrivoPrevisto).includes(fl) ||
+					s.veicoloModello.toLocaleLowerCase().includes(fl) ||
+					s.veicoloTarga.toLowerCase().includes(fl)
 			}),
 			filterText
 		})
@@ -67,6 +73,7 @@ export default class GestioneSpedizioniPresenter
 			onChangeFilterText={this.onChangeFilterText}
 			onEliminaSpedizione={this.onEliminaSpedizione}
 			onVisualizzaSpedizione={this.onVisualizzaSpedizione}
+			onInserisciSpedizione={this.onInserisciSpedizione}
 			spedizioni={this.state.spedizioni}/>
 	}
 }

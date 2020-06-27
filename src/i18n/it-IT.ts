@@ -11,22 +11,10 @@ const itIT: i18n = {
 			"shipmentManagementButton": "Gestione Spedizioni"
 		},
 		"gestioneSpedizioni": {
-			"search": "cerca",
+			"search": "Cerca",
 			"actions": "Azioni",
 			"delete": "Elimina",
-			"details": "Dettagli",
-			"shipmentProperty": {
-				"departureDate": "Data partenza",
-				"arrivalDate":   "Data arrivo",
-				"drivers":       "Autista/i",
-				"duration":      "Durata",
-				"distance":      "Distanza",
-				"state":         "Stato",
-				"vehicle":       "Veicolo",
-				"trailer":       "Rimorchio",
-				"maxLoad":       "Carico massimo",
-				"unladenMass":   "Massa a vuoto"
-			}
+			"details": "Dettagli"
 		},
 		"inserisciSpedizione": {
 		},
@@ -48,17 +36,6 @@ const itIT: i18n = {
 		}
 	},
 	"domain": {
-		"orderProperties": {
-			"id":         "Id",
-			"desc":       "Descrizione",
-			"from":       "Mittente",
-			"to":         "Destinatario",
-			"load":       "Carico",
-			"unload":     "Scarico",
-			"dimension":  "Dimensioni",
-			"mass":       "Massa",
-			"state":      "Stato"
-		},
 		"orderState": {
 			[StatoOrdine.INSERITO]: "Inserito",
 			[StatoOrdine.PROGRAMMATO]: "Programmato",
@@ -69,6 +46,32 @@ const itIT: i18n = {
 			[StatoSpedizione.CREATA]: "Creata",
 			[StatoSpedizione.IN_CORSO]: "In corso",
 			[StatoSpedizione.COMPLETATA]: "Completata"
+		},
+		"orderProperties": {
+			"id":         "Id",
+			"desc":       "Descrizione",
+			"from":       "Mittente",
+			"to":         "Destinatario",
+			"load":       "Indirizzo di carico",
+			"unload":     "Indirizzo di scarico",
+			"dimension":  "Dimensioni",
+			"mass":       "Massa",
+			"state":      "Stato"
+		},
+		"shipmentProperties": {
+			"id":            "Id",
+			"departureDate": "Data partenza",
+			"arrivalDate":   "Data arrivo",
+			"drivers":       "Autisti",
+			"duration":      "Durata",
+			"distance":      "Distanza",
+			"state":         "Stato",
+			"vehicle":       "Veicolo",
+			"trailer":       "Rimorchio",
+			"maxLoad":       "Carico massimo",
+			"unladenMass":   "Massa a vuoto",
+			"numOrders":     "Numero di ordini",
+			"numStops":      "Numero di tappe"
 		}
 	},
 	"components": {
