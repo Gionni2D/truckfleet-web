@@ -41,6 +41,7 @@ export interface Spedizione {
 	rimorchioCaricoMax: number; // double
 	rimorchioMassa: number;     // double
 	stato: StatoSpedizione;
+	camionisti: [Camionista, Camionista?];
 	getOrdini() : Ordine[]
 	getTappe()  : Tappa[]
 }
@@ -82,6 +83,12 @@ export interface Model {
 }
 
 export interface GestoreSpedizioni {
+	nome: string,
+	cognome: string,
+	userName: string
+}
+
+export interface Camionista {
 	nome: string,
 	cognome: string,
 	userName: string

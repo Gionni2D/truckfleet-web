@@ -1,10 +1,16 @@
-import { Magazzino, Ordine, Tappa, Spedizione, StatoSpedizione, StatoOrdine, GestoreSpedizioni } from "./domain";
+import { Magazzino, Ordine, Tappa, Spedizione, StatoSpedizione, StatoOrdine, GestoreSpedizioni, Camionista } from "./domain";
 import * as faker from "faker/locale/it";
 
 export const Spedizioni : Spedizione[] = []
 export const Ordini : Ordine[] = []
 export const Magazzini : Magazzino[] = []
 export const Tappe : Tappa[] = []
+export const Camionisti : Camionista[] = [
+	{nome: "Giovanni", cognome: "Bianchi", userName: "bianchi.giovanni.1"},
+	{nome: "Matteo", cognome: "Verdi", userName: "verdi.matteo.1"},
+	{nome: "Enrico", cognome: "Rossi", userName: "rossi.enrico.1"},
+	{nome: "Daniele", cognome: "Bascetta", userName: "bascetta.daniele.1"}
+]
 
 const targhe : string[]  = [
 	"EF122SN",
@@ -37,8 +43,14 @@ const N_ORDINI     = 25
 const N_ORD_X_SPED = 4 // ≤ N_ORDINI / N_SPEDIZIONI
 
 // CREAZIONE SPEDIZIONI
-
 for(let i = 0; i < N_SPEDIZIONI; i++) {
+
+	let camionista1 = faker.random.number(3);
+	let camionista2: number;
+	do {
+		camionista2 = faker.random.number(5);//così potrebbe esserci un solo camionista
+	} while(camionista1 === camionista2);
+
 	Spedizioni.push({
 		id: i,
 		veicoloTarga: targhe[i],
@@ -50,6 +62,7 @@ for(let i = 0; i < N_SPEDIZIONI; i++) {
 		rimorchioCaricoMax: 20, // double
 		rimorchioMassa: 10.8,   // double
 		stato: StatoSpedizione.CREATA,
+		camionisti: [Camionisti[camionista1], Camionisti[camionista2]],
 		getOrdini( ) { return Ordini.filter(x => x.spedizioneId == this.id) },
 		getTappe() { return Tappe.filter(x => x.spedizioneId == this.id) }
 	});
