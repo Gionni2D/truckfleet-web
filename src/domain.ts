@@ -40,6 +40,10 @@ export interface Magazzino {
 	indirizzo: string; // Via, Civico, Comune, Provincia, ZIPCode, Nazione
 }
 
+export interface MagazzinoRaw {
+	indirizzo: string; // Via, Civico, Comune, Provincia, ZIPCode, Nazione
+}
+
 export interface Spedizione {
 	id: number; // integer
 	veicoloTarga: string;
@@ -86,9 +90,9 @@ export interface Model {
 	inserisciSpedizione(s : Spedizione) : boolean
 	rimuoviSpedizione(s : Spedizione) : boolean
 	validaSpedizione(s : Spedizione) : boolean
-	inserisciOrdine(o: OrdineRaw, magazzinoCarico: Magazzino, magazzinoScarico: Magazzino) : boolean
+	inserisciOrdine(o: OrdineRaw, magazzinoCarico: MagazzinoRaw, magazzinoScarico: MagazzinoRaw) : boolean
 	rimuoviOrdine(o: Ordine) : boolean
-	validaOrdine(o: OrdineRaw, magazzinoCarico: Magazzino, magazzinoScarico: Magazzino) : boolean
+	validaOrdine(o: OrdineRaw, magazzinoCarico: MagazzinoRaw, magazzinoScarico: MagazzinoRaw) : boolean
 	getMe() : GestoreSpedizioni
 }
 

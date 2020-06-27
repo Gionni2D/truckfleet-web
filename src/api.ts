@@ -48,73 +48,55 @@ const api : D.Model = {
 		return false
 	},
 
-	inserisciOrdine(o: D.OrdineRaw, magazzinoCarico: D.Magazzino, magazzinoScarico: D.Magazzino) : boolean {
-		
-		let maxId = -1;
-		if(!this.validaOrdine(o, magazzinoCarico, magazzinoScarico)) return false
-		
+	inserisciOrdine(o: D.OrdineRaw, mC: D.MagazzinoRaw, mS: D.MagazzinoRaw) : boolean {
+		const maxIdReducer = <U extends { id: number }>(maxId: number, elem: U) => maxId > elem.id ? maxId : elem.id
+		let magazzinoCarico  : D.Magazzino = db.Magazzini.filter(m => m.indirizzo === mC.indirizzo)[0]
+		let magazzinoScarico : D.Magazzino = db.Magazzini.filter(m => m.indirizzo === mS.indirizzo)[0]
+
+		if(!this.validaOrdine(o, mC, mS)) return false
+
 		// se magazzinoCarico non esiste, lo aggiungo al db
-		if(db.Magazzini.findIndex(x => x.indirizzo == magazzinoCarico.indirizzo) == -1) {
-			db.Magazzini.every(x => x.id > maxId ? maxId = x.id : maxId = maxId)
-			magazzinoCarico.id = maxId+1
+		if(!magazzinoCarico) {
+			magazzinoCarico = {
+				...mC,
+				id: 1 + db.Magazzini.reduce(maxIdReducer, -1)
+			}
 			db.Magazzini.push(magazzinoCarico)
 		}
 
 		// se magazzinoScarico non esiste, lo aggiungo al db
-		if(db.Magazzini.findIndex(x => x.indirizzo == magazzinoScarico.indirizzo) == -1) {
-			magazzinoScarico.id = maxId+2
+		if(!magazzinoScarico) {
+			magazzinoScarico = {
+				...mS,
+				id: 1 + db.Magazzini.reduce(maxIdReducer, -1)
+			}
 			db.Magazzini.push(magazzinoScarico)
 		}
-		
+
 		// inserimento ordine nel db
-		maxId = -1;
-		db.Ordini.every(x => x.id > maxId ? maxId = x.id : maxId = maxId)
 
 		db.Ordini.push({
-			id: maxId+1, // integer
-			magazzinoCaricoId:  magazzinoCarico.id,             // integer
-			magazzinoScaricoId: magazzinoScarico.id,            // integer
-			descrizione:        o.descrizione,
-			nomeMittente:       o.nomeMittente,
-			nomeDestinatario:   o.nomeDestinatario,
-			dimX:               o.dimX,    // integer
-			dimY:               o.dimY,    // integer
-			dimZ:               o.dimZ,    // integer
-			massa:              o.massa, // double
-			stato:              D.StatoOrdine.INSERITO,          // integer
-			getSpedizione() {
-				return db.Spedizioni.filter(x => x.id == this.spedizioneId)[0]
-			},
-			getInfoCarico()  {
-				const t = db.Tappe.filter(x => x.id == this.tappaCaricoId)[0]
-				const m = db.Magazzini.filter(x => x.id == this.magazzinoCaricoId)[0]
-				return [ m, t]
-			},
-			getInfoScarico() {
-				const t = db.Tappe.filter(x => x.id == this.tappaScaricoId)[0]
-				const m = db.Magazzini.filter(x => x.id == this.magazzinoScaricoId)[0]
-				return [ m, t]
-			}
+			...o,
+			id: 1 + db.Ordini.reduce(maxIdReducer, -1), // integer
+			magazzinoCaricoId:  magazzinoCarico.id,     // integer
+			magazzinoScaricoId: magazzinoScarico.id,    // integer
+			stato:              D.StatoOrdine.INSERITO, // integer
+			getSpedizione: db.getSpedizione,
+			getInfoCarico: db.getInfoCarico,
+			getInfoScarico: db.getInfoScarico
 		})
 
 		return true
 	},
 
 	rimuoviOrdine(o: D.Ordine) : boolean {
-		if(o.stato == D.StatoOrdine.INSERITO) {
-			for(let i = 0; i < db.Ordini.length; i++) {
-				
-				if(db.Ordini[i].id == o.id) {
-					db.Ordini.splice(i, 1)
-					return true
-				}
-			}
-		}
-		return false
+		if(o.stato != D.StatoOrdine.INSERITO) return false;
+		db.Ordini.splice(db.Ordini.findIndex(e => e.id === o.id), 1)
+		return true
 	},
 
 	// (50 x 5 x 15 ) m
-	validaOrdine(o: D.OrdineRaw, magazzinoCarico: D.Magazzino, magazzinoScarico: D.Magazzino) : boolean {
+	validaOrdine(o: D.OrdineRaw, magazzinoCarico: D.MagazzinoRaw, magazzinoScarico: D.MagazzinoRaw) : boolean {
 		if(o.massa <= 0) return false
 		if(o.dimX > 50) return false
 		if(o.dimY > 5) return false

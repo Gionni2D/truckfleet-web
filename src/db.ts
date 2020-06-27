@@ -42,6 +42,30 @@ const N_MAGAZZINI  = 10
 const N_ORDINI     = 25
 const N_ORD_X_SPED = 4 // ≤ N_ORDINI / N_SPEDIZIONI
 
+export const getOrdini = function(this: Spedizione) {
+	return Ordini.filter(x => x.spedizioneId == this.id)
+}
+
+export const getTappe = function(this: Spedizione) {
+	return Tappe.filter(x => x.spedizioneId == this.id)
+}
+
+export const getSpedizione = function(this: Ordine) {
+	return Spedizioni.filter(x => x.id == this.spedizioneId)[0]
+}
+
+export const getInfoCarico = function(this: Ordine) : [Magazzino, Tappa?] {
+	const t = Tappe.filter(x => x.id == this.tappaCaricoId)[0]
+	const m = Magazzini.filter(x => x.id == this.magazzinoCaricoId)[0]
+	return [m, t]
+}
+
+export const getInfoScarico = function(this: Ordine) : [Magazzino, Tappa?] {
+	const t = Tappe.filter(x => x.id == this.tappaScaricoId)[0]
+	const m = Magazzini.filter(x => x.id == this.magazzinoScaricoId)[0]
+	return [m, t]
+}
+
 // CREAZIONE SPEDIZIONI
 for(let i = 0; i < N_SPEDIZIONI; i++) {
 
@@ -63,8 +87,8 @@ for(let i = 0; i < N_SPEDIZIONI; i++) {
 		rimorchioMassa: 10.8,   // double
 		stato: StatoSpedizione.CREATA,
 		camionisti: [Camionisti[camionista1], Camionisti[camionista2]],
-		getOrdini( ) { return Ordini.filter(x => x.spedizioneId == this.id) },
-		getTappe() { return Tappe.filter(x => x.spedizioneId == this.id) }
+		getOrdini,
+		getTappe
 	});
 }
 
@@ -99,19 +123,9 @@ for(let i = 0; i < N_ORDINI; i++) {
 		dimZ:               faker.random.number(50)+10,    // integer
 		massa:              faker.random.number(10.5)+0.5, // double
 		stato:              StatoOrdine.INSERITO,          // integer
-		getSpedizione() {
-			return Spedizioni.filter(x => x.id == this.spedizioneId)[0]
-		},
-		getInfoCarico()  {
-			const t = Tappe.filter(x => x.id == this.tappaCaricoId)[0]
-			const m = Magazzini.filter(x => x.id == this.magazzinoCaricoId)[0]
-			return [ m, t]
-		},
-		getInfoScarico() {
-			const t = Tappe.filter(x => x.id == this.tappaScaricoId)[0]
-			const m = Magazzini.filter(x => x.id == this.magazzinoScaricoId)[0]
-			return [ m, t]
-		}
+		getSpedizione,
+		getInfoCarico,
+		getInfoScarico
 	})
 }
 
@@ -144,7 +158,7 @@ for(let s of Spedizioni) {
 	const orders = Ordini.slice(ordersIndexBegin, ordersIndexBegin + N_ORD_X_SPED)
 
 	// assegno alcuni ordini ad una spedizione
-	orders.forEach(o => o.spedizioneId = s.id)
+	orders.forEach(o => { o.spedizioneId = s.id; o.stato = StatoOrdine.PROGRAMMATO })
 
 	// prendo il magazzino di carico e scarico di ogni ordine
 	const magOrdini = orders.map(o => [
