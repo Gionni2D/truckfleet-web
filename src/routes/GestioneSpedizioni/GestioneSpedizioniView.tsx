@@ -50,7 +50,9 @@ export default class GestioneSpedizioniView
 		this.bundle = app.getBundle()
 	}
 
-	onEliminaSpedizione = (idSpedizione: number) => {
+	onEliminaSpedizione = (idSpedizione: number, e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+		e.stopPropagation();
+
 		if(this.props.onEliminaSpedizione(idSpedizione))
 			alert("Spedizione eliminata correttamente");
 		else
@@ -83,8 +85,11 @@ export default class GestioneSpedizioniView
 					</Fab>
 
 
-					{ this.props.spedizioni.map((spedizione) => 
-						<Card key={spedizione.id} style={style.card} onClick={this.props.onVisualizzaSpedizione.bind(this, spedizione.id)}>
+					{ this.props.spedizioni.map((spedizione) =>
+						<Card
+							key={spedizione.id}
+							style={style.card}
+							onClick={this.props.onVisualizzaSpedizione.bind(this, spedizione.id)}>
 							<CardHeader
 								avatar={<Avatar><LocalShippingIcon /></Avatar>}
 								title={<span>{spedizione.getTappe()[0].getMagazzino().indirizzo} <ArrowForwardIcon style={{fontSize: "inherit"}}/> {spedizione.getTappe()[spedizione.getTappe().length-1].getMagazzino().indirizzo}</span>}

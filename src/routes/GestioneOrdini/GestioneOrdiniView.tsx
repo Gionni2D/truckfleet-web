@@ -77,7 +77,12 @@ export default class GestioneOrdiniView
 						<AddIcon />
 					</Fab>
 
-					{ this.props.ordini.map((ordine) => <OrderItem ordine={ordine} onEliminaOrdine={this.onEliminaOrdine}/> )}
+					{this.props.ordini.map((ordine) => (
+						<OrderItem
+							key={ordine.id}
+							ordine={ordine}
+							onEliminaOrdine={this.onEliminaOrdine}/>)
+					)}
 				</div>
 			</Drawer>
 		</App>
