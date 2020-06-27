@@ -60,6 +60,19 @@ export interface Spedizione {
 	getTappe()  : Tappa[]
 }
 
+export interface SpedizioneRaw {
+	veicoloTarga: string;
+	veicoloModello: string;
+	veicoloMassa: number;       // double
+	rimorchioDimX: number;      // integer
+	rimorchioDimY: number;      // integer
+	rimorchioDimZ: number;      // integer
+	rimorchioCaricoMax: number; // double
+	rimorchioMassa: number;     // double
+	stato: StatoSpedizione;
+	camionisti: [Camionista, Camionista?];
+}
+
 export enum StatoSpedizione {
 	CREATA,     // 0
 	IN_CORSO,   // 1
@@ -77,6 +90,12 @@ export interface Tappa {
 	getMagazzino()  : Magazzino
 }
 
+export interface TappaRaw { 
+	magazzinoId: number, 
+	ordineItinerario: number,
+	ordini: ["carico"|"scarico", number][] 	// [carico/scarico, idOrdine][]
+}
+
 export type SpedizioniFilter = (o: Spedizione) => boolean
 export type MagazziniFilter = (o: Magazzino) => boolean
 export type OrdiniFilter = (o: Ordine) => boolean
@@ -87,9 +106,9 @@ export interface Model {
 	getMagazzini(filter?: MagazziniFilter) : Magazzino[]
 	getOrdini(filter?: OrdiniFilter) : Ordine[]
 	getTappe(filter?: TappeFilter) : Tappa[]
-	inserisciSpedizione(s : Spedizione) : boolean
-	rimuoviSpedizione(s : Spedizione) : boolean
-	validaSpedizione(s : Spedizione) : boolean
+	inserisciSpedizione(s: SpedizioneRaw, tappe: TappaRaw[], dataOraPartenza: number) : boolean
+	rimuoviSpedizione(s: Spedizione) : boolean
+	validaSpedizione(s: SpedizioneRaw, tappe: TappaRaw[], dataOraPartenza: number, arrayOrari: number[]) : boolean
 	inserisciOrdine(o: OrdineRaw, magazzinoCarico: MagazzinoRaw, magazzinoScarico: MagazzinoRaw) : boolean
 	rimuoviOrdine(o: Ordine) : boolean
 	validaOrdine(o: OrdineRaw, magazzinoCarico: MagazzinoRaw, magazzinoScarico: MagazzinoRaw) : boolean

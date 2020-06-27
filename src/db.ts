@@ -50,7 +50,7 @@ export const getTappe = function(this: Spedizione) {
 	return Tappe.filter(x => x.spedizioneId == this.id)
 }
 
-export const getSpedizione = function(this: Ordine) {
+export const getSpedizione = function<U extends {spedizioneId: number}>(this: U) {
 	return Spedizioni.filter(x => x.id == this.spedizioneId)[0]
 }
 
@@ -65,6 +65,11 @@ export const getInfoScarico = function(this: Ordine) : [Magazzino, Tappa?] {
 	const m = Magazzini.filter(x => x.id == this.magazzinoScaricoId)[0]
 	return [m, t]
 }
+
+export const getMagazzino = function(this: Tappa) : Magazzino {
+	return Magazzini.filter(m => m.id === this.magazzinoId)[0]
+}
+
 
 // CREAZIONE SPEDIZIONI
 for(let i = 0; i < N_SPEDIZIONI; i++) {
@@ -142,8 +147,8 @@ type TappaRaw = {
 function createTappa(tappaRaw: TappaRaw) {
 	Tappe.push({
 		...tappaRaw,
-		getMagazzino() { return Magazzini.filter(m => m.id === this.magazzinoId)[0] },
-		getSpedizione() { return Spedizioni.filter(s => s.id === this.spedizioneId)[0] }
+		getMagazzino,
+		getSpedizione
 	})
 }
 

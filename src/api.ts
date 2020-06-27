@@ -26,16 +26,69 @@ const api : D.Model = {
 			db.Tappe;
 	},
 
-	inserisciSpedizione(s: D.Spedizione) : boolean {
-		return false
+	inserisciSpedizione(s: D.SpedizioneRaw, tappe: D.TappaRaw[], dataOraPartenza: number) : boolean {
+		const maxIdReducer = <U extends { id: number }>(maxId: number, elem: U) => maxId > elem.id ? maxId : elem.id
+
+		let arrayOrari = [ dataOraPartenza ]
+		for(let i = 0; i < tappe.length-1; i++) {
+			arrayOrari.push(dataOraPartenza += fakerStatic.random.number(1000*60*60)+1000*60*20)
+		}
+
+
+		if(!this.validaSpedizione(s, tappe, dataOraPartenza, arrayOrari)) return false;
+
+		let idSped = 1 + db.Spedizioni.reduce(maxIdReducer, -1)
+
+		for(let i = 0; i < tappe.length; i++) {
+			let t = tappe[i]
+			let idTappa = 1+ db.Tappe.reduce(maxIdReducer, -1)
+			
+			db.Tappe.push({
+				id: idTappa,
+				arrivoPrevisto: arrayOrari[i],
+				magazzinoId: t.magazzinoId,
+				ordineItinerario: t.ordineItinerario,
+				spedizioneId: idSped,
+				getMagazzino: db.getMagazzino,
+				getSpedizione: db.getSpedizione
+			})
+
+			t.ordini.forEach(x => {
+				for(let o of db.Ordini) {
+
+					if(o.id == x[1]){
+						o.stato = D.StatoOrdine.PROGRAMMATO
+						o.spedizioneId = idSped
+						x[0] == "carico" ? o.tappaCaricoId = idTappa : o.tappaScaricoId = idTappa
+					}
+				}
+			})
+
+			// aumento dataOraPartenza in modo casuale per la tappa successiva
+			dataOraPartenza += fakerStatic.random.number(1000*60*60)+1000*60*20
+		}
+
+		db.Spedizioni.push({
+			...s,
+			id: 1 + db.Spedizioni.reduce(maxIdReducer, -1), // integer
+			stato:              D.StatoSpedizione.CREATA, // integer
+			getOrdini:					db.getOrdini,
+			getTappe:						db.getTappe
+		})
+
+		return true
 	},
 
 	rimuoviSpedizione(s: D.Spedizione) : boolean {
 		if(s.stato == D.StatoSpedizione.CREATA) {
 			for(let i = 0; i < db.Spedizioni.length; i++) {
 				if(db.Spedizioni[i].id == s.id) {
-					// imposto lo stato dell'ordine a INSERITO
-					db.Spedizioni[i].getOrdini().every(x => x.stato = D.StatoOrdine.INSERITO);
+					
+					// imposto lo stato di ogni ordine a INSERITO
+					for(let o of db.Spedizioni[i].getOrdini()) {
+						o.stato = D.StatoOrdine.INSERITO
+					}
+					
 					db.Spedizioni.splice(i, 1);
 					return true;
 				}
@@ -44,8 +97,38 @@ const api : D.Model = {
 		return false
 	},
 
-	validaSpedizione(s: D.Spedizione) : boolean {
-		return false
+	validaSpedizione(s: D.SpedizioneRaw, tappe: D.TappaRaw[], dataOraPartenza: number, arrayArrivi: number[]) : boolean {
+	
+		for(let c of s.camionisti) {
+
+			// controllo ogni spedizione presente nel db
+			for(let spedizione of db.Spedizioni) {
+
+				/* controllo se tra i camionisti assegnati c'è un camionista della
+				 * nuova spedizione da inserire. In tal caso, controllo se gli 
+				 * orari delle due spedizioni si sovrappongono
+				 */
+				for(let cc of spedizione.camionisti) {
+					if(cc?.userName == c?.userName) {
+
+						let partenza = spedizione.getTappe()[0].arrivoPrevisto
+						let arrivo = spedizione.getTappe()[spedizione.getTappe().length-1].arrivoPrevisto
+
+						// overlap orari spedizioni
+						// old |-----|
+						// new   |------|
+
+						// old   |--------|
+						// new |----|
+						if((arrayArrivi[0] >= partenza && arrayArrivi[0] <= arrivo)
+							|| (arrayArrivi[0] <= partenza &&  arrayArrivi[arrayArrivi.length-1] >= partenza)) {
+							return false
+						}
+					}
+				}
+			}
+		}
+		return true
 	},
 
 	inserisciOrdine(o: D.OrdineRaw, mC: D.MagazzinoRaw, mS: D.MagazzinoRaw) : boolean {
@@ -74,7 +157,6 @@ const api : D.Model = {
 		}
 
 		// inserimento ordine nel db
-
 		db.Ordini.push({
 			...o,
 			id: 1 + db.Ordini.reduce(maxIdReducer, -1), // integer
@@ -98,9 +180,10 @@ const api : D.Model = {
 	// (50 x 5 x 15 ) m
 	validaOrdine(o: D.OrdineRaw, magazzinoCarico: D.MagazzinoRaw, magazzinoScarico: D.MagazzinoRaw) : boolean {
 		if(o.massa <= 0) return false
-		if(o.dimX > 50) return false
-		if(o.dimY > 5) return false
-		if(o.dimZ > 15) return false
+		// le dimensioni sono in centimetri (50m -> 50*1000cm)
+		if(o.dimX > 50*1000) return false
+		if(o.dimY > 5*1000) return false
+		if(o.dimZ > 15*1000) return false
 		if(o.descrizione == "") return false
 		if(o.nomeDestinatario == "") return false
 		if(o.nomeMittente == "") return false
