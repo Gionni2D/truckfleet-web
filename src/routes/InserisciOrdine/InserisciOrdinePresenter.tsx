@@ -1,10 +1,10 @@
 import InserisciOrdineView, {FromInserisciOrdineRoute} from './InserisciOrdineView'
 import * as React from 'react'
 import app from '../../app'
-import { Ordine, StatoOrdine, Magazzino } from '../../domain'
+import { OrdineRaw, StatoOrdine, Magazzino } from '../../domain'
 
 interface PresenterState {
-	ordine: Ordine,
+	ordine: OrdineRaw,
 	magazzinoCarico: Magazzino,
 	magazzinoScarico: Magazzino
 }
@@ -26,27 +26,7 @@ export default class VisualizzaSpedizionePresenter
 				dimX: 1,
 				dimY: 1,
 				dimZ: 1,
-				massa: 1,
-				stato: StatoOrdine.INSERITO,
-
-
-				id: -1,
-				magazzinoCaricoId: -1,
-				magazzinoScaricoId: -1,
-				getSpedizione() {
-					return app.getSpedizioni(x => x.id == this.spedizioneId)[0]
-				},
-				getInfoCarico()  {
-					const t = app.getTappe(x => x.id == this.tappaCaricoId)[0]
-					const m = app.getMagazzini(x => x.id == this.magazzinoCaricoId)[0]
-					return [ m, t]
-				},
-				getInfoScarico() {
-					const t = app.getTappe(x => x.id == this.tappaScaricoId)[0]
-					const m = app.getMagazzini(x => x.id == this.magazzinoScaricoId)[0]
-					return [ m, t]
-				}
-
+				massa: 1
 			},
 			magazzinoCarico: {
 				id: -1,
@@ -63,8 +43,8 @@ export default class VisualizzaSpedizionePresenter
 		app.changeRoute({ route })
 	}
 
-	onChangeValue = (value: string, attributeName: keyof Ordine) => {
-		let newOrdine: Ordine = {...this.state.ordine, [attributeName]: value};
+	onChangeValue = (value: string, attributeName: keyof OrdineRaw) => {
+		let newOrdine: OrdineRaw = {...this.state.ordine, [attributeName]: value};
 		this.setState({
 			ordine: newOrdine
 		});

@@ -2,17 +2,17 @@ import { i18n } from '../../i18n'
 import { RouteList } from '..'
 import * as React from 'react'
 import app from '../../app'
-import { Ordine, Magazzino } from '../../domain'
+import { OrdineRaw, Magazzino } from '../../domain'
 import Drawer from '../../components/Drawer'
 import App from '../../components/App'
 
 interface ViewProps {
 	onChangeRoute(route: FromInserisciOrdineRoute): void
-	onChangeValue(value: string, attributeName: keyof Ordine): void
+	onChangeValue(value: string, attributeName: keyof OrdineRaw): void
 	onChangeMagazzinoCarico(value: string): void
 	onChangeMagazzinoScarico(value: string): void
 	onSubmit(): boolean
-	ordine: Ordine
+	ordine: OrdineRaw
 	magazzinoCarico: Magazzino
 	magazzinoScarico: Magazzino
 }
@@ -38,8 +38,7 @@ export default class InserisciOrdineView
 	onChangeValue = (e: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement>) => {
 		if(!Object.keys(this.props.ordine).includes(e.target.name))
 			throw new TypeError(`Object Ordine has not an attribute named '${e.target.name}'`);
-		let attributeName: keyof Ordine = e.target.name as keyof Ordine;
-		this.props.onChangeValue(e.target.value, e.target.name as keyof Ordine);
+		this.props.onChangeValue(e.target.value, e.target.name as keyof OrdineRaw);
 	}
 
 	onChangeMagazzinoCarico = (e: React.ChangeEvent<HTMLInputElement>) => {
