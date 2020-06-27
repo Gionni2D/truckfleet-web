@@ -3,6 +3,8 @@ import * as React from 'react'
 import app from '../../app'
 import { Spedizione } from '../../domain'
 import { RouteList } from '..'
+import { formatDate } from '../../utils'
+import { i18n } from '../../i18n'
 
 interface PresenterState {
 	spedizioni: Spedizione[]
@@ -12,12 +14,15 @@ interface PresenterState {
 export default class GestioneSpedizioniPresenter
 	extends React.Component<{}, PresenterState> {
 
+	readonly bundle: i18n
+
 	constructor(props: {}) {
 		super(props)
 		this.state = {
 			spedizioni: [],
 			filterText: ""
 		}
+		this.bundle = app.getBundle()
 	}
 
 	componentDidMount() {
@@ -34,7 +39,10 @@ export default class GestioneSpedizioniPresenter
 		this.setState({
 			spedizioni: app.getSpedizioni((s: Spedizione) => {
 				const fl = filterText.toLowerCase();
-				return true
+				return s.camionisti.some(c => { if (c !== undefined) return (c.cognome + " " + c.nome).toLowerCase().includes(fl) }) ||
+					this.bundle.domain.shipmentState[s.stato].toLowerCase().includes(fl) ||
+					formatDate(s.getTappe()[0].arrivoPrevisto).includes(fl) ||
+					formatDate(s.getTappe()[s.getTappe().length-1].arrivoPrevisto).includes(fl)
 			}),
 			filterText
 		})

@@ -2,7 +2,7 @@ import { i18n } from '../../i18n'
 import { RouteList } from '..'
 import * as React from 'react'
 import app from '../../app'
-import { OrdineRaw, Magazzino } from '../../domain'
+import { OrdineRaw, MagazzinoRaw } from '../../domain'
 import Drawer from '../../components/Drawer'
 import App from '../../components/App'
 
@@ -13,8 +13,8 @@ interface ViewProps {
 	onChangeMagazzinoScarico(value: string): void
 	onSubmit(): boolean
 	ordine: OrdineRaw
-	magazzinoCarico: Magazzino
-	magazzinoScarico: Magazzino
+	magazzinoCarico: MagazzinoRaw
+	magazzinoScarico: MagazzinoRaw
 }
 
 export type FromInserisciOrdineRoute =

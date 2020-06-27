@@ -1,12 +1,12 @@
 import InserisciOrdineView, {FromInserisciOrdineRoute} from './InserisciOrdineView'
 import * as React from 'react'
 import app from '../../app'
-import { OrdineRaw, StatoOrdine, Magazzino } from '../../domain'
+import { OrdineRaw, StatoOrdine, MagazzinoRaw } from '../../domain'
 
 interface PresenterState {
 	ordine: OrdineRaw,
-	magazzinoCarico: Magazzino,
-	magazzinoScarico: Magazzino
+	magazzinoCarico: MagazzinoRaw,
+	magazzinoScarico: MagazzinoRaw
 }
 
 export default class VisualizzaSpedizionePresenter
@@ -29,11 +29,9 @@ export default class VisualizzaSpedizionePresenter
 				massa: 1
 			},
 			magazzinoCarico: {
-				id: -1,
 				indirizzo: ""
 			},
 			magazzinoScarico: {
-				id: -1,
 				indirizzo: ""
 			}
 		}

@@ -80,7 +80,10 @@ export default class GestioneOrdiniView
 						value={this.props.filterText}
 						onChange={this.onChangeFilterText} />
 
-					<Fab color="primary" style={style.fab}>
+					<Fab
+						color="primary"
+						style={style.fab}
+						onClick={this.onChangeRoute.bind(this, RouteList.InserisciOrdine)}>
 						<AddIcon />
 					</Fab>
 
