@@ -8,7 +8,7 @@ import LocalShippingIcon from '@material-ui/icons/LocalShipping';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import FaceIcon from '@material-ui/icons/Face';
 import MenuIcon from '@material-ui/icons/Menu'
-import MailIcon from '@material-ui/icons/Mail'
+import HomeIcon from '@material-ui/icons/Home'
 import * as React from 'react'
 import app from '../app';
 import clsx from 'clsx'
@@ -94,6 +94,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
 }))
 
+const goToHome = () => app.changeRoute({ route: RouteList.Home })
 const goToGestioneOrdini = () => app.changeRoute({ route: RouteList.GestioneOrdini })
 const goToGestioneSpedizioni = () => app.changeRoute({ route: RouteList.GestioneSpedizioni })
 
@@ -145,6 +146,10 @@ export default function CustomDrawer(props: React.ComponentProps<'div'>) {
         </div>
         <Divider />
         <List>
+          <ListItem button onClick={goToHome} key={b.home}>
+            <ListItemIcon><HomeIcon /></ListItemIcon>
+            <ListItemText primary={b.home} />
+          </ListItem>
           <ListItem button onClick={goToGestioneOrdini} key={b.orderManagement}>
             <ListItemIcon><ListAltIcon /></ListItemIcon>
             <ListItemText primary={b.orderManagement} />

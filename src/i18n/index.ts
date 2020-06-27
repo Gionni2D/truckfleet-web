@@ -41,6 +41,7 @@ export interface i18n {
 			"actions": string,
 			"delete": string,
 			"ordersProperty": {
+				"id":         string,
 				"desc":       string,
 				"from":       string,
 				"to":         string,
@@ -66,6 +67,7 @@ export interface i18n {
 	"components": {
 		"drawer": {
 			"settings":           string,
+			"home":               string,
 			"orderManagement":    string,
 			"shipmentManagement": string,
 			"shipmentDetails":    string

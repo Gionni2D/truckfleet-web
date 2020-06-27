@@ -42,6 +42,7 @@ const itIT: i18n = {
 			"manageOrders": "Gestione ordini",
 			"delete": "Elimina",
 			"ordersProperty": {
+				"id":         "Id",
 				"desc":       "Descrizione",
 				"from":       "Mittente",
 				"to":         "Destinatario",
@@ -72,6 +73,7 @@ const itIT: i18n = {
 	"components": {
 		"drawer": {
 			"settings":           "Impostazioni account",
+			"home":               "Home",
 			"orderManagement":    "Gestione ordini",
 			"shipmentManagement": "Gestione spedizioni",
 			"shipmentDetails":    "Dettagli spedizione"
