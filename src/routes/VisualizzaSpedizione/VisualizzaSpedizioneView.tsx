@@ -22,7 +22,7 @@ export default class VisualizzaSpedizioneView
 
 	render() {
 		const b = this.bundle.routes.visualizzaSpedizione
-		const bo = this.bundle.routes.gestioneOrdini.ordersProperty
+		const bo = this.bundle.domain.orderProperties
 		const bs = this.bundle.routes.gestioneSpedizioni.shipmentProperty
 
 		return <App>

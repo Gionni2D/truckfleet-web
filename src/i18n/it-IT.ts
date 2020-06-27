@@ -40,24 +40,25 @@ const itIT: i18n = {
 			"search": "Cerca",
 			"actions": "Azioni",
 			"manageOrders": "Gestione ordini",
-			"delete": "Elimina",
-			"ordersProperty": {
-				"id":         "Id",
-				"desc":       "Descrizione",
-				"from":       "Mittente",
-				"to":         "Destinatario",
-				"load":       "Carico",
-				"unload":     "Scarico",
-				"dimension":  "Dimensioni",
-				"mass":       "Massa",
-				"state":      "Stato"
-			}
+			"delete": "Elimina"
 		},
 		"inserisciOrdine": {
+			"title": "Inserisci ordine",
 			"insert": "Inserisci"
 		}
 	},
 	"domain": {
+		"orderProperties": {
+			"id":         "Id",
+			"desc":       "Descrizione",
+			"from":       "Mittente",
+			"to":         "Destinatario",
+			"load":       "Carico",
+			"unload":     "Scarico",
+			"dimension":  "Dimensioni",
+			"mass":       "Massa",
+			"state":      "Stato"
+		},
 		"orderState": {
 			[StatoOrdine.INSERITO]: "Inserito",
 			[StatoOrdine.PROGRAMMATO]: "Programmato",

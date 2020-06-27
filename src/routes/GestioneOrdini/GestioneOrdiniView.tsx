@@ -93,8 +93,8 @@ export default class GestioneOrdiniView
 								avatar={<Avatar><OrderIcon /></Avatar>}
 								title={ordine.descrizione}
 								subheader={<span>
-									{b.ordersProperty.id}: <b>{ordine.id}</b><br/>
-									{b.ordersProperty.state}: <b>{bd.orderState[ordine.stato]}</b>
+									{bd.orderProperties.id}: <b>{ordine.id}</b><br/>
+									{bd.orderProperties.state}: <b>{bd.orderState[ordine.stato]}</b>
 								</span>}
 								action={ ordine.stato == StatoOrdine.INSERITO ?
 									<IconButton
@@ -108,31 +108,31 @@ export default class GestioneOrdiniView
 								<Grid container spacing={2}>
 									<Grid item xs={4}>
 										<div>
-											<Typography variant="overline" color="textSecondary">{b.ordersProperty.from}:</Typography>
+											<Typography variant="overline" color="textSecondary">{bd.orderProperties.from}:</Typography>
 											<Typography variant="body2">{ordine.nomeMittente}</Typography>
 										</div>
 										<div style={style.mt}>
-											<Typography variant="overline" color="textSecondary">{b.ordersProperty.to}:</Typography>
+											<Typography variant="overline" color="textSecondary">{bd.orderProperties.to}:</Typography>
 											<Typography variant="body2">{ordine.nomeDestinatario}</Typography>
 										</div>
 									</Grid>
 									<Grid item xs={4}>
 										<div>
-											<Typography variant="overline" color="textSecondary">{b.ordersProperty.load}:</Typography>
+											<Typography variant="overline" color="textSecondary">{bd.orderProperties.load}:</Typography>
 											<Typography variant="body2">{ordine.getInfoCarico()[0].indirizzo}</Typography>
 										</div>
 										<div style={style.mt}>
-											<Typography variant="overline" color="textSecondary">{b.ordersProperty.unload}:</Typography>
+											<Typography variant="overline" color="textSecondary">{bd.orderProperties.unload}:</Typography>
 											<Typography variant="body2">{ordine.getInfoScarico()[0].indirizzo}</Typography>
 										</div>
 									</Grid>
 									<Grid item xs={4}>
 										<div>
-											<Typography variant="overline" color="textSecondary">{b.ordersProperty.dimension}:</Typography>
+											<Typography variant="overline" color="textSecondary">{bd.orderProperties.dimension}:</Typography>
 											<Typography variant="body2">{ordine.dimX}x{ordine.dimY}x{ordine.dimZ}cm</Typography>
 										</div>
 										<div style={style.mt}>
-											<Typography variant="overline" color="textSecondary">{b.ordersProperty.mass}:</Typography>
+											<Typography variant="overline" color="textSecondary">{bd.orderProperties.mass}:</Typography>
 											<Typography variant="body2">{ordine.massa}kg</Typography>
 										</div>
 									</Grid>

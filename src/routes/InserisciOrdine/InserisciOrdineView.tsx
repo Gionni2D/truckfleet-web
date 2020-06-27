@@ -5,6 +5,7 @@ import app from '../../app'
 import { OrdineRaw, MagazzinoRaw } from '../../domain'
 import Drawer from '../../components/Drawer'
 import App from '../../components/App'
+import { Typography } from '@material-ui/core'
 
 interface ViewProps {
 	onChangeRoute(route: FromInserisciOrdineRoute): void
@@ -15,6 +16,12 @@ interface ViewProps {
 	ordine: OrdineRaw
 	magazzinoCarico: MagazzinoRaw
 	magazzinoScarico: MagazzinoRaw
+}
+
+const style : { [key: string] : React.CSSProperties } = {
+	mTitleContent: {
+		marginTop: 20
+	}
 }
 
 export type FromInserisciOrdineRoute =
@@ -59,29 +66,29 @@ export default class InserisciOrdineView
 
 	render() {
 		const b = this.bundle.routes.inserisciOrdine
-		const bg = this.bundle.routes.gestioneOrdini
+		const bo = this.bundle.domain.orderProperties
 
 		return <App>
 			<Drawer>
-				<h1>{bg.insertOrder}</h1><div>
-			<button onClick={this.onChangeRoute.bind(this, RouteList.Home)}>Home</button><br/><br/>
-			<button onClick={this.onChangeRoute.bind(this, RouteList.GestioneOrdini)}>{bg.manageOrders}</button><br/><br/>
+				<Typography variant="h3" >{b.title}</Typography>
 
-			<form onSubmit={this.onSubmit}>
-			<input type="text" placeholder={bg.ordersProperty.from} value={this.props.ordine.nomeMittente} onChange={this.onChangeValue} name="nomeMittente"></input>
-			<input type="text" placeholder={bg.ordersProperty.load} value={this.props.magazzinoCarico.indirizzo} onChange={this.onChangeMagazzinoCarico}></input><br/><br/>
-			<input type="text" placeholder={bg.ordersProperty.to} value={this.props.ordine.nomeDestinatario} onChange={this.onChangeValue} name="nomeDestinatario"></input>
-			<input type="text" placeholder={bg.ordersProperty.unload} value={this.props.magazzinoScarico.indirizzo} onChange={this.onChangeMagazzinoScarico}></input><br/><br/>
-			<textarea placeholder={bg.ordersProperty.desc} value={this.props.ordine.descrizione} onChange={this.onChangeValue} name="descrizione" maxLength={500}></textarea><br/><br/>
-			Dimensioni pacco:
-			<input type="number" placeholder="x" value={this.props.ordine.dimX} onChange={this.onChangeValue} name="dimX" min="1" max="5000"></input> cm
-			<input type="number" placeholder="y" value={this.props.ordine.dimY} onChange={this.onChangeValue} name="dimY" min="1" max="5000"></input> cm
-			<input type="number" placeholder="z" value={this.props.ordine.dimZ} onChange={this.onChangeValue} name="dimZ" min="1" max="5000"></input> cm
-			<input type="number" placeholder={bg.ordersProperty.mass} value={this.props.ordine.massa} onChange={this.onChangeValue} name="massa" min="0" max="44000" step="0.001"></input> kg<br/><br/>
-			<input type="submit" value={b.insert}></input>
-			</form>
-		</div>
-		</Drawer>
+				<div style={style.mTitleContent}>
+
+					<form onSubmit={this.onSubmit}>
+					<input type="text" placeholder={bo.from} value={this.props.ordine.nomeMittente} onChange={this.onChangeValue} name="nomeMittente"></input>
+					<input type="text" placeholder={bo.load} value={this.props.magazzinoCarico.indirizzo} onChange={this.onChangeMagazzinoCarico}></input><br/><br/>
+					<input type="text" placeholder={bo.to} value={this.props.ordine.nomeDestinatario} onChange={this.onChangeValue} name="nomeDestinatario"></input>
+					<input type="text" placeholder={bo.unload} value={this.props.magazzinoScarico.indirizzo} onChange={this.onChangeMagazzinoScarico}></input><br/><br/>
+					<textarea placeholder={bo.desc} value={this.props.ordine.descrizione} onChange={this.onChangeValue} name="descrizione" maxLength={500}></textarea><br/><br/>
+					Dimensioni pacco:
+					<input type="number" placeholder="x" value={this.props.ordine.dimX} onChange={this.onChangeValue} name="dimX" min="1" max="5000"></input> cm
+					<input type="number" placeholder="y" value={this.props.ordine.dimY} onChange={this.onChangeValue} name="dimY" min="1" max="5000"></input> cm
+					<input type="number" placeholder="z" value={this.props.ordine.dimZ} onChange={this.onChangeValue} name="dimZ" min="1" max="5000"></input> cm
+					<input type="number" placeholder={bo.mass} value={this.props.ordine.massa} onChange={this.onChangeValue} name="massa" min="0" max="44000" step="0.001"></input> kg<br/><br/>
+					<input type="submit" value={b.insert}></input>
+					</form>
+				</div>
+			</Drawer>
 		</App>
 	}
 }

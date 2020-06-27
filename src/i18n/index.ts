@@ -40,19 +40,9 @@ export interface i18n {
 			"manageOrders": string,
 			"actions": string,
 			"delete": string,
-			"ordersProperty": {
-				"id":         string,
-				"desc":       string,
-				"from":       string,
-				"to":         string,
-				"load":       string,
-				"unload":     string,
-				"dimension":  string,
-				"mass":       string,
-				"state":      string
-			}
 		}
 		"inserisciOrdine": {
+			"title": string,
 			"insert": string
 		}
 	},
@@ -62,6 +52,17 @@ export interface i18n {
 		},
 		"shipmentState": {
 			[key in StatoSpedizione]: string
+		},
+		"orderProperties": {
+			"id":         string,
+			"desc":       string,
+			"from":       string,
+			"to":         string,
+			"load":       string,
+			"unload":     string,
+			"dimension":  string,
+			"mass":       string,
+			"state":      string
 		}
 	},
 	"components": {
