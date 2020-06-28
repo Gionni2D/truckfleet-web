@@ -1,6 +1,14 @@
 import * as db from './db'
 import * as D from './domain'
 
+const getOrariRandom = (begin: number, tappe: D.TappaRaw[]) => {
+	const result = [ begin ]
+	for(let i = 0; i < tappe.length-1; i++) {
+		result.push(begin += fakerStatic.random.number(1000*60*60)+1000*60*20)
+	}
+	return result;
+}
+
 const api : D.Model = {
 	getSpedizioni(filter?: D.SpedizioniFilter) : D.Spedizione[] {
 		return filter ?
@@ -37,13 +45,10 @@ const api : D.Model = {
 	inserisciSpedizione(s: D.SpedizioneRaw, tappe: D.TappaRaw[], dataOraPartenza: number) : boolean {
 		const maxIdReducer = <U extends { id: number }>(maxId: number, elem: U) => maxId > elem.id ? maxId : elem.id
 
-		let arrayOrari = [ dataOraPartenza ]
-		for(let i = 0; i < tappe.length-1; i++) {
-			arrayOrari.push(dataOraPartenza += fakerStatic.random.number(1000*60*60)+1000*60*20)
-		}
+		let arrayOrari = getOrariRandom(dataOraPartenza, tappe)
 
 
-		if(!this.validaSpedizione(s, tappe, dataOraPartenza, arrayOrari)) return false;
+		if(!this.validaSpedizione(s, tappe, dataOraPartenza)) return false;
 
 		let idSped = 1 + db.Spedizioni.reduce(maxIdReducer, -1)
 
@@ -105,7 +110,8 @@ const api : D.Model = {
 		return false
 	},
 
-	validaSpedizione(s: D.SpedizioneRaw, tappe: D.TappaRaw[], dataOraPartenza: number, arrayArrivi: number[]) : boolean {
+	validaSpedizione(s: D.SpedizioneRaw, tappe: D.TappaRaw[], dataOraPartenza: number) : boolean {
+		const arrayArrivi = getOrariRandom(dataOraPartenza, tappe)
 
 		for(let c of s.camionisti) {
 

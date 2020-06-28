@@ -118,7 +118,7 @@ export interface Model {
 	getTappe(filter?: TappeFilter) : Tappa[]
 	inserisciSpedizione(s: SpedizioneRaw, tappe: TappaRaw[], dataOraPartenza: number) : boolean
 	rimuoviSpedizione(s: Spedizione) : boolean
-	validaSpedizione(s: SpedizioneRaw, tappe: TappaRaw[], dataOraPartenza: number, arrayOrari: number[]) : boolean
+	validaSpedizione(s: SpedizioneRaw, tappe: TappaRaw[], dataOraPartenza: number) : boolean
 	inserisciOrdine(o: OrdineRaw, magazzinoCarico: MagazzinoRaw, magazzinoScarico: MagazzinoRaw) : boolean
 	rimuoviOrdine(o: Ordine) : boolean
 	validaOrdine(o: OrdineRaw, magazzinoCarico: MagazzinoRaw, magazzinoScarico: MagazzinoRaw) : boolean
