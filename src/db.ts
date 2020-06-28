@@ -1,4 +1,4 @@
-import { Magazzino, Ordine, Tappa, Spedizione, StatoSpedizione, StatoOrdine, GestoreSpedizioni, Camionista } from "./domain";
+import { Magazzino, Ordine, Tappa, Spedizione, StatoSpedizione, StatoOrdine, GestoreSpedizioni, Camionista, Posizione } from "./domain";
 import * as faker from "faker/locale/it";
 
 export const Spedizioni : Spedizione[] = []
@@ -194,3 +194,5 @@ export let gestoreSpedizioni: GestoreSpedizioni = {
 	cognome: "Rossi",
 	userName: "rossi.mario.3"
 }
+
+export const Posizioni : Posizione[] = []

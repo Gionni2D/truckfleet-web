@@ -17,7 +17,9 @@ const api : D.Model = {
 	},
 
 	getCamionisti(filter?: D.CamionistiFilter) : D.Camionista[] {
-		return []
+		return filter ?
+			db.Camionisti.filter(filter) :
+			db.Camionisti;
 	},
 
 	getMagazzini(filter?: D.MagazziniFilter) : D.Magazzino[] {
@@ -27,7 +29,9 @@ const api : D.Model = {
 	},
 
 	getPosizioni(filter?: D.PosizioniFilter) : D.Posizione[] {
-		return []
+		return filter ?
+			db.Posizioni.filter(filter) :
+			db.Posizioni;
 	},
 
 	getOrdini(filter?: D.OrdiniFilter) : D.Ordine[] {
@@ -45,10 +49,11 @@ const api : D.Model = {
 	inserisciSpedizione(s: D.SpedizioneRaw, tappe: D.TappaRaw[], dataOraPartenza: number) : boolean {
 		const maxIdReducer = <U extends { id: number }>(maxId: number, elem: U) => maxId > elem.id ? maxId : elem.id
 
+		// da sostituire con le API Google Maps
 		let arrayOrari = getOrariRandom(dataOraPartenza, tappe)
 
 
-		if(!this.validaSpedizione(s, tappe, dataOraPartenza)) return false;
+		if(this.validaSpedizione(s, tappe, dataOraPartenza).result == false) return false;
 
 		let idSped = 1 + db.Spedizioni.reduce(maxIdReducer, -1)
 
@@ -110,11 +115,11 @@ const api : D.Model = {
 		return false
 	},
 
-	validaSpedizione(s: D.SpedizioneRaw, tappe: D.TappaRaw[], dataOraPartenza: number) : boolean {
+	validaSpedizione(s: D.SpedizioneRaw, tappe: D.TappaRaw[], dataOraPartenza: number) : D.SpedizioneNonValida | D.SpedizioneValida {
 		const arrayArrivi = getOrariRandom(dataOraPartenza, tappe)
-
+		let n = 0;
 		for(let c of s.camionisti) {
-
+			n++;
 			// controllo ogni spedizione presente nel db
 			for(let spedizione of db.Spedizioni) {
 
@@ -128,7 +133,7 @@ const api : D.Model = {
 						let partenza = spedizione.getTappe()[0].arrivoPrevisto
 						let arrivo = spedizione.getTappe()[spedizione.getTappe().length-1].arrivoPrevisto
 
-						// overlap orari spedizioni
+						// sovrapposizione orari spedizioni
 						// old |-----|
 						// new   |------|
 
@@ -136,13 +141,19 @@ const api : D.Model = {
 						// new |----|
 						if((arrayArrivi[0] >= partenza && arrayArrivi[0] <= arrivo)
 							|| (arrayArrivi[0] <= partenza &&  arrayArrivi[arrayArrivi.length-1] >= partenza)) {
-							return false
+							
+							return { 
+								result: false, 
+								error: 600 + n }	// n: indice che indica il camionista occupato in un'altra
+																	// spedizione e definisce il codice di errore
 						}
 					}
 				}
 			}
 		}
-		return true
+		return {
+			result: true,
+			arriviPrevisti: arrayArrivi }
 	},
 
 	inserisciOrdine(o: D.OrdineRaw, mC: D.MagazzinoRaw, mS: D.MagazzinoRaw) : boolean {
@@ -150,7 +161,7 @@ const api : D.Model = {
 		let magazzinoCarico  : D.Magazzino = db.Magazzini.filter(m => m.indirizzo === mC.indirizzo)[0]
 		let magazzinoScarico : D.Magazzino = db.Magazzini.filter(m => m.indirizzo === mS.indirizzo)[0]
 
-		if(!this.validaOrdine(o, mC, mS)) return false
+		if(this.validaOrdine(o, mC, mS).result == false) return false
 
 		// se magazzinoCarico non esiste, lo aggiungo al db
 		if(!magazzinoCarico) {
@@ -192,17 +203,22 @@ const api : D.Model = {
 	},
 
 	// (50 x 5 x 15 ) m
-	validaOrdine(o: D.OrdineRaw, magazzinoCarico: D.MagazzinoRaw, magazzinoScarico: D.MagazzinoRaw) : boolean {
-		if(o.massa <= 0) return false
+	validaOrdine(o: D.OrdineRaw, magazzinoCarico: D.MagazzinoRaw, magazzinoScarico: D.MagazzinoRaw) : D.OrdineNonValido | D.OrdineValido {
+		if(o.massa <= 0) return { result: false, error: 701 }
+		
 		// le dimensioni sono in centimetri (50m -> 50*1000cm)
-		if(o.dimX > 50*1000) return false
-		if(o.dimY > 5*1000) return false
-		if(o.dimZ > 15*1000) return false
-		if(o.descrizione == "") return false
-		if(o.nomeDestinatario == "") return false
-		if(o.nomeMittente == "") return false
+		if(o.dimX > 50*1000 || o.dimX <= 0) return { result: false, error: 702 }
+		if(o.dimY > 5*1000  || o.dimY <= 0) return { result: false, error: 703 }
+		if(o.dimZ > 15*1000 || o.dimZ <= 0) return { result: false, error: 704 }
 
-		return true
+		if(o.descrizione == "") return { result: false, error: 705 }
+		if(o.nomeDestinatario == "") return { result: false, error: 706 }
+		if(o.nomeMittente == "") return { result: false, error: 707 }
+
+		if(magazzinoCarico.indirizzo 	== "") return { result: false, error: 708 }
+		if(magazzinoScarico.indirizzo == "") return { result: false, error: 709 }
+
+		return { result: true }
 	},
 
 	getMe() : D.GestoreSpedizioni {

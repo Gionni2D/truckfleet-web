@@ -118,10 +118,10 @@ export interface Model {
 	getTappe(filter?: TappeFilter) : Tappa[]
 	inserisciSpedizione(s: SpedizioneRaw, tappe: TappaRaw[], dataOraPartenza: number) : boolean
 	rimuoviSpedizione(s: Spedizione) : boolean
-	validaSpedizione(s: SpedizioneRaw, tappe: TappaRaw[], dataOraPartenza: number) : boolean
+	validaSpedizione(s: SpedizioneRaw, tappe: TappaRaw[], dataOraPartenza: number) : SpedizioneNonValida | SpedizioneValida
 	inserisciOrdine(o: OrdineRaw, magazzinoCarico: MagazzinoRaw, magazzinoScarico: MagazzinoRaw) : boolean
 	rimuoviOrdine(o: Ordine) : boolean
-	validaOrdine(o: OrdineRaw, magazzinoCarico: MagazzinoRaw, magazzinoScarico: MagazzinoRaw) : boolean
+	validaOrdine(o: OrdineRaw, magazzinoCarico: MagazzinoRaw, magazzinoScarico: MagazzinoRaw) : OrdineNonValido | OrdineValido
 	getMe() : GestoreSpedizioni
 }
 
@@ -135,4 +135,38 @@ export interface Camionista {
 	nome: string,
 	cognome: string,
 	userName: string
+}
+
+/*	Codici errore validazione Spedizione:
+ *	601 - Camionista 1 occupato
+ *	602 - Camionista 2 occupato
+ */
+export interface SpedizioneNonValida {
+	result: false, 
+	error: number
+}
+
+export interface SpedizioneValida {
+	result: true, 
+	arriviPrevisti: number[]
+}
+
+/*	Codici errore validazione Ordine:
+ *	701 - Massa negativa
+ *	702 - DimX > limite (50m) || DimX negativa
+ *	703 - DimY > limite (5m) 	|| DimY negativa
+ *	704 - DimZ > limite (15m)	|| DimZ negativa
+ *	705 - Descrizione vuota
+ *	706 - Nome destinatario vuoto
+ *	707 - Nome mittente vuoto
+ *	708 - Magazzino Carico vuoto
+ *	709 - Magazzino Scarico vuoto
+ */
+export interface OrdineNonValido {
+	result: false,
+	error: number
+}
+
+export interface OrdineValido {
+	result: true
 }
