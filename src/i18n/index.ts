@@ -16,6 +16,11 @@ export interface i18n {
 			"details": string
 		}
 		"inserisciSpedizione": {
+			"title": string,
+			"next" : string
+			"vehicleSection": string
+			"trailerSection": string
+			"insertComplete": string
 		}
 		"visualizzaSpedizione": {
 			"associatedOrders":  string,
@@ -64,7 +69,11 @@ export interface i18n {
 			"distance":      string,
 			"state":         string,
 			"vehicle":       string,
+			"vehicleModel":  string,
+			"vehiclePlate":  string,
+			"vehicleWeight": string,
 			"trailer":       string,
+			"trailerDim":    string,
 			"maxLoad":       string,
 			"unladenMass":   string,
 			"numOrders":     string,

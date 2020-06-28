@@ -17,6 +17,11 @@ const itIT: i18n = {
 			"details": "Dettagli"
 		},
 		"inserisciSpedizione": {
+			"title": "Inserisci Spedizione",
+			"next":  "Avanti",
+			"vehicleSection": "Informazioni veicolo",
+			"trailerSection": "Informazioni rimorchio",
+			"insertComplete": "La spedizione è stata inserita nel sistema"
 		},
 		"visualizzaSpedizione": {
 			"associatedOrders":  "Ordini associati",
@@ -70,7 +75,11 @@ const itIT: i18n = {
 			"distance":      "Distanza",
 			"state":         "Stato",
 			"vehicle":       "Veicolo",
+			"vehicleModel":  "Modello veicolo",
+			"vehiclePlate":  "Targa veicolo",
+			"vehicleWeight": "Peso veicolo",
 			"trailer":       "Rimorchio",
+			"trailerDim":    "Spazio di carico",
 			"maxLoad":       "Carico massimo",
 			"unladenMass":   "Massa a vuoto",
 			"numOrders":     "Numero di ordini",

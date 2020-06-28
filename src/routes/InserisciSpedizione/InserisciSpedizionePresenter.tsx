@@ -1,4 +1,4 @@
-import InserisciSpedizioneView from './InserisciSpedizioneView'
+import InserisciSpedizioneView, { ValidationError } from './InserisciSpedizioneView'
 import * as React from 'react'
 import app from '../../app'
 import { SpedizioneRaw, Camionista, Ordine, StatoOrdine, TappaRaw } from '../../domain'
@@ -45,18 +45,55 @@ export default class InserisciSpedizionePresenter
 		// TODO
 	}
 
-	onInfoVeicoliInserted = () => {
-		if(this.state.optimization) this.optimizeSpedizione()
+	validateVeicolo() {
+		const errors : ValidationError = {}
+		const { spedizione } = this.state
+
+		errors.veicoloModello = !spedizione.veicoloModello.trim()
+		errors.veicoloTarga = !spedizione.veicoloTarga.trim()
+		errors.veicoloMassa = spedizione.veicoloMassa < 1 || spedizione.veicoloMassa > 40000
+		errors.rimorchioCaricoMax = spedizione.rimorchioCaricoMax < 1 || spedizione.rimorchioCaricoMax > 40000
+		errors.rimorchioMassa = spedizione.rimorchioMassa < 1 || spedizione.rimorchioMassa > 40000
+		errors.rimorchioDimX = spedizione.rimorchioDimX < 1 || spedizione.rimorchioDimX > 5000
+		errors.rimorchioDimY = spedizione.rimorchioDimY < 1 || spedizione.rimorchioDimY > 5000
+		errors.rimorchioDimZ = spedizione.rimorchioDimZ < 1 || spedizione.rimorchioDimZ > 5000
+
+		const result = !(errors.veicoloMassa ||
+			errors.veicoloModello ||
+			errors.veicoloTarga ||
+			errors.rimorchioCaricoMax ||
+			errors.rimorchioMassa ||
+			errors.rimorchioDimX ||
+			errors.rimorchioDimY ||
+			errors.rimorchioDimZ)
+
+		return { result, errors }
+	}
+
+	onInfoVeicoloInserted = () => {
+		const validation = this.validateVeicolo()
+		if(validation.result && this.state.optimization) this.optimizeSpedizione()
+		return validation
 	}
 
 	onAllInfoInserted = () => {
-		const {spedizione, tappe, dataInizio} = this.state
-		return app.validaSpedizione(spedizione, tappe, dataInizio)
+		// const {spedizione, tappe, dataInizio} = this.state
+		// return app.validaSpedizione(spedizione, tappe, dataInizio)
+		return { result: true, errors: {} }
 	}
 
 	onCreateSpedizione = () => {
 		const {spedizione, tappe, dataInizio} = this.state
 		return app.inserisciSpedizione(spedizione, tappe, dataInizio)
+	}
+
+	onChangeTappe = (tappe: TappaRaw[]) => {
+		this.setState({ tappe });
+	}
+
+	onChangeSpedizione = (value: string, attributeName: keyof SpedizioneRaw) => {
+		let spedizione = {...this.state.spedizione, [attributeName]: value};
+		this.setState({ spedizione });
 	}
 
 	render() {
@@ -66,8 +103,10 @@ export default class InserisciSpedizionePresenter
 			camionisti={this.state.camionisti}
 			ordini={this.state.ordini}
 			tappe={this.state.tappe}
-			onInfoVeicoloInserted={this.onInfoVeicoliInserted}
+			onInfoVeicoloInserted={this.onInfoVeicoloInserted}
 			onAllInfoInserted={this.onAllInfoInserted}
-			onCreateSpedizione={this.onCreateSpedizione}/>
+			onCreateSpedizione={this.onCreateSpedizione}
+			onChangeTappe={this.onChangeTappe}
+			onChangeSpedizione={this.onChangeSpedizione}/>
 	}
 }
