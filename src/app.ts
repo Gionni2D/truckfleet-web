@@ -28,7 +28,9 @@ class App implements Model {
 	}
 
 	getSpedizioni = api.getSpedizioni
+	getCamionisti = api.getCamionisti
 	getMagazzini = api.getMagazzini
+	getPosizioni = api.getPosizioni
 	getOrdini = api.getOrdini
 	getTappe = api.getTappe
 	inserisciSpedizione = api.inserisciSpedizione

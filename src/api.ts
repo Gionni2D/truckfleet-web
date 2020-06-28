@@ -8,10 +8,18 @@ const api : D.Model = {
 			db.Spedizioni;
 	},
 
+	getCamionisti(filter?: D.CamionistiFilter) : D.Camionista[] {
+		return []
+	},
+
 	getMagazzini(filter?: D.MagazziniFilter) : D.Magazzino[] {
 		return filter ?
 			db.Magazzini.filter(filter) :
 			db.Magazzini;
+	},
+
+	getPosizioni(filter?: D.PosizioniFilter) : D.Posizione[] {
+		return []
 	},
 
 	getOrdini(filter?: D.OrdiniFilter) : D.Ordine[] {
@@ -42,7 +50,7 @@ const api : D.Model = {
 		for(let i = 0; i < tappe.length; i++) {
 			let t = tappe[i]
 			let idTappa = 1+ db.Tappe.reduce(maxIdReducer, -1)
-			
+
 			db.Tappe.push({
 				id: idTappa,
 				arrivoPrevisto: arrayOrari[i],
@@ -83,12 +91,12 @@ const api : D.Model = {
 		if(s.stato == D.StatoSpedizione.CREATA) {
 			for(let i = 0; i < db.Spedizioni.length; i++) {
 				if(db.Spedizioni[i].id == s.id) {
-					
+
 					// imposto lo stato di ogni ordine a INSERITO
 					for(let o of db.Spedizioni[i].getOrdini()) {
 						o.stato = D.StatoOrdine.INSERITO
 					}
-					
+
 					db.Spedizioni.splice(i, 1);
 					return true;
 				}
@@ -98,14 +106,14 @@ const api : D.Model = {
 	},
 
 	validaSpedizione(s: D.SpedizioneRaw, tappe: D.TappaRaw[], dataOraPartenza: number, arrayArrivi: number[]) : boolean {
-	
+
 		for(let c of s.camionisti) {
 
 			// controllo ogni spedizione presente nel db
 			for(let spedizione of db.Spedizioni) {
 
 				/* controllo se tra i camionisti assegnati c'è un camionista della
-				 * nuova spedizione da inserire. In tal caso, controllo se gli 
+				 * nuova spedizione da inserire. In tal caso, controllo se gli
 				 * orari delle due spedizioni si sovrappongono
 				 */
 				for(let cc of spedizione.camionisti) {

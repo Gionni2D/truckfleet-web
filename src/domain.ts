@@ -69,7 +69,6 @@ export interface SpedizioneRaw {
 	rimorchioDimZ: number;      // integer
 	rimorchioCaricoMax: number; // double
 	rimorchioMassa: number;     // double
-	stato: StatoSpedizione;
 	camionisti: [Camionista, Camionista?];
 }
 
@@ -90,20 +89,31 @@ export interface Tappa {
 	getMagazzino()  : Magazzino
 }
 
-export interface TappaRaw { 
-	magazzinoId: number, 
+export interface TappaRaw {
+	magazzinoId: number,
 	ordineItinerario: number,
 	ordini: ["carico"|"scarico", number][] 	// [carico/scarico, idOrdine][]
 }
 
+export interface Posizione {
+	lat:  number         // latitudine
+	lng:  number         // longitudine
+	time: number         // timestamp (millisecondi)
+	spedizioneId: number // integer
+}
+
 export type SpedizioniFilter = (o: Spedizione) => boolean
+export type CamionistiFilter = (o: Camionista) => boolean
 export type MagazziniFilter = (o: Magazzino) => boolean
+export type PosizioniFilter = (o: Posizione) => boolean
 export type OrdiniFilter = (o: Ordine) => boolean
 export type TappeFilter = (o: Tappa) => boolean
 
 export interface Model {
 	getSpedizioni(filter?: SpedizioniFilter) : Spedizione[]
+	getCamionisti(filter?: CamionistiFilter) : Camionista[]
 	getMagazzini(filter?: MagazziniFilter) : Magazzino[]
+	getPosizioni(filter?: PosizioniFilter) : Posizione[]
 	getOrdini(filter?: OrdiniFilter) : Ordine[]
 	getTappe(filter?: TappeFilter) : Tappa[]
 	inserisciSpedizione(s: SpedizioneRaw, tappe: TappaRaw[], dataOraPartenza: number) : boolean
