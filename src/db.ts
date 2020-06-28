@@ -196,3 +196,173 @@ export let gestoreSpedizioni: GestoreSpedizioni = {
 }
 
 export const Posizioni : Posizione[] = []
+
+Magazzini.push({
+	id: 101,  // integer
+	indirizzo: `Via John Lennon, 13, Casalecchio di Reno, BO, 40033, Italia`// Via, Civico, Comune, Provincia, ZIPCode, Nazione
+});
+Magazzini.push({
+	id: 102,  
+	indirizzo: `Via Tolemaide, 140, Rimini, RN, 47922, Italia`
+});
+Magazzini.push({
+	id: 103,  
+	indirizzo: `Frazione Aspio, 37, Camerano, AN, 60021, Italia`
+});
+Magazzini.push({
+	id: 104,  
+	indirizzo: `Via Regolizie, 22, San Giovanni Teatino, CH, 66020, Italia`
+});
+
+Ordini.push({
+	id:                 101,
+	spedizioneId:				101,
+	tappaCaricoId:			101,
+	tappaScaricoId:			103,                            
+	magazzinoCaricoId:  101,           
+	magazzinoScaricoId: 103,         
+	descrizione:        "Comodino regale, colore nero",
+	nomeMittente:       "Ikea Bologna",
+	nomeDestinatario:   "Ikea Ancona",
+	dimX:               50,  
+	dimY:               40,    
+	dimZ:               45,    
+	massa:              7, 
+	stato:              StatoOrdine.CONSEGNATO,       
+	getSpedizione,
+	getInfoCarico,
+	getInfoScarico
+})
+Ordini.push({
+	id:                 102,
+	spedizioneId:				101,
+	tappaCaricoId:			101,
+	tappaScaricoId:			104,
+	magazzinoCaricoId:  101,
+	magazzinoScaricoId: 104,
+	descrizione:        "Cornice foto grande, color arcobaleno",
+	nomeMittente:       "Ikea Bologna",
+	nomeDestinatario:   "Ikea Chieti",
+	dimX:               30,
+	dimY:               40,
+	dimZ:               5,
+	massa:              0.8,
+	stato:              StatoOrdine.CONSEGNATO,
+	getSpedizione,
+	getInfoCarico,
+	getInfoScarico
+})
+Ordini.push({
+	id:                 103,
+	spedizioneId:				101,
+	tappaCaricoId:			101,
+	tappaScaricoId:			104,
+	magazzinoCaricoId:  101,
+	magazzinoScaricoId: 104,
+	descrizione:        "Cappellino e torcia per campeggio, color verde militare",
+	nomeMittente:       "Ikea Bologna",
+	nomeDestinatario:   "Ikea Chieti",
+	dimX:               15,
+	dimY:               10,
+	dimZ:               15,
+	massa:              0.7,
+	stato:              StatoOrdine.CONSEGNATO,
+	getSpedizione,
+	getInfoCarico,
+	getInfoScarico
+})
+Ordini.push({
+	id:                 104,
+	spedizioneId:				101,
+	tappaCaricoId:			102,
+	tappaScaricoId:			103,
+	magazzinoCaricoId:  102,
+	magazzinoScaricoId: 103,
+	descrizione:        "Casetta di legno",
+	nomeMittente:       "Ikea Rimini",
+	nomeDestinatario:   "Ikea Ancona",
+	dimX:               300,
+	dimY:               200,
+	dimZ:               150,
+	massa:              45.3,
+	stato:              StatoOrdine.CONSEGNATO,
+	getSpedizione,
+	getInfoCarico,
+	getInfoScarico
+})
+Ordini.push({
+	id:                 105,
+	spedizioneId:				101,
+	tappaCaricoId:			103,
+	tappaScaricoId:			104,
+	magazzinoCaricoId:  103,
+	magazzinoScaricoId: 104,
+	descrizione:        "Lava-lamp",
+	nomeMittente:       "Ikea Ancona",
+	nomeDestinatario:   "Ikea Chieti",
+	dimX:               30,
+	dimY:               50,
+	dimZ:               30,
+	massa:              5,
+	stato:              StatoOrdine.CONSEGNATO,
+	getSpedizione,
+	getInfoCarico,
+	getInfoScarico
+})
+
+Tappe.push({
+	id:               101,
+	spedizioneId:     101,
+	magazzinoId:      101,
+	arrivoPrevisto:   1592796600000,
+	arrivoEffettivo:	1592796720000,
+	ordineItinerario: 0,
+	getMagazzino,
+	getSpedizione
+})
+Tappe.push({
+	id:               102,
+	spedizioneId:     101,
+	magazzinoId:      102,
+	arrivoPrevisto:   1592802300000,
+	arrivoEffettivo:	1592802397000,
+	ordineItinerario: 1,
+	getMagazzino,
+	getSpedizione
+})
+Tappe.push({
+	id:               103,
+	spedizioneId:     101,
+	magazzinoId:      103,
+	arrivoPrevisto:   1592809200000,
+	arrivoEffettivo:	1592809044000,
+	ordineItinerario: 2,
+	getMagazzino,
+	getSpedizione
+})
+Tappe.push({
+	id:               104,
+	spedizioneId:     101,
+	magazzinoId:      104,
+	arrivoPrevisto:   1592818200000,
+	arrivoEffettivo:	1592818261000,
+	ordineItinerario: 3,
+	getMagazzino,
+	getSpedizione
+})
+
+Spedizioni.push({
+	id: 101,
+	veicoloTarga: "DA328HG",
+	veicoloModello: "Mercedes Actros",
+	veicoloMassa: 11.5,     // double
+	rimorchioDimX: 250,     // integer
+	rimorchioDimY: 350,     // integer
+	rimorchioDimZ: 700,     // integer
+	rimorchioCaricoMax: 20, // double
+	rimorchioMassa: 10.8,   // double
+	stato: StatoSpedizione.COMPLETATA,
+	camionisti: [Camionisti[0]],
+	getOrdini,
+	getTappe
+});
