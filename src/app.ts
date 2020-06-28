@@ -27,6 +27,10 @@ class App implements Model {
 		this.store.dispatch({ type: AT.CHANGE_ROUTE_ACTION, routeData })
 	}
 
+	onMapLoaded = () => {
+		this.store.dispatch({ type: AT.MAP_LOADED_ACTION })
+	}
+
 	getSpedizioni = api.getSpedizioni
 	getCamionisti = api.getCamionisti
 	getMagazzini = api.getMagazzini
