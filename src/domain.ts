@@ -140,6 +140,8 @@ export interface Camionista {
 /*	Codici errore validazione Spedizione:
  *	601 - Camionista 1 occupato
  *	602 - Camionista 2 occupato
+ *	603 - Sforato peso massimo di 44 t
+ *	604 - Veicolo già impiegato in un altra spedizione
  */
 export interface SpedizioneNonValida {
 	result: false, 
@@ -161,6 +163,7 @@ export interface SpedizioneValida {
  *	707 - Nome mittente vuoto
  *	708 - Magazzino Carico vuoto
  *	709 - Magazzino Scarico vuoto
+ *	710 - Stesso indirizzo di carico e scarico
  */
 export interface OrdineNonValido {
 	result: false,

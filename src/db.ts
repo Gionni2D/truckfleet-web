@@ -47,7 +47,7 @@ export const getOrdini = function(this: Spedizione) {
 }
 
 export const getTappe = function(this: Spedizione) {
-	return Tappe.filter(x => x.spedizioneId == this.id)
+	return Tappe.filter(x => x.spedizioneId == this.id).sort((t1, t2) => t1.ordineItinerario < t2.ordineItinerario ? -1 : 1)
 }
 
 export const getSpedizione = function<U extends {spedizioneId: number}>(this: U) {

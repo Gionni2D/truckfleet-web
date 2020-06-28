@@ -118,39 +118,69 @@ const api : D.Model = {
 	validaSpedizione(s: D.SpedizioneRaw, tappe: D.TappaRaw[], dataOraPartenza: number) : D.SpedizioneNonValida | D.SpedizioneValida {
 		const arrayArrivi = getOrariRandom(dataOraPartenza, tappe)
 		let n = 0;
-		for(let c of s.camionisti) {
-			n++;
-			// controllo ogni spedizione presente nel db
-			for(let spedizione of db.Spedizioni) {
 
-				/* controllo se tra i camionisti assegnati c'è un camionista della
-				 * nuova spedizione da inserire. In tal caso, controllo se gli
-				 * orari delle due spedizioni si sovrappongono
-				 */
-				for(let cc of spedizione.camionisti) {
-					if(cc?.userName == c?.userName) {
+		// controllo se sforo il peso massimo consentito tra una tappa e l'altra
+		let tappeOrdinate = tappe.sort((a,b) => a.ordineItinerario < b.ordineItinerario ? -1 : 1)
+		let pesoTotale = 0
+		let found = false
 
-						let partenza = spedizione.getTappe()[0].arrivoPrevisto
-						let arrivo = spedizione.getTappe()[spedizione.getTappe().length-1].arrivoPrevisto
-
-						// sovrapposizione orari spedizioni
-						// old |-----|
-						// new   |------|
-
-						// old   |--------|
-						// new |----|
-						if((arrayArrivi[0] >= partenza && arrayArrivi[0] <= arrivo)
-							|| (arrayArrivi[0] <= partenza &&  arrayArrivi[arrayArrivi.length-1] >= partenza)) {
-							
-							return { 
-								result: false, 
-								error: 600 + n }	// n: indice che indica il camionista occupato in un'altra
-																	// spedizione e definisce il codice di errore
-						}
+		for(let tappa of tappeOrdinate) {
+			for(let infoOrdine of tappa.ordini) {
+				
+				for(let i = 0; !found && i < db.Ordini.length; i++) {
+					let ordine = db.Ordini[i]
+					
+					if(ordine.id == infoOrdine[1]) {
+						if(infoOrdine[0] == "carico") 	pesoTotale += ordine.massa
+						if(infoOrdine[0] == "scarico") 	pesoTotale -= ordine.massa
+						found = true
 					}
 				}
 			}
+			// 44 tonnellate limite di peso totale su strada
+			if(pesoTotale >= 44*1000) return { result: false, error: 603 }
 		}
+
+
+		// controllo se il viaggio si sovrappone con un'altra spedizione
+		// che ha gli stessi camionisti o lo stesso veicolo
+		for(let spedizione of db.Spedizioni.filter(
+																x => 
+																x.camionisti.includes(s.camionisti[0]) || 
+																x.camionisti.includes(s.camionisti[1]) ||
+																x.veicoloTarga == s.veicoloTarga)) {
+
+			let partenza = spedizione.getTappe()[0].arrivoPrevisto
+			let arrivo = spedizione.getTappe()[spedizione.getTappe().length-1].arrivoPrevisto
+
+			// sovrapposizione orari spedizioni
+			// old |-----|
+			// new   |------|
+
+			// old   |--------|
+			// new |----|
+			if((arrayArrivi[0] >= partenza && arrayArrivi[0] <= arrivo)
+				|| (arrayArrivi[0] <= partenza &&  arrayArrivi[arrayArrivi.length-1] >= partenza)) {
+				
+				// controllo qual è l'errore specifico
+				if(spedizione.veicoloTarga == s.veicoloTarga) {
+					return { 
+						result: false,
+						error: 604 }
+				} 
+				else if(spedizione.camionisti.includes(s.camionisti[0])) {
+					return { 
+						result: false, 
+						error: 600 + 1 }
+				} 
+				else if(spedizione.camionisti.includes(s.camionisti[1])){
+					return {
+						result: false,
+						error: 600 + 2 }
+				}
+			}
+		}
+
 		return {
 			result: true,
 			arriviPrevisti: arrayArrivi }
@@ -217,6 +247,8 @@ const api : D.Model = {
 
 		if(magazzinoCarico.indirizzo 	== "") return { result: false, error: 708 }
 		if(magazzinoScarico.indirizzo == "") return { result: false, error: 709 }
+
+		if(magazzinoCarico.indirizzo == magazzinoScarico.indirizzo) return { result: false, error: 710 }
 
 		return { result: true }
 	},
