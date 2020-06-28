@@ -27,18 +27,59 @@ const modelli : string[] = [
 	"MAN"
 ]
 
-const citta : string[] = [
-	"Bologna, BO, 40123",
-	"Modena, MO, 41121",
-	"Rimini, RN, 47921",
-	"Novara, NO, 28100",
-	"Rovigo, RO, 45100",
-	"Pesaro-Urbino, PU, 61122",
-	"Parma, PR, 43121"
-]
+// Via, Civico, Comune, Provincia, ZIPCode, Nazione
 
+const indirizzi : string[] = [
+	"Via Messina, 35/37, Milano, Milano, 20100, Italia",
+	"Via Scuole, 6, Brescia, Brescia, 25128, Italia",
+	"Via Polveriera Vecchia, 12, Verona, Verona, 37100, Italia",
+	"Via della Motorizzazione Civile, 6, Mestre, Venezia, 30100, Italia",
+	"Via Aposazza, 3, Bologna, Bologna, 40128, Italia",
+	"Via Morara, 202, Medicina, Bologna, 40059, Italia",
+	"Strada Val Nure, 9, Piacenza, Piacenza, 29122, Italia",
+	"Via Varisco, 1A, Rimini, Rimini, 47924, Italia",
+	"Via Paolo Carnicelli, 2, Grosseto, Grosseto, 58100, Italia",
+	"Via Gregorio XVI, 3, Belluno, Belluno, 32100, Italia",
+	"Via Codussi, 9, Bergamo, Bergamo, 24100, Italia",
+	"viale Druso, 116, Bolzano, Bolzano, 39100, Italia",
+	"Viale Marconi, 300, Cagliari, Cagliari, 09100, Italia",
+	"Viale della Regione, 196, Caltanissetta, Caltanissetta, 93100, Italia",
+	"Via S. Antonio Dei Lazzari, 5/a, Campobasso, Campobasso, 86100, Italia",
+	"Via Cesare Beccaria, 31, Catania, Catania, 95123, Italia",
+	"Via Vinicio Cortese, 11, Catanzaro, Catanzaro, 88100, Italia",
+	"Via Filippo Masci, 115, Chieti, Chieti, 66100, Italia",
+	"Via Valleggio, 15, Como, Como, 22100, Italia",
+	"Viale della Repubblica, 56, Cosenza, Cosenza, 87100, Italia",
+	"Via Nazario Sauro, 14, Cremona, Cremona, 26100, Italia",
+	"Corso A. De Gasperi, 71, Cuneo, Cuneo, 12100, Italia",
+	"Via Verga, 125, Ferrara, Ferrara, 44124, Italia",
+	"Via G. La Farina, 28, Firenze, Firenze, 50132, Italia",
+	"Piazza G.B. Fraticelli, 1, Foggia, Foggia, 71100, Italia",
+	"Via Albertazzi, 2, Genova, Genova, 16100, Italia",
+	"Via dei Leoni, 33, Gorizia, Gorizia, 34170, Italia",
+	"Via G. Strato, 2, Imperia, Imperia, 18100, Italia",
+	"Piazzale Angelo Guglielmi, 2, Isernia, Isernia, 86170, Italia",
+	"Via Antoniana, 10, La, La, 19125, Italia",
+	"Viale Pescara, 85, L'Aquila, L'Aquila, 67100, Italia",
+	"Piazzale Carturan, 1, Latina, Latina, 04100, Italia",
+	"Viale Grassi, 86, Lecce, Lecce, 73100, Italia",
+	"Via Amendola, 4, Lecco, Lecco, 23900, Italia",
+	"Via Campania, 25, Livorno, Livorno, 57124, Italia",
+	"Viale Piacenza, 83, Lodi, Lodi, 26900, Italia",
+	"Viale Indipendenza, 158, Macerata, Macerata, 62100, Italia",
+	"Viale Risorgimento, 16, Mantova, Mantova, 46100, Italia",
+	"Via Massa Avenza, 121/P, Massa, Massa, 54100, Italia",
+	"Via Giuseppe Giglio, 3, Matera, Matera, 75100, Italia",
+	"Via Antonio Salandra, 39, Messina, Messina, 98124, Italia",
+	"Via Formigina, 125, Modena, Modena, 41100, Italia",
+	"Largo Tarantini, 1, Napoli, Napoli, 80100, Italia",
+	"Via Pietro Generali, 19, Novara, Novara, 28100, Italia",
+	"Via del Porto, 6, Oristano, Oristano, 09170, Italia",
+	"Via S. Fidenzio, 3, Padova, Padova, 35100, Italia",
+	"Via Scarlatti, 16, Palermo, Palermo, 90100, Italia",
+]
 const N_SPEDIZIONI = 5
-const N_MAGAZZINI  = 10
+const N_MAGAZZINI  = indirizzi.length
 const N_ORDINI     = 25
 const N_ORD_X_SPED = 4 // ≤ N_ORDINI / N_SPEDIZIONI
 
@@ -102,7 +143,7 @@ for(let i = 0; i < N_SPEDIZIONI; i++) {
 for(let i = 0; i < N_MAGAZZINI; i++) {
 	Magazzini.push({
 		id: i,  // integer
-		indirizzo: `${faker.address.streetName()}, ${faker.random.number(50)+1}, ${citta[faker.random.number(6)]}, Italia`// Via, Civico, Comune, Provincia, ZIPCode, Nazione
+		indirizzo: indirizzi[i]
 	});
 }
 
