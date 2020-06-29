@@ -151,9 +151,9 @@ export default class VisualizzaSpedizioneView
 		<Drawer>
 			<Typography variant="h3">{this.bundle.components.drawer.shipmentDetails} #{this.props.spedizione.id}</Typography>
 			<div>
-				<Grid container justify="space-between">
-					<Grid item md={"auto"}>
-						<Card style={style.card}>
+				<Grid container spacing={2} justify="space-between">
+					<Grid item md={6}>
+						<Card>
 							<CardContent>
 								<Table size="small">
 									<TableHead>
@@ -177,7 +177,7 @@ export default class VisualizzaSpedizioneView
 						</Card>
 					</Grid>
 					<Grid item md={6}>
-						<div id="map" ref="map" style={{width: "100%", height: "400px"}}>
+						<div id="map" ref="map" style={{width: "100%", height: "450px"}}>
 						</div>
 					</Grid>
 				</Grid>
