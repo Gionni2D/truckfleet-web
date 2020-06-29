@@ -6,8 +6,9 @@ import App from '../../components/App'
 import { Spedizione, StatoSpedizione, Posizione } from '../../domain'
 import { formatDate } from '../../utils'
 import OrderItem from '../../components/OrderItem'
-import { Grid, Typography, IconButton, Avatar, Fab, TextField } from '@material-ui/core'
+import { Grid, Typography, IconButton, Avatar, Fab, TextField, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core'
 import { Card, CardContent, CardHeader } from '@material-ui/core'
+import { BorderRight, ClosedCaptionSharp } from '@material-ui/icons'
 
 interface ViewProps {
 	spedizione: Spedizione,
@@ -147,22 +148,32 @@ export default class VisualizzaSpedizioneView
 
 		return <App>
 		<Drawer>
-			<h1>{this.bundle.components.drawer.shipmentDetails} #{this.props.spedizione.id}</h1>
+			<Typography variant="h3">{this.bundle.components.drawer.shipmentDetails} #{this.props.spedizione.id}</Typography>
 			<div>
-				<Grid container>
-					<Grid item md={6}>
-						<table>
-							<caption>{b.stops}</caption>
-							<tbody>
-								{ this.props.spedizione.getTappe().map((tappa) => {
-									return (<tr key={tappa.id}>
-										<td>{tappa.getMagazzino().indirizzo}</td>
-										<td>{formatDate(tappa.arrivoPrevisto)}</td>
-										<td>{tappa.arrivoEffettivo !== undefined && formatDate(tappa.arrivoEffettivo)}</td>
-									</tr>)
-								})}
-							</tbody>
-						</table>
+				<Grid container justify="space-between">
+					<Grid item md={"auto"}>
+						<Card style={style.card}>
+							<CardContent>
+								<Table size="small">
+									<TableHead>
+										<TableRow>
+											<TableCell><Typography variant="subtitle2">Indirizzo tappa</Typography></TableCell>
+											<TableCell><Typography variant="subtitle2">Arrivo previsto</Typography></TableCell>
+											<TableCell><Typography variant="subtitle2">Arrivo effettivo</Typography></TableCell>
+										</TableRow>
+									</TableHead>
+									<TableBody>
+										{ this.props.spedizione.getTappe().map((tappa) => {
+											return (<TableRow key={tappa.id}>
+												<TableCell><Typography variant="body2">{tappa.arrivoEffettivo !== undefined ? '\u25A3' : '\u25A2'} {tappa.getMagazzino().indirizzo}</Typography></TableCell>
+												<TableCell><Typography variant="body2">{formatDate(tappa.arrivoPrevisto)}</Typography></TableCell>
+												<TableCell><Typography variant="body2">{tappa.arrivoEffettivo !== undefined && formatDate(tappa.arrivoEffettivo)}</Typography></TableCell>
+											</TableRow>)
+										})}
+									</TableBody>
+								</Table>
+							</CardContent>
+						</Card>
 					</Grid>
 					<Grid item md={6}>
 						<div id="map" ref="map" style={{width: "100%", height: "400px"}}>
@@ -190,7 +201,7 @@ export default class VisualizzaSpedizioneView
 							</div>
 							<div style={style.mt}>
 								<Typography variant="overline" color="textSecondary">{bs.unladenMass}:</Typography>
-								<Typography variant="body2">{this.props.spedizione.veicoloMassa} kg</Typography>
+								<Typography variant="body2">{this.props.spedizione.veicoloMassa} t</Typography>
 							</div>
 						</Grid>
 						<Grid item xs={12} sm={6} md={4}>
@@ -200,8 +211,8 @@ export default class VisualizzaSpedizioneView
 							</div>
 							<div style={style.mt}>
 								<Typography variant="overline" color="textSecondary">{bs.trailer}:</Typography>
-								<Typography variant="body2">{bs.unladenMass}: {this.props.spedizione.rimorchioMassa} kg<br/>
-									{bs.maxLoad}: {this.props.spedizione.rimorchioCaricoMax} kg
+								<Typography variant="body2">{bs.unladenMass}: {this.props.spedizione.rimorchioMassa} t<br/>
+									{bs.maxLoad}: {this.props.spedizione.rimorchioCaricoMax} t
 								</Typography>
 							</div>
 						</Grid>
