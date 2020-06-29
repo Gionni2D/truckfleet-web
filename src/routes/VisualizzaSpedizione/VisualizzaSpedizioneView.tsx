@@ -61,7 +61,7 @@ export default class VisualizzaSpedizioneView
 		//tutte le cordinate GPS della spedizione in corso o conclusa vengono unite con una linea e mostrate
 		let bologna = {lat: 44.49911, lng: 11.3316855};
 
-		this.map = new google.maps.Map(document.getElementById("map") as Element, {zoom: 4, center: bologna});
+		this.map = new google.maps.Map(document.getElementById("map") as Element, {zoom: 5, center: bologna});
 		let directionsService = new google.maps.DirectionsService();
 		let directionsRenderer = new google.maps.DirectionsRenderer();
 		let geocoder = new google.maps.Geocoder();
@@ -76,7 +76,7 @@ export default class VisualizzaSpedizioneView
 			if(tappe[i].arrivoEffettivo === undefined) {
 				waypoints.push({location: tappe[i].getMagazzino().indirizzo});
 			} else {
-				this.addMarker(tappe[i].getMagazzino().indirizzo, geocoder);
+				this.addMarker(tappe[i].getMagazzino().indirizzo, ""+(i+1), geocoder);
 			}
 		}
 		//se ci sono almeno 2 posizioni crea una linea che le unisce
@@ -84,9 +84,9 @@ export default class VisualizzaSpedizioneView
 			let percorsoSvolto = new google.maps.Polyline({
 				path: this.props.posizioni,
 				geodesic: true,
-				strokeColor: '#FF0000',
+				strokeColor: '#00a000',
 				strokeOpacity: 1.0,
-				strokeWeight: 2
+				strokeWeight: 4
 			});
 			percorsoSvolto.setMap(this.map);
 		}
@@ -97,7 +97,7 @@ export default class VisualizzaSpedizioneView
 			if(this.props.spedizione.stato == StatoSpedizione.IN_CORSO && this.props.posizioni.length > 0) {
 				let lastPosizione = this.props.posizioni[this.props.posizioni.length-1];
 				start = new google.maps.LatLng(lastPosizione.lat, lastPosizione.lng);
-				this.addMarker(tappe[0].getMagazzino().indirizzo, geocoder)
+				this.addMarker(tappe[0].getMagazzino().indirizzo, "1", geocoder)
 			} else  {
 				start = tappe[0].getMagazzino().indirizzo;
 			}
@@ -107,7 +107,8 @@ export default class VisualizzaSpedizioneView
 
 			this.makeRoute(start, end, waypoints, directionsService, directionsRenderer);
 		} else {
-			this.addMarker(tappe[tappe.length-1].getMagazzino().indirizzo, geocoder);
+			this.addMarker(tappe[0].getMagazzino().indirizzo, "1", geocoder);
+			this.addMarker(tappe[tappe.length-1].getMagazzino().indirizzo, "" + (tappe.length), geocoder);
 		}
 		
 	}
@@ -126,13 +127,13 @@ export default class VisualizzaSpedizioneView
 		})
 	}
 
-	addMarker(address: string, geocoder: google.maps.Geocoder) {
+	addMarker(address: string, label: string, geocoder: google.maps.Geocoder) {
 		geocoder.geocode( { 'address': address}, (results, status) => {
 			if (status == 'OK') {
 				new google.maps.Marker({
 					map: this.map,
 					position: results[0].geometry.location,
-					//label: address,
+					label,
 					title: address
 				});
 			} else {
