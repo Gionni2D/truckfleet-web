@@ -236,7 +236,7 @@ export let gestoreSpedizioni: GestoreSpedizioni = {
 	userName: "rossi.mario.3"
 }
 
-export const Posizioni : Posizione[] = []
+export { Posizioni } from './dbPosizioni'
 
 Magazzini.push({
 	id: 101,  // integer
