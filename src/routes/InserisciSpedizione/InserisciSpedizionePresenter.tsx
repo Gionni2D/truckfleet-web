@@ -87,7 +87,21 @@ export default class InserisciSpedizionePresenter
 		return app.inserisciSpedizione(spedizione, tappe, dataInizio)
 	}
 
-	onChangeTappe = (tappe: TappaRaw[]) => {
+	onAddTappa = (tappa: TappaRaw) => {
+		this.setState({
+			tappe: [
+				...this.state.tappe,
+				tappa
+			]
+		});
+	}
+
+	onDeleteTappa = (tappa: TappaRaw) => {
+		console.log(tappa);
+		const tappe = this.state.tappe
+			.filter(t => t.ordineItinerario != tappa.ordineItinerario)
+			.map((t, i) => { t.ordineItinerario = i; return t })
+
 		this.setState({ tappe });
 	}
 
@@ -96,17 +110,23 @@ export default class InserisciSpedizionePresenter
 		this.setState({ spedizione });
 	}
 
+	onHintOptimizationChange = (optimization: boolean) => this.setState({ optimization })
+
 	render() {
+		console.log("[InserisciSpedizionePresenter]", this.state);
+
 		return <InserisciSpedizioneView
 			optimization={this.state.optimization}
 			spedizione={this.state.spedizione}
 			camionisti={this.state.camionisti}
 			ordini={this.state.ordini}
 			tappe={this.state.tappe}
+			onHintOptimizationChange={this.onHintOptimizationChange}
 			onInfoVeicoloInserted={this.onInfoVeicoloInserted}
 			onAllInfoInserted={this.onAllInfoInserted}
 			onCreateSpedizione={this.onCreateSpedizione}
-			onChangeTappe={this.onChangeTappe}
+			onDeleteTappa={this.onDeleteTappa}
+			onAddTappa={this.onAddTappa}
 			onChangeSpedizione={this.onChangeSpedizione}/>
 	}
 }

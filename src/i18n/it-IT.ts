@@ -19,9 +19,21 @@ const itIT: i18n = {
 		"inserisciSpedizione": {
 			"title": "Inserisci Spedizione",
 			"next":  "Avanti",
-			"vehicleSection": "Informazioni veicolo",
-			"trailerSection": "Informazioni rimorchio",
-			"insertComplete": "La spedizione è stata inserita nel sistema"
+			"hintOptimizedShipment": "Suggerisci spedizione ottimizzata",
+			"vehicleSection":  "Informazioni veicolo",
+			"trailerSection":  "Informazioni rimorchio",
+			"ordersSection":   "Seleziona gli ordini",
+			"warehouse":       "Magazzini di carico/scarico",
+			"stageSection":    "Inserisci le tappe",
+			"addStageButton":  "Aggiungi tappa",
+			"insertComplete":  "La spedizione è stata inserita nel sistema",
+			"modal": {
+				"title":          "Aggiungi una tappa",
+				"ok":             "Inserisci",
+				"cancel":         "Annulla",
+				"addressSection": "Seleziona indirizzo",
+				"ordersSection":  "Seleziona gli ordini della tappa"
+			}
 		},
 		"visualizzaSpedizione": {
 			"associatedOrders":  "Ordini associati",
@@ -83,7 +95,8 @@ const itIT: i18n = {
 			"maxLoad":       "Carico massimo",
 			"unladenMass":   "Massa a vuoto",
 			"numOrders":     "Numero di ordini",
-			"numStops":      "Numero di tappe"
+			"numStops":      "Numero di tappe",
+			"stage":         "Tappa"
 		}
 	},
 	"components": {

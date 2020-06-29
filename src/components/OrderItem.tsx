@@ -1,11 +1,12 @@
 import * as React from 'react'
 import { Grid, Typography, IconButton, Avatar } from '@material-ui/core'
 import { Card, CardContent, CardHeader } from '@material-ui/core'
-import OrderIcon from '@material-ui/icons/ListAlt';
+import ListAltIcon from '@material-ui/icons/ListAlt';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { Ordine, StatoOrdine } from '../domain';
 import app from '../app';
 
+export const OrderIcon = ListAltIcon
 
 const style : { [key: string] : React.CSSProperties } = {
 	card: {
@@ -28,7 +29,7 @@ interface OrderItemProps {
 const bd = app.getBundle().domain
 
 export default function OrderItem({ordine, onEliminaOrdine}: OrderItemProps) {
-	
+
 	return <Card style={style.card}>
 	<CardHeader
 		avatar={<Avatar><OrderIcon /></Avatar>}
