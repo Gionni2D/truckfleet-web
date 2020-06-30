@@ -47,14 +47,14 @@ const api : D.Model = {
 			db.Tappe;
 	},
 
-	inserisciSpedizione(s: D.SpedizioneRaw, tappe: D.TappaRaw[], dataOraPartenza: number) : boolean {
+	inserisciSpedizione(s: D.SpedizioneRaw, tappe: D.TappaRaw[], dataOraPartenza: number) : D.InserisciSpedizioneResult {
 		const maxIdReducer = <U extends { id: number }>(maxId: number, elem: U) => maxId > elem.id ? maxId : elem.id
 
 		// da sostituire con le API Google Maps
 		let arrayOrari = getOrariRandom(dataOraPartenza, tappe)
+		const validation = this.validaSpedizione(s, tappe, dataOraPartenza)
 
-
-		if(this.validaSpedizione(s, tappe, dataOraPartenza).result == false) return false;
+		if(!validation.result) return validation;
 
 		let idSped = 1 + db.Spedizioni.reduce(maxIdReducer, -1)
 
@@ -87,15 +87,20 @@ const api : D.Model = {
 			dataOraPartenza += faker.random.number(1000*60*60)+1000*60*20
 		}
 
-		db.Spedizioni.push({
+		const spedizione = {
 			...s,
-			id: 1 + db.Spedizioni.reduce(maxIdReducer, -1), // integer
-			stato:              D.StatoSpedizione.CREATA, // integer
-			getOrdini:					db.getOrdini,
-			getTappe:						db.getTappe
-		})
+			id:        1 + db.Spedizioni.reduce(maxIdReducer, -1), // integer
+			stato:     D.StatoSpedizione.CREATA, // integer
+			getOrdini: db.getOrdini,
+			getTappe:  db.getTappe
+		}
 
-		return true
+		db.Spedizioni.push(spedizione)
+
+		return {
+			result: true,
+			spedizione
+		}
 	},
 
 	rimuoviSpedizione(s: D.Spedizione) : boolean {
@@ -116,7 +121,7 @@ const api : D.Model = {
 		return false
 	},
 
-	validaSpedizione(s: D.SpedizioneRaw, tappe: D.TappaRaw[], dataOraPartenza: number) : D.SpedizioneNonValida | D.SpedizioneValida {
+	validaSpedizione(s: D.SpedizioneRaw, tappe: D.TappaRaw[], dataOraPartenza: number) : D.ValidaSpedizioneResult {
 		const arrayArrivi = getOrariRandom(dataOraPartenza, tappe)
 		let n = 0;
 

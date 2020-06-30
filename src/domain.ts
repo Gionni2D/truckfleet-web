@@ -116,9 +116,9 @@ export interface Model {
 	getPosizioni(filter?: PosizioniFilter) : Posizione[]
 	getOrdini(filter?: OrdiniFilter) : Ordine[]
 	getTappe(filter?: TappeFilter) : Tappa[]
-	inserisciSpedizione(s: SpedizioneRaw, tappe: TappaRaw[], dataOraPartenza: number) : boolean
+	inserisciSpedizione(s: SpedizioneRaw, tappe: TappaRaw[], dataOraPartenza: number) : InserisciSpedizioneResult
 	rimuoviSpedizione(s: Spedizione) : boolean
-	validaSpedizione(s: SpedizioneRaw, tappe: TappaRaw[], dataOraPartenza: number) : SpedizioneNonValida | SpedizioneValida
+	validaSpedizione(s: SpedizioneRaw, tappe: TappaRaw[], dataOraPartenza: number) : ValidaSpedizioneResult
 	inserisciOrdine(o: OrdineRaw, magazzinoCarico: MagazzinoRaw, magazzinoScarico: MagazzinoRaw) : boolean
 	rimuoviOrdine(o: Ordine) : boolean
 	validaOrdine(o: OrdineRaw, magazzinoCarico: MagazzinoRaw, magazzinoScarico: MagazzinoRaw) : OrdineNonValido | OrdineValido
@@ -144,6 +144,7 @@ export interface Camionista {
  *	604 - Veicolo già impiegato in un altra spedizione
  */
 export type SpedizioneNonValidaError = 601 | 602 | 603 | 604
+
 export interface SpedizioneNonValida {
 	result: false,
 	error: SpedizioneNonValidaError
@@ -153,6 +154,15 @@ export interface SpedizioneValida {
 	result: true,
 	arriviPrevisti: number[]
 }
+
+export interface SpedizioneInserita {
+	result: true
+	spedizione: Spedizione
+}
+
+export type ValidaSpedizioneResult = SpedizioneNonValida | SpedizioneValida
+
+export type InserisciSpedizioneResult = SpedizioneNonValida | SpedizioneInserita
 
 /*	Codici errore validazione Ordine:
  *	701 - Massa negativa

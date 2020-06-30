@@ -76,7 +76,7 @@ export default class InserisciSpedizionePresenter
 		return { ...validation, arriviPrevisti: [] }
 	}
 
-	onAllInfoInserted = () : ValidationResult => {
+	onValidateSpedizione = () : ValidationResult => {
 		const {spedizione, tappe, partenza } = this.state
 		const r = app.validaSpedizione(spedizione, tappe, partenza)
 
@@ -138,9 +138,9 @@ export default class InserisciSpedizionePresenter
 			ordini={this.state.ordini}
 			tappe={this.state.tappe}
 			partenza={this.state.partenza}
-			onHintOptimizationChange={this.onHintOptimizationChange}
+			onChangeOptimization={this.onHintOptimizationChange}
 			onInfoVeicoloInserted={this.onInfoVeicoloInserted}
-			onAllInfoInserted={this.onAllInfoInserted}
+			onValidateSpedizione={this.onValidateSpedizione}
 			onCreateSpedizione={this.onCreateSpedizione}
 			onDeleteTappa={this.onDeleteTappa}
 			onAddTappa={this.onAddTappa}

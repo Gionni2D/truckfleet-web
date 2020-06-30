@@ -1,5 +1,5 @@
+import { SpedizioneValida, SpedizioneNonValidaError, InserisciSpedizioneResult } from '../../domain'
 import { SpedizioneRaw, Camionista, Ordine, TappaRaw, Magazzino } from '../../domain'
-import { SpedizioneValida, SpedizioneNonValidaError } from '../../domain'
 import { ListItemSecondaryAction, Select, MenuItem, FormControl, InputLabel } from '@material-ui/core'
 import { ListItemText, Dialog, DialogTitle, DialogContent, DialogActions } from '@material-ui/core'
 import { Typography, Grid, TextField, Button, Checkbox, IconButton } from '@material-ui/core'
@@ -22,12 +22,12 @@ interface ViewProps {
 	tappe: TappaRaw[],
 	ordini: Ordine[],
 	partenza: number,
-	onHintOptimizationChange(opt: boolean) : void
 	onInfoVeicoloInserted() : ValidationResult
-	onAllInfoInserted() : ValidationResult
-	onCreateSpedizione() : boolean
+	onValidateSpedizione() : ValidationResult
+	onCreateSpedizione() : InserisciSpedizioneResult
 	onDeleteTappa(tappa: TappaRaw) : void
 	onAddTappa(tappa: TappaRaw) : void
+	onChangeOptimization(opt: boolean) : void
 	onChangeSpedizione(value: string, attributeName: keyof SpedizioneRaw): void
 	onChangeAutisti(autisti: [Camionista, Camionista?]) : void
 	onChangePartenza(partenza: number) : void
@@ -152,7 +152,7 @@ export default class InserisciSpedizioneView
 
 	onAllInfoInserted = (e: React.FormEvent) => {
 		e.preventDefault()
-		const r = this.props.onAllInfoInserted()
+		const r = this.props.onValidateSpedizione()
 		if(r.result) {
 			this.setState({ step: 2, arriviPrevisti: r.arriviPrevisti })
 			return
@@ -317,7 +317,7 @@ export default class InserisciSpedizioneView
 								control={
 									<Checkbox
 										checked={optimization}
-										onChange={(_, checked) => this.props.onHintOptimizationChange(checked)} />
+										onChange={(_, checked) => this.props.onChangeOptimization(checked)} />
 								}
 								label={b.hintOptimizedShipment}/>
 						</div>
