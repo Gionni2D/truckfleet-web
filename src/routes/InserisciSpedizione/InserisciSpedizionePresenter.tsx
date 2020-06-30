@@ -2,6 +2,7 @@ import InserisciSpedizioneView, { ValidationError, ValidationResult } from './In
 import * as React from 'react'
 import app from '../../app'
 import { SpedizioneRaw, Camionista, Ordine, StatoOrdine, TappaRaw } from '../../domain'
+import { RouteList } from '..'
 
 interface PresenterState {
 	spedizione: SpedizioneRaw,
@@ -89,7 +90,14 @@ export default class InserisciSpedizionePresenter
 
 	onCreateSpedizione = () => {
 		const {spedizione, tappe, partenza } = this.state
-		return app.inserisciSpedizione(spedizione, tappe, partenza)
+		const r = app.inserisciSpedizione(spedizione, tappe, partenza)
+		if(r.result) {
+			app.changeRoute({
+				route: RouteList.VisualizzaSpedizione,
+				id_spedizione: r.spedizione.id
+			})
+		}
+		return r
 	}
 
 	onAddTappa = (tappa: TappaRaw) => {

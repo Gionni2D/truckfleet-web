@@ -10,6 +10,7 @@ import { Grid, Typography, IconButton, Avatar, Fab, TextField, Table, TableHead,
 import { Card, CardContent, CardHeader } from '@material-ui/core'
 import { BorderRight, ClosedCaptionSharp } from '@material-ui/icons'
 import StageList from '../../components/StageList'
+import ShipmentInfo from '../../components/ShipmentInfo'
 
 interface ViewProps {
 	spedizione: Spedizione,
@@ -25,7 +26,14 @@ const style : { [key: string] : React.CSSProperties } = {
 	},
 	mt: {
 		marginTop: 10
-	}
+	},
+	scrollBox: {
+		width: '100%',
+		height: '300px',
+		flexWrap: 'unset',
+		overflowY: 'scroll',
+		overflowX: 'hidden'
+	},
 }
 
 export default class VisualizzaSpedizioneView
@@ -151,6 +159,7 @@ export default class VisualizzaSpedizioneView
 		return <App>
 		<Drawer>
 			<Typography variant="h3">{this.bundle.components.drawer.shipmentDetails} #{this.props.spedizione.id}</Typography>
+			<ShipmentInfo spedizione={this.props.spedizione} />
 			<div>
 				<Grid container spacing={2} justify="space-between">
 					<Grid item md={6}>
@@ -162,45 +171,7 @@ export default class VisualizzaSpedizioneView
 					</Grid>
 				</Grid>
 			</div>
-			<Card style={style.card}>
-				<CardContent>
-					<Grid container spacing={2}>
-						<Grid item xs={12} sm={6} md={4}>
-							<div>
-								<Typography variant="overline" color="textSecondary">{bs.drivers}:</Typography>
-								<Typography variant="body2">{this.props.spedizione.camionisti.map((camionista) => {if (camionista !== undefined) return <span key={camionista.userName} style={{display: "block"}}>{`${camionista.cognome} ${camionista.nome}`} </span>})}</Typography>
-							</div>
-							<div style={style.mt}>
-								<Typography variant="overline" color="textSecondary">{bs.state}:</Typography>
-								<Typography variant="body2">{this.bundle.domain.shipmentState[this.props.spedizione.stato]}</Typography>
-							</div>
-						</Grid>
-						<Grid item xs={12} sm={6} md={4}>
-							<div>
-								<Typography variant="overline" color="textSecondary">{bs.vehicle}:</Typography>
-								<Typography variant="body2">{this.props.spedizione.veicoloModello} - {this.props.spedizione.veicoloTarga}</Typography>
-							</div>
-							<div style={style.mt}>
-								<Typography variant="overline" color="textSecondary">{bs.unladenMass}:</Typography>
-								<Typography variant="body2">{this.props.spedizione.veicoloMassa} t</Typography>
-							</div>
-						</Grid>
-						<Grid item xs={12} sm={6} md={4}>
-							<div>
-								<Typography variant="overline" color="textSecondary">{bs.trailer}:</Typography>
-								<Typography variant="body2">{this.props.spedizione.rimorchioDimX}x{this.props.spedizione.rimorchioDimY}x{this.props.spedizione.rimorchioDimZ} cm</Typography>
-							</div>
-							<div style={style.mt}>
-								<Typography variant="overline" color="textSecondary">{bs.trailer}:</Typography>
-								<Typography variant="body2">{bs.unladenMass}: {this.props.spedizione.rimorchioMassa} t<br/>
-									{bs.maxLoad}: {this.props.spedizione.rimorchioCaricoMax} t
-								</Typography>
-							</div>
-						</Grid>
-					</Grid>
-				</CardContent>
-			</Card>
-			<div>
+			<div style={{...style.scrollBox, ...style.mt}}>
 				{ this.props.spedizione.getOrdini().map((ordine) => <OrderItem key={ordine.id} ordine={ordine}/> )}
 			</div>
 			</Drawer>

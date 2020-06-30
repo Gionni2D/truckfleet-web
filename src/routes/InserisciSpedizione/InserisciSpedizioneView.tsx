@@ -15,6 +15,7 @@ import { i18n } from '../../i18n'
 import * as React from 'react'
 import app from '../../app'
 import StageList from '../../components/StageList'
+import ShipmentInfo from '../../components/ShipmentInfo'
 
 interface ViewProps {
 	spedizione: SpedizioneRaw,
@@ -604,38 +605,56 @@ export default class InserisciSpedizioneView
 				</Grid>
 			</Grid>
 			<div style={{...style.mTitleContent, ...style.row}}>
-					<Button
-						size="large"
-						variant="contained"
-						onClick={this.onBack}>{b.back}</Button>
-					<Button
-						size="large"
-						variant="contained"
-						color="primary"
-						disabled={!this.areTappeComplete()}
-						type="submit">{b.insertButton}</Button>
-				</div>
+				<Button
+					size="large"
+					variant="contained"
+					onClick={this.onBack}>{b.back}</Button>
+				<Button
+					size="large"
+					variant="contained"
+					color="primary"
+					disabled={!this.areTappeComplete()}
+					type="submit">{b.insertButton}</Button>
+			</div>
 		</form>
 	}
 
 	renderThirdStep = () => {
 		const b = this.bundle.routes.inserisciSpedizione
-		const { tappe } = this.props
-		const { arriviPrevisti } = this.state
+		const { tappe, spedizione } = this.props
+		const { arriviPrevisti, ordiniSelected } = this.state
 		const tappeData = tappe.map((t, i) => ({
 			indirizzo: this.getAddress(t.magazzinoId),
 			arrivoPrevisto: arriviPrevisti[i]
 		}))
 
-		return <div>
+		return <form onSubmit={this.onCreateSpedizione}>
 			<Typography variant="h5">{b.summarySection}</Typography>
-			<div style={style.mTitleContent}></div>
 			<Grid container spacing={2} justify="space-between">
-				<Grid item md={6}>
+				<Grid item xs={12}>
+					<ShipmentInfo spedizione={spedizione}/>
+				</Grid>
+				<Grid item xs={12} md={6} style={style.mTitleContent}>
 					<StageList propsType="expanse" data={tappeData} />
 				</Grid>
+				<Grid item xs={12} md={6}>
+					<div style={{...style.scrollBox, ...style.mTitleContent}}>
+						{ ordiniSelected.map(o => <OrderItem key={o.id} ordine={o} />) }
+					</div>
+				</Grid>
 			</Grid>
-		</div>
+			<div style={{...style.mTitleContent, ...style.row}}>
+				<Button
+					size="large"
+					variant="contained"
+					onClick={this.onBack}>{b.back}</Button>
+				<Button
+					size="large"
+					variant="contained"
+					color="primary"
+					type="submit">{b.insertButton}</Button>
+			</div>
+		</form>
 	}
 
 
