@@ -143,13 +143,14 @@ export interface Camionista {
  *	603 - Sforato peso massimo di 44 t
  *	604 - Veicolo già impiegato in un altra spedizione
  */
+export type SpedizioneNonValidaError = 601 | 602 | 603 | 604
 export interface SpedizioneNonValida {
-	result: false, 
-	error: number
+	result: false,
+	error: SpedizioneNonValidaError
 }
 
 export interface SpedizioneValida {
-	result: true, 
+	result: true,
 	arriviPrevisti: number[]
 }
 

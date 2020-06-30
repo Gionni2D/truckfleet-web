@@ -1,10 +1,11 @@
-import * as db from './db'
+import * as faker from "faker/locale/it";
 import * as D from './domain'
+import * as db from './db'
 
 const getOrariRandom = (begin: number, tappe: D.TappaRaw[]) => {
 	const result = [ begin ]
 	for(let i = 0; i < tappe.length-1; i++) {
-		result.push(begin += fakerStatic.random.number(1000*60*60)+1000*60*20)
+		result.push(begin += faker.random.number(1000*60*60)+1000*60*20)
 	}
 	return result;
 }
@@ -83,7 +84,7 @@ const api : D.Model = {
 			})
 
 			// aumento dataOraPartenza in modo casuale per la tappa successiva
-			dataOraPartenza += fakerStatic.random.number(1000*60*60)+1000*60*20
+			dataOraPartenza += faker.random.number(1000*60*60)+1000*60*20
 		}
 
 		db.Spedizioni.push({
@@ -126,10 +127,10 @@ const api : D.Model = {
 
 		for(let tappa of tappeOrdinate) {
 			for(let infoOrdine of tappa.ordini) {
-				
+
 				for(let i = 0; !found && i < db.Ordini.length; i++) {
 					let ordine = db.Ordini[i]
-					
+
 					if(ordine.id == infoOrdine[1]) {
 						if(infoOrdine[0] == "carico") 	pesoTotale += ordine.massa
 						if(infoOrdine[0] == "scarico") 	pesoTotale -= ordine.massa
@@ -145,8 +146,8 @@ const api : D.Model = {
 		// controllo se il viaggio si sovrappone con un'altra spedizione
 		// che ha gli stessi camionisti o lo stesso veicolo
 		for(let spedizione of db.Spedizioni.filter(
-																x => 
-																x.camionisti.includes(s.camionisti[0]) || 
+																x =>
+																x.camionisti.includes(s.camionisti[0]) ||
 																x.camionisti.includes(s.camionisti[1]) ||
 																x.veicoloTarga == s.veicoloTarga)) {
 
@@ -161,22 +162,22 @@ const api : D.Model = {
 			// new |----|
 			if((arrayArrivi[0] >= partenza && arrayArrivi[0] <= arrivo)
 				|| (arrayArrivi[0] <= partenza &&  arrayArrivi[arrayArrivi.length-1] >= partenza)) {
-				
+
 				// controllo qual è l'errore specifico
 				if(spedizione.veicoloTarga == s.veicoloTarga) {
-					return { 
+					return {
 						result: false,
 						error: 604 }
-				} 
+				}
 				else if(spedizione.camionisti.includes(s.camionisti[0])) {
-					return { 
-						result: false, 
-						error: 600 + 1 }
-				} 
+					return {
+						result: false,
+						error: 601 }
+				}
 				else if(spedizione.camionisti.includes(s.camionisti[1])){
 					return {
 						result: false,
-						error: 600 + 2 }
+						error: 602 }
 				}
 			}
 		}
@@ -235,7 +236,7 @@ const api : D.Model = {
 	// (50 x 5 x 15 ) m
 	validaOrdine(o: D.OrdineRaw, magazzinoCarico: D.MagazzinoRaw, magazzinoScarico: D.MagazzinoRaw) : D.OrdineNonValido | D.OrdineValido {
 		if(o.massa <= 0) return { result: false, error: 701 }
-		
+
 		// le dimensioni sono in centimetri (50m -> 50*1000cm)
 		if(o.dimX > 50*1000 || o.dimX <= 0) return { result: false, error: 702 }
 		if(o.dimY > 5*1000  || o.dimY <= 0) return { result: false, error: 703 }
