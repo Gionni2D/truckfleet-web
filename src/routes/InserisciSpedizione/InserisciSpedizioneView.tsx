@@ -1,11 +1,15 @@
-import { ListItemText, Dialog, DialogTitle, DialogContent, DialogActions, ListItemSecondaryAction } from '@material-ui/core'
+import { SpedizioneRaw, Camionista, Ordine, TappaRaw, Magazzino } from '../../domain'
+import { SpedizioneValida, SpedizioneNonValidaError } from '../../domain'
+import { ListItemSecondaryAction, Select, MenuItem, FormControl, InputLabel } from '@material-ui/core'
+import { ListItemText, Dialog, DialogTitle, DialogContent, DialogActions } from '@material-ui/core'
 import { Typography, Grid, TextField, Button, Checkbox, IconButton } from '@material-ui/core'
 import { List, ListItem, ListItemAvatar, Avatar, FormControlLabel } from '@material-ui/core'
-import { SpedizioneRaw, Camionista, Ordine, TappaRaw, Magazzino, Tappa } from '../../domain'
+import { parseInputDateTime, formatInputDateTime } from '../../utils'
 import OrderItem, { OrderIcon } from '../../components/OrderItem'
 import PositionIcon from '@material-ui/icons/Room'
 import DeleteIcon from '@material-ui/icons/Delete'
 import Drawer from '../../components/Drawer'
+import Alert from '@material-ui/lab/Alert';
 import App from '../../components/App'
 import { i18n } from '../../i18n'
 import * as React from 'react'
@@ -17,6 +21,7 @@ interface ViewProps {
 	optimization: boolean,
 	tappe: TappaRaw[],
 	ordini: Ordine[],
+	partenza: number,
 	onHintOptimizationChange(opt: boolean) : void
 	onInfoVeicoloInserted() : ValidationResult
 	onAllInfoInserted() : ValidationResult
@@ -24,15 +29,19 @@ interface ViewProps {
 	onDeleteTappa(tappa: TappaRaw) : void
 	onAddTappa(tappa: TappaRaw) : void
 	onChangeSpedizione(value: string, attributeName: keyof SpedizioneRaw): void
+	onChangeAutisti(autisti: [Camionista, Camionista?]) : void
+	onChangePartenza(partenza: number) : void
 }
 
 export type ValidationResult = {
-	result: boolean,
+	result: false,
 	errors: ValidationError
-}
+} | SpedizioneValida
 
 export type ValidationError = {
 	[key in keyof SpedizioneRaw]?: boolean
+} & {
+	error?: SpedizioneNonValidaError
 }
 
 type ViewStep = 0 | 1 | 2
@@ -43,7 +52,8 @@ interface ViewState {
 	modalOpen: boolean,
 	modalValue: TappaRaw
 	ordiniSelected: Ordine[],
-	magazziniSelected: Magazzino[]
+	magazziniSelected: Magazzino[],
+	arriviPrevisti: number[]
 }
 
 const style : { [key: string] : React.CSSProperties } = {
@@ -66,6 +76,15 @@ const style : { [key: string] : React.CSSProperties } = {
 	},
 	warehouseSelected: {
 		color: 'green'
+	},
+	row: {
+		display: 'flex',
+		justifyContent: 'space-around'
+	},
+	alert: {
+		position: 'fixed',
+		width: '80%',
+		zIndex: 3
 	}
 }
 
@@ -84,7 +103,8 @@ export default class InserisciSpedizioneView
 			modalOpen: false,
 			modalValue: InserisciSpedizioneView.getEmptyTappaRaw(props),
 			ordiniSelected: [],
-			magazziniSelected: []
+			magazziniSelected: [],
+			arriviPrevisti: []
 		}
 		this.StepComponent = [
 			this.renderFirstStep,
@@ -116,6 +136,12 @@ export default class InserisciSpedizioneView
 			.reduce((r, o) => `[${o[0]}] ${bo.id}: ${o[1].id}; ${r}`, '')
 	}
 
+	onBack = () => {
+		let { step } = this.state
+		if(step > 0) step--
+		this.setState({ step })
+	}
+
 	onInfoVeicoloInserted = (e: React.FormEvent) => {
 		e.preventDefault()
 		const validation = this.props.onInfoVeicoloInserted()
@@ -124,9 +150,15 @@ export default class InserisciSpedizioneView
 		else this.setState({ errors: validation.errors })
 	}
 
-	onAllInfoInserted = () => {
-		if(this.props.onAllInfoInserted()) {
-			this.setState({ step: 2 })
+	onAllInfoInserted = (e: React.FormEvent) => {
+		e.preventDefault()
+		const r = this.props.onAllInfoInserted()
+		if(r.result) {
+			this.setState({ step: 2, arriviPrevisti: r.arriviPrevisti })
+			return
+		}
+		else {
+			this.setState({ errors: r.errors })
 		}
 	}
 
@@ -226,6 +258,25 @@ export default class InserisciSpedizioneView
 
 	onDeleteTappa = (t: TappaRaw) => {
 		this.props.onDeleteTappa(t);
+	}
+
+	onChangeAutista = (userName: string, i: 0 | 1) => {
+		const autisti = this.props.spedizione.camionisti
+		const { camionisti } = this.props
+		autisti[i] = camionisti.find(c => c.userName == userName) as Camionista
+		this.props.onChangeAutisti(autisti)
+	}
+
+	onChangePartenza = (e: React.ChangeEvent<HTMLInputElement>) => {
+		this.props.onChangePartenza(parseInputDateTime(e.target.value))
+	}
+
+	areTappeComplete = () => {
+		const { ordiniSelected } = this.state
+		return ordiniSelected.length > 0 &&
+			ordiniSelected.reduce((p, o) => p &&
+				this.isMagazzinoOrdineSelected(o, 'carico') &&
+				this.isMagazzinoOrdineSelected(o, 'scarico'), true)
 	}
 
 	renderFirstStep = () => {
@@ -344,10 +395,11 @@ export default class InserisciSpedizioneView
 		const bm = this.bundle.routes.inserisciSpedizione.modal
 		const bo = this.bundle.domain.orderProperties
 		const bs = this.bundle.domain.shipmentProperties
-		const { modalOpen, modalValue, ordiniSelected, magazziniSelected, } = this.state
-		const { tappe } = this.props
+		const { modalOpen, modalValue, ordiniSelected, magazziniSelected } = this.state
+		const { camionisti, tappe, partenza } = this.props
+		const { spedizione: { camionisti: autisti } } = this.props
 
-		return <form>
+		return <form onSubmit={this.onAllInfoInserted}>
 			<Grid container >
 				<Grid item xs={12} md={6}>
 					<Typography variant="h5">{b.ordersSection}</Typography>
@@ -498,6 +550,66 @@ export default class InserisciSpedizioneView
 					</Button>
 				</DialogActions>
 			</Dialog>
+			<div>
+				<Typography variant="h5">{b.otherSection}</Typography>
+				<div style={{...style.mTitleContent, ...style.row}}>
+					<FormControl variant="outlined">
+						<InputLabel>{bs.mainDriver}</InputLabel>
+						<Select
+							style={{minWidth: '200px'}}
+							label={bs.mainDriver}
+							value={autisti[0].userName}
+							onChange={({ target }) => this.onChangeAutista(target.value as string, 0)}>
+							<MenuItem disabled value=""><em>None</em></MenuItem>
+							{ camionisti.map(c => (
+								<MenuItem key={c.userName} value={c.userName}>
+									<em>{c.cognome} {c.nome}</em>
+								</MenuItem>
+								))
+							}
+						</Select>
+					</FormControl>
+					<FormControl variant="outlined">
+						<InputLabel>{bs.supportDriver}</InputLabel>
+						<Select
+							style={{minWidth: '200px'}}
+							label={bs.supportDriver}
+							value={autisti[1] ? autisti[1].userName : ""}
+							onChange={({ target }) => this.onChangeAutista(target.value as string, 1)}>
+							<MenuItem disabled value=""><em>None</em></MenuItem>
+							{ camionisti
+									.filter(c => c.userName != autisti[0].userName)
+									.map(c => (
+										<MenuItem key={c.userName} value={c.userName}>
+											<em>{c.cognome} {c.nome}</em>
+										</MenuItem>
+									))
+							}
+						</Select>
+					</FormControl>
+					<TextField
+						variant="outlined"
+						label={bs.departureDate}
+						type="datetime-local"
+						value={formatInputDateTime(partenza)}
+						onChange={this.onChangePartenza}
+						InputLabelProps={{
+							shrink: true,
+						}}/>
+				</div>
+				<div style={{...style.mTitleContent, ...style.row}}>
+					<Button
+						size="large"
+						variant="contained"
+						onClick={this.onBack}>{b.back}</Button>
+					<Button
+						size="large"
+						variant="contained"
+						color="primary"
+						disabled={!this.areTappeComplete()}
+						type="submit">{b.insertButton}</Button>
+				</div>
+			</div>
 		</form>
 	}
 
@@ -509,9 +621,18 @@ export default class InserisciSpedizioneView
 
 	render() {
 		const b = this.bundle.routes.inserisciSpedizione
+		const { error, ...errors } = this.state.errors
 
 		return <App>
 			<Drawer>
+				{ !error ? undefined :
+						<Alert
+							style={style.alert}
+							severity="error"
+							onClose={() => this.setState({ errors })}>
+							{b.errors[error]}
+						</Alert>
+				}
 				<Typography variant="h3" >{b.title}</Typography>
 				<div style={style.mTitleContent}>
 					{ this.StepComponent[this.state.step]() }

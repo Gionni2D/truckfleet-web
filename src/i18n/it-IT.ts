@@ -19,13 +19,16 @@ const itIT: i18n = {
 		"inserisciSpedizione": {
 			"title": "Inserisci Spedizione",
 			"next":  "Avanti",
+			"back":  "Indietro",
 			"hintOptimizedShipment": "Suggerisci spedizione ottimizzata",
 			"vehicleSection":  "Informazioni veicolo",
 			"trailerSection":  "Informazioni rimorchio",
 			"ordersSection":   "Seleziona gli ordini",
 			"warehouse":       "Magazzini di carico/scarico",
 			"stageSection":    "Inserisci le tappe",
+			"otherSection":    "Altri dettagli",
 			"addStageButton":  "Aggiungi tappa",
+			"insertButton":    "Inserisci spedizione",
 			"insertComplete":  "La spedizione è stata inserita nel sistema",
 			"modal": {
 				"title":          "Aggiungi una tappa",
@@ -33,6 +36,12 @@ const itIT: i18n = {
 				"cancel":         "Annulla",
 				"addressSection": "Seleziona indirizzo",
 				"ordersSection":  "Seleziona gli ordini della tappa"
+			},
+			"errors": {
+				"601": "Autista principale occupato",
+				"602": "Autista secondario occupato",
+				"603": "Sforato peso massimo di 44 t",
+				"604": "Veicolo già impiegato in un altra spedizione"
 			}
 		},
 		"visualizzaSpedizione": {
@@ -96,7 +105,9 @@ const itIT: i18n = {
 			"unladenMass":   "Massa a vuoto",
 			"numOrders":     "Numero di ordini",
 			"numStops":      "Numero di tappe",
-			"stage":         "Tappa"
+			"stage":         "Tappa",
+			"mainDriver":    "Autista principale",
+			"supportDriver": "Autista secondario"
 		}
 	},
 	"components": {

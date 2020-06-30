@@ -18,13 +18,16 @@ export interface i18n {
 		"inserisciSpedizione": {
 			"title": string,
 			"next" : string,
+			"back" : string,
 			"hintOptimizedShipment": string
 			"vehicleSection":  string
 			"trailerSection":  string
 			"ordersSection":   string
 			"warehouse":       string
 			"stageSection":    string
+			"otherSection":    string
 			"addStageButton":  string
+			"insertButton":    string
 			"insertComplete":  string
 			"modal": {
 				"title":          string
@@ -32,6 +35,12 @@ export interface i18n {
 				"cancel":         string
 				"addressSection": string
 				"ordersSection":  string
+			},
+			"errors": {
+				"601": string
+				"602": string
+				"603": string
+				"604": string
 			}
 		}
 		"visualizzaSpedizione": {
@@ -90,7 +99,9 @@ export interface i18n {
 			"unladenMass":   string,
 			"numOrders":     string,
 			"numStops":      string,
-			"stage":         string
+			"stage":         string,
+			"mainDriver":    string,
+			"supportDriver": string
 		}
 	},
 	"components": {

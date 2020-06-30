@@ -1,4 +1,4 @@
-import InserisciSpedizioneView, { ValidationError } from './InserisciSpedizioneView'
+import InserisciSpedizioneView, { ValidationError, ValidationResult } from './InserisciSpedizioneView'
 import * as React from 'react'
 import app from '../../app'
 import { SpedizioneRaw, Camionista, Ordine, StatoOrdine, TappaRaw } from '../../domain'
@@ -7,7 +7,7 @@ interface PresenterState {
 	spedizione: SpedizioneRaw,
 	tappe: TappaRaw[],
 	camionisti: Camionista[],
-	dataInizio: number,
+	partenza: number
 	optimization: boolean,
 	ordini: Ordine[]
 }
@@ -24,7 +24,7 @@ export default class InserisciSpedizionePresenter
 		this.state = {
 			camionisti,
 			optimization: false,
-			dataInizio: Date.now() + 1000*60*60*24,
+			partenza: Date.now() + 1000*60*60*24,
 			ordini,
 			spedizione: {
 				veicoloTarga: "",
@@ -70,21 +70,26 @@ export default class InserisciSpedizionePresenter
 		return { result, errors }
 	}
 
-	onInfoVeicoloInserted = () => {
+	onInfoVeicoloInserted = () : ValidationResult => {
 		const validation = this.validateVeicolo()
 		if(validation.result && this.state.optimization) this.optimizeSpedizione()
-		return validation
+		return { ...validation, arriviPrevisti: [] }
 	}
 
-	onAllInfoInserted = () => {
-		// const {spedizione, tappe, dataInizio} = this.state
-		// return app.validaSpedizione(spedizione, tappe, dataInizio)
-		return { result: true, errors: {} }
+	onAllInfoInserted = () : ValidationResult => {
+		const {spedizione, tappe, partenza } = this.state
+		const r = app.validaSpedizione(spedizione, tappe, partenza)
+
+		if(r.result) {
+			return { result: true, arriviPrevisti: r.arriviPrevisti }
+		} else {
+			return { result: false, errors: { error: r.error } }
+		}
 	}
 
 	onCreateSpedizione = () => {
-		const {spedizione, tappe, dataInizio} = this.state
-		return app.inserisciSpedizione(spedizione, tappe, dataInizio)
+		const {spedizione, tappe, partenza } = this.state
+		return app.inserisciSpedizione(spedizione, tappe, partenza)
 	}
 
 	onAddTappa = (tappa: TappaRaw) => {
@@ -110,6 +115,17 @@ export default class InserisciSpedizionePresenter
 		this.setState({ spedizione });
 	}
 
+	onChangeAutisti = (autisti: [Camionista, Camionista?]) => {
+		const { spedizione } = this.state
+		if(autisti[1] && autisti[0].userName == autisti[1].userName) autisti[1] = undefined
+		spedizione.camionisti = autisti
+		this.setState({ spedizione })
+	}
+
+	onChangePartenza = (partenza: number) => {
+		this.setState({ partenza })
+	}
+
 	onHintOptimizationChange = (optimization: boolean) => this.setState({ optimization })
 
 	render() {
@@ -121,12 +137,15 @@ export default class InserisciSpedizionePresenter
 			camionisti={this.state.camionisti}
 			ordini={this.state.ordini}
 			tappe={this.state.tappe}
+			partenza={this.state.partenza}
 			onHintOptimizationChange={this.onHintOptimizationChange}
 			onInfoVeicoloInserted={this.onInfoVeicoloInserted}
 			onAllInfoInserted={this.onAllInfoInserted}
 			onCreateSpedizione={this.onCreateSpedizione}
 			onDeleteTappa={this.onDeleteTappa}
 			onAddTappa={this.onAddTappa}
-			onChangeSpedizione={this.onChangeSpedizione}/>
+			onChangeSpedizione={this.onChangeSpedizione}
+			onChangeAutisti={this.onChangeAutisti}
+			onChangePartenza={this.onChangePartenza}/>
 	}
 }

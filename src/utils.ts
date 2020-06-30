@@ -11,3 +11,11 @@ export const formatDate = (ts: number) => {
 	let minutes = leadingZero(date.getMinutes());
 	return day + "/" + month + "/" + year + " " + hours + ":" + minutes
 }
+
+export const parseInputDateTime = (s: string) => {
+	return new Date(s).getTime()
+}
+
+export const formatInputDateTime = (n: number) => {
+	return new Date(n).toISOString().slice(0, -8) // remove millisecond and second
+}
