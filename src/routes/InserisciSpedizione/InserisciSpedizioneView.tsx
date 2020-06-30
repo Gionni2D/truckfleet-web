@@ -79,7 +79,7 @@ const style : { [key: string] : React.CSSProperties } = {
 	},
 	row: {
 		display: 'flex',
-		justifyContent: 'space-around'
+		justifyContent: 'space-between'
 	},
 	alert: {
 		position: 'fixed',
@@ -287,7 +287,7 @@ export default class InserisciSpedizioneView
 		return (
 			<form onSubmit={this.onInfoVeicoloInserted}>
 				<Grid container spacing={2}>
-					<Grid item xs={12} md={6}>
+					<Grid item xs={12} sm={6}>
 						<Typography variant="h5">{b.vehicleSection}</Typography>
 						<div style={style.mTitleContent}>
 							<TextField
@@ -322,7 +322,7 @@ export default class InserisciSpedizioneView
 								label={b.hintOptimizedShipment}/>
 						</div>
 					</Grid>
-					<Grid item xs={12} md={6}>
+					<Grid item xs={12} sm={6}>
 						<Typography variant="h5">{b.trailerSection}</Typography>
 						<div style={style.mTitleContent}>
 							<TextField
@@ -550,9 +550,9 @@ export default class InserisciSpedizioneView
 					</Button>
 				</DialogActions>
 			</Dialog>
-			<div>
-				<Typography variant="h5">{b.otherSection}</Typography>
-				<div style={{...style.mTitleContent, ...style.row}}>
+			<Typography style={style.mTitleContent} variant="h5">{b.otherSection}</Typography>
+			<Grid container spacing={2}>
+				<Grid item xs={12} sm={6} md={4} style={{...style.mTitleContent}}>
 					<FormControl variant="outlined">
 						<InputLabel>{bs.mainDriver}</InputLabel>
 						<Select
@@ -569,6 +569,8 @@ export default class InserisciSpedizioneView
 							}
 						</Select>
 					</FormControl>
+				</Grid>
+				<Grid item xs={12} sm={6} md={4} style={{...style.mTitleContent}}>
 					<FormControl variant="outlined">
 						<InputLabel>{bs.supportDriver}</InputLabel>
 						<Select
@@ -587,6 +589,8 @@ export default class InserisciSpedizioneView
 							}
 						</Select>
 					</FormControl>
+				</Grid>
+				<Grid item xs={12} sm={6} md={4} style={{...style.mTitleContent}}>
 					<TextField
 						variant="outlined"
 						label={bs.departureDate}
@@ -596,8 +600,9 @@ export default class InserisciSpedizioneView
 						InputLabelProps={{
 							shrink: true,
 						}}/>
-				</div>
-				<div style={{...style.mTitleContent, ...style.row}}>
+				</Grid>
+			</Grid>
+			<div style={{...style.mTitleContent, ...style.row}}>
 					<Button
 						size="large"
 						variant="contained"
@@ -609,7 +614,6 @@ export default class InserisciSpedizioneView
 						disabled={!this.areTappeComplete()}
 						type="submit">{b.insertButton}</Button>
 				</div>
-			</div>
 		</form>
 	}
 
