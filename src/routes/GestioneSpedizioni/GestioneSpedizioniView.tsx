@@ -25,7 +25,8 @@ const style : { [key: string] : React.CSSProperties } = {
 	fab: {
 		position: 'fixed',
 		bottom: "20px",
-		right: "20px"
+		right: "20px",
+		zIndex: 3
 	},
 	card: {
 		padding: 10,
