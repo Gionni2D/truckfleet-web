@@ -28,6 +28,7 @@ const itIT: i18n = {
 			"stageSection":    "Inserisci le tappe",
 			"otherSection":    "Altri dettagli",
 			"addStageButton":  "Aggiungi tappa",
+			"summarySection":  "Riepologo",
 			"insertButton":    "Inserisci spedizione",
 			"insertComplete":  "La spedizione è stata inserita nel sistema",
 			"modal": {
@@ -108,6 +109,11 @@ const itIT: i18n = {
 			"stage":         "Tappa",
 			"mainDriver":    "Autista principale",
 			"supportDriver": "Autista secondario"
+		},
+		"stageProperties": {
+			"indirizzo":       "Indirizzo tappa",
+			"arrivoPrevisto":  "Arrivo previsto",
+			"arrivoEffettivo": "Arrivo effettivo"
 		}
 	},
 	"components": {

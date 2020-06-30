@@ -14,6 +14,7 @@ import App from '../../components/App'
 import { i18n } from '../../i18n'
 import * as React from 'react'
 import app from '../../app'
+import StageList from '../../components/StageList'
 
 interface ViewProps {
 	spedizione: SpedizioneRaw,
@@ -150,7 +151,7 @@ export default class InserisciSpedizioneView
 		else this.setState({ errors: validation.errors })
 	}
 
-	onAllInfoInserted = (e: React.FormEvent) => {
+	onValidateSpedizione = (e: React.FormEvent) => {
 		e.preventDefault()
 		const r = this.props.onValidateSpedizione()
 		if(r.result) {
@@ -164,9 +165,9 @@ export default class InserisciSpedizioneView
 
 	onCreateSpedizione = () => {
 		const b = this.bundle.routes.inserisciSpedizione
-		if(this.props.onCreateSpedizione()) {
+		const r = this.props.onCreateSpedizione()
+		if(r.result) {
 			alert(b.insertComplete)
-			// TODO: change location
 		}
 	}
 
@@ -399,7 +400,7 @@ export default class InserisciSpedizioneView
 		const { camionisti, tappe, partenza } = this.props
 		const { spedizione: { camionisti: autisti } } = this.props
 
-		return <form onSubmit={this.onAllInfoInserted}>
+		return <form onSubmit={this.onValidateSpedizione}>
 			<Grid container >
 				<Grid item xs={12} md={6}>
 					<Typography variant="h5">{b.ordersSection}</Typography>
@@ -619,7 +620,22 @@ export default class InserisciSpedizioneView
 
 	renderThirdStep = () => {
 		const b = this.bundle.routes.inserisciSpedizione
-		return <div>Third Step</div>
+		const { tappe } = this.props
+		const { arriviPrevisti } = this.state
+		const tappeData = tappe.map((t, i) => ({
+			indirizzo: this.getAddress(t.magazzinoId),
+			arrivoPrevisto: arriviPrevisti[i]
+		}))
+
+		return <div>
+			<Typography variant="h5">{b.summarySection}</Typography>
+			<div style={style.mTitleContent}></div>
+			<Grid container spacing={2} justify="space-between">
+				<Grid item md={6}>
+					<StageList propsType="expanse" data={tappeData} />
+				</Grid>
+			</Grid>
+		</div>
 	}
 
 

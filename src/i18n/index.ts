@@ -27,6 +27,7 @@ export interface i18n {
 			"stageSection":    string
 			"otherSection":    string
 			"addStageButton":  string
+			"summarySection":  string
 			"insertButton":    string
 			"insertComplete":  string
 			"modal": {
@@ -102,6 +103,11 @@ export interface i18n {
 			"stage":         string,
 			"mainDriver":    string,
 			"supportDriver": string
+		},
+		"stageProperties": {
+			"indirizzo":       string
+			"arrivoPrevisto":  string
+			"arrivoEffettivo": string
 		}
 	},
 	"components": {

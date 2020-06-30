@@ -9,6 +9,7 @@ import OrderItem from '../../components/OrderItem'
 import { Grid, Typography, IconButton, Avatar, Fab, TextField, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core'
 import { Card, CardContent, CardHeader } from '@material-ui/core'
 import { BorderRight, ClosedCaptionSharp } from '@material-ui/icons'
+import StageList from '../../components/StageList'
 
 interface ViewProps {
 	spedizione: Spedizione,
@@ -103,14 +104,14 @@ export default class VisualizzaSpedizioneView
 			}
 
 			let end = tappe[tappe.length-1].getMagazzino().indirizzo;
-			
+
 
 			this.makeRoute(start, end, waypoints, directionsService, directionsRenderer);
 		} else {
 			this.addMarker(tappe[0].getMagazzino().indirizzo, "1", geocoder);
 			this.addMarker(tappe[tappe.length-1].getMagazzino().indirizzo, "" + (tappe.length), geocoder);
 		}
-		
+
 	}
 
 	makeRoute(start: string|google.maps.LatLng, end: string, waypoints: google.maps.DirectionsWaypoint[], directionsService: google.maps.DirectionsService, directionsRenderer: google.maps.DirectionsRenderer) {
@@ -153,28 +154,7 @@ export default class VisualizzaSpedizioneView
 			<div>
 				<Grid container spacing={2} justify="space-between">
 					<Grid item md={6}>
-						<Card>
-							<CardContent>
-								<Table size="small">
-									<TableHead>
-										<TableRow>
-											<TableCell><Typography variant="subtitle2">Indirizzo tappa</Typography></TableCell>
-											<TableCell><Typography variant="subtitle2">Arrivo previsto</Typography></TableCell>
-											<TableCell><Typography variant="subtitle2">Arrivo effettivo</Typography></TableCell>
-										</TableRow>
-									</TableHead>
-									<TableBody>
-										{ this.props.spedizione.getTappe().map((tappa) => {
-											return (<TableRow key={tappa.id}>
-												<TableCell><Typography variant="body2">{tappa.arrivoEffettivo !== undefined ? '\u25A3' : '\u25A2'} {tappa.getMagazzino().indirizzo}</Typography></TableCell>
-												<TableCell><Typography variant="body2">{formatDate(tappa.arrivoPrevisto)}</Typography></TableCell>
-												<TableCell><Typography variant="body2">{tappa.arrivoEffettivo !== undefined && formatDate(tappa.arrivoEffettivo)}</Typography></TableCell>
-											</TableRow>)
-										})}
-									</TableBody>
-								</Table>
-							</CardContent>
-						</Card>
+						<StageList propsType="compact" tappe={this.props.spedizione.getTappe()} />
 					</Grid>
 					<Grid item md={6}>
 						<div id="map" ref="map" style={{width: "100%", height: "450px"}}>
