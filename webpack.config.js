@@ -23,6 +23,9 @@ module.exports = {
 			},
 		]
 	},
+	watchOptions: {
+		ignored: /node_modules/
+	},
 	resolve: {
 		extensions: [ '.tsx', '.ts', '.js' ],
 	},
