@@ -49,8 +49,16 @@ export default class InserisciOrdineView
 		this.props.onChangeMagazzinoCarico(e.target.value);
 	}
 
+	onSelectMagazzinoCarico = (event: React.ChangeEvent<{}>, value: string | Magazzino | null) => {
+		this.props.onChangeMagazzinoCarico((value as Magazzino).indirizzo);
+	}
+
 	onChangeMagazzinoScarico = (e: React.ChangeEvent<HTMLInputElement>) => {
 		this.props.onChangeMagazzinoScarico(e.target.value);
+	}
+
+	onSelectMagazzinoScarico = (event: React.ChangeEvent<{}>, value: string | Magazzino | null) => {
+		this.props.onChangeMagazzinoScarico((value as Magazzino).indirizzo);
 	}
 
 	onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -133,6 +141,7 @@ export default class InserisciOrdineView
 										options={this.props.magazzini}
 										getOptionLabel={(option) => option.indirizzo}
 										style={{ width: 300 }}
+										onChange={this.onSelectMagazzinoCarico}
 										freeSolo
 										renderInput={(params) => <TextField
 											{...params}
@@ -155,6 +164,7 @@ export default class InserisciOrdineView
 										options={this.props.magazzini}
 										getOptionLabel={(option) => option.indirizzo}
 										style={{ width: 300 }}
+										onChange={this.onSelectMagazzinoScarico}
 										freeSolo
 										renderInput={(params) => <TextField
 											{...params}
