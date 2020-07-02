@@ -71,11 +71,11 @@ export default function OrderItem({ordine, onEliminaOrdine}: OrderItemProps) {
 			<Grid item xs={12} sm={6} md={4}>
 				<div>
 					<Typography variant="overline" color="textSecondary">{bd.orderProperties.dimension}:</Typography>
-					<Typography variant="body2">{ordine.dimX}x{ordine.dimY}x{ordine.dimZ}cm</Typography>
+					<Typography variant="body2">{ordine.dimX} x {ordine.dimY} x {ordine.dimZ} cm</Typography>
 				</div>
 				<div style={style.mt}>
 					<Typography variant="overline" color="textSecondary">{bd.orderProperties.mass}:</Typography>
-					<Typography variant="body2">{ordine.massa}kg</Typography>
+					<Typography variant="body2">{ordine.massa} kg</Typography>
 				</div>
 			</Grid>
 		</Grid>

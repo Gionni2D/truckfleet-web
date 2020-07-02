@@ -87,6 +87,9 @@ const style : { [key: string] : React.CSSProperties } = {
 		position: 'fixed',
 		width: '80%',
 		zIndex: 3
+	},
+	w150: {
+		width: '150px'
 	}
 }
 
@@ -311,8 +314,9 @@ export default class InserisciSpedizioneView
 								inputProps={{ min: 1, max: 40000 }}
 								variant="outlined"
 								name="veicoloMassa"
+								style={style.w150}
 								error={errors.veicoloMassa}
-								label={bs.vehicleWeight}
+								label={`${bs.vehicleWeight} (t)`}
 								value={spedizione.veicoloMassa}
 								onChange={this.onChangeSpedizione}/><br/><br/>
 							<FormControlLabel
@@ -332,8 +336,9 @@ export default class InserisciSpedizioneView
 								inputProps={{ min: 1, max: 40000 }}
 								variant="outlined"
 								name="rimorchioMassa"
+								style={style.w150}
 								error={errors.rimorchioMassa}
-								label={bs.unladenMass}
+								label={`${bs.unladenMass} (t)`}
 								value={spedizione.rimorchioMassa}
 								onChange={this.onChangeSpedizione}/>
 							<TextField
@@ -341,8 +346,9 @@ export default class InserisciSpedizioneView
 								inputProps={{ min: 1, max: 40000 }}
 								variant="outlined"
 								name="rimorchioCaricoMax"
+								style={style.w150}
 								error={errors.rimorchioCaricoMax}
-								label={bs.maxLoad}
+								label={`${bs.maxLoad} (t)`}
 								value={spedizione.rimorchioCaricoMax}
 								onChange={this.onChangeSpedizione}/><br/><br/>
 							<Typography variant="subtitle2" color="textSecondary">

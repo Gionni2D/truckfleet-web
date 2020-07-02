@@ -60,7 +60,7 @@ export default function ShipmentInfo(props: ShipmentInfoProps) {
           <Grid item xs={12} sm={6} md={4}>
             <div>
               <Typography variant="overline" color="textSecondary">{bs.trailer}:</Typography>
-              <Typography variant="body2">{spedizione.rimorchioDimX}x{spedizione.rimorchioDimY}x{spedizione.rimorchioDimZ} cm</Typography>
+              <Typography variant="body2">{spedizione.rimorchioDimX} x {spedizione.rimorchioDimY} x {spedizione.rimorchioDimZ} cm</Typography>
             </div>
             <div style={style.mt}>
               <Typography variant="overline" color="textSecondary">{bs.trailer}:</Typography>
