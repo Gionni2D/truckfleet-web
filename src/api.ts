@@ -106,11 +106,19 @@ const api : D.Model = {
 	rimuoviSpedizione(s: D.Spedizione) : boolean {
 		if(s.stato == D.StatoSpedizione.CREATA) {
 			for(let i = 0; i < db.Spedizioni.length; i++) {
-				if(db.Spedizioni[i].id == s.id) {
+				const spedizione = db.Spedizioni[i]
+
+				if(spedizione.id == s.id) {
 
 					// imposto lo stato di ogni ordine a INSERITO
-					for(let o of db.Spedizioni[i].getOrdini()) {
+					for(let o of spedizione.getOrdini()) {
+						o.spedizioneId = undefined
 						o.stato = D.StatoOrdine.INSERITO
+					}
+
+					// elimino le tappe
+					for(let t of spedizione.getTappe()) {
+						db.Tappe.splice(db.Tappe.indexOf(t), 1);
 					}
 
 					db.Spedizioni.splice(i, 1);
