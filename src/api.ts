@@ -114,6 +114,8 @@ const api : D.Model = {
 					for(let o of spedizione.getOrdini()) {
 						o.spedizioneId = undefined
 						o.stato = D.StatoOrdine.INSERITO
+						o.tappaCaricoId = undefined
+						o.tappaScaricoId = undefined
 					}
 
 					// elimino le tappe
