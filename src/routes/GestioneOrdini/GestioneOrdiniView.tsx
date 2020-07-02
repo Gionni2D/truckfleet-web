@@ -52,10 +52,12 @@ export default class GestioneOrdiniView
 	}
 
 	onEliminaOrdine = (idOrdine: number) => {
-		if(this.props.onEliminaOrdine(idOrdine))
-			alert("Ordine eliminato correttamente");
-		else
-			alert("Errore nell'eliminazione dell'ordine");
+		if(confirm("Sei sicuro di voler cancellare l'ordine?")) {
+			if(this.props.onEliminaOrdine(idOrdine))
+				alert("Ordine eliminato correttamente");
+			else
+				alert("Errore nell'eliminazione dell'ordine");
+		}
 	}
 
 	render() {

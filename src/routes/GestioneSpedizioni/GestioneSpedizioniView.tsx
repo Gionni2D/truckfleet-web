@@ -53,11 +53,12 @@ export default class GestioneSpedizioniView
 
 	onEliminaSpedizione = (idSpedizione: number, e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.stopPropagation();
-
-		if(this.props.onEliminaSpedizione(idSpedizione))
-			alert("Spedizione eliminata correttamente");
-		else
-			alert("Errore durante l'eliminazione della spedizione");
+		if(confirm("Sei sicuro di voler cancellare la spedizione?")) {
+			if(this.props.onEliminaSpedizione(idSpedizione))
+				alert("Spedizione eliminata correttamente");
+			else
+				alert("Errore durante l'eliminazione della spedizione");
+		}
 	}
 
 	onChangeFilterText = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -120,7 +121,7 @@ export default class GestioneSpedizioniView
 									</Grid>
 									<Grid item xs={4}>
 										<div>
-											<Typography variant="overline" color="textSecondary">{bs.distance}:</Typography>
+											<Typography variant="overline" color="textSecondary">{bs.duration}:</Typography>
 											<Typography variant="body2">{Math.round((spedizione.getTappe()[spedizione.getTappe().length-1].arrivoPrevisto-spedizione.getTappe()[0].arrivoPrevisto)/3600/1000)} h</Typography>
 										</div>
 										<div style={style.mt}>
