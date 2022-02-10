@@ -10,7 +10,7 @@
 		"build": "rm -rf dist/* && NODE_ENV=production webpack && cp -r public/* dist"
 	},
 	"devDependencies": {
-		"node-sass": "^4.13.0",
+		"node-sass": "^7.0.0",
 		"sass-loader": "^8.0.0",
 		"ts-loader": "^6.2.1",
 		"typescript": "^3.7.2",
